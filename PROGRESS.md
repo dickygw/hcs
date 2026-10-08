@@ -53,7 +53,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 ## Langkah berikutnya
 Lanjutan Build Plan Tahap 2 (sesi berikutnya):
 1. User di dasbor Supabase `hcs-dev`:
-   1. Unduh sertifikat SSL (Project Settings → Database → SSL Configuration) ke `D:\HCS\database\supabase-ca.crt`.
+   1. ✅ Sertifikat SSL sudah ada di `database/prod-ca-2021.crt`. Di `.env`, ubah `DATABASE_CA_FILE` menjadi `../database/prod-ca-2021.crt`.
    2. Lengkapi `.env` (sudah dibuat; password `hcs_app` dan `ENCRYPTION_KEY` sudah terisi): ganti `[REF]`, `[HOST]` (Connect → Session pooler), `[PASSWORD-POSTGRES]`.
    3. Matikan Data API; aktifkan Enforce SSL; matikan signup Supabase Auth.
    4. Buat bucket privat `dokumen` (5 MB; PDF/JPG/PNG).
