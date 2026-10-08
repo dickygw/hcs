@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/pegadaian-design-system-019973fe-4807-49c3-ad4d-ce6938d439d7/styles.css">
+<script src="_ds/pegadaian-design-system-019973fe-4807-49c3-ad4d-ce6938d439d7/_ds_bundle.js"></script>
+<style>body{margin:0;background:#eceeec;font-family:var(--font-core);color:var(--neutral-900);-webkit-font-smoothing:antialiased}a{color:var(--text-link)}a:hover{color:var(--text-link-hover)}*{box-sizing:border-box}</style>
+</helmet>
+
+<header style="padding:48px 56px 8px;display:flex;flex-direction:column;gap:12px;max-width:1400px">
+  <img src="assets/logo/pegadaian-logo-horizontal.png" alt="Pegadaian" style="height:36px;width:auto;align-self:flex-start">
+  <div style="font:600 12px/1 var(--font-core);letter-spacing:.12em;text-transform:uppercase;color:var(--pgd-green-dark)">HCS · Admin SDM · Laptop dan HP</div>
+  <h1 style="margin:0;font:700 40px/1.1 var(--font-core);letter-spacing:-.02em;color:var(--pgd-forest)">UI mockup sisi Admin</h1>
+  <p style="margin:0;max-width:820px;font:400 16px/1.55 var(--font-core);color:var(--neutral-700);text-wrap:pretty">Satu tata letak responsif dengan dua titik acuan: laptop 1366 px untuk bekerja penuh, dan HP 360 px untuk memeriksa serta memutuskan pengajuan dari mana saja. Setiap layar ditampilkan berdampingan pada kedua ukuran.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;max-width:1100px;margin-top:8px">
+    <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px"><span style="font:600 14px var(--font-core);color:var(--pgd-forest)">Navigasi</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Menu samping di laptop. Di HP menjadi navigasi bawah 4 menu, sisanya di Lainnya.</span></div>
+    <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px"><span style="font:600 14px var(--font-core);color:var(--pgd-forest)">Tabel</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Baris 48 px di laptop. Di HP setiap baris menjadi kartu dengan kolom yang sama.</span></div>
+    <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px"><span style="font:600 14px var(--font-core);color:var(--pgd-forest)">Detail</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Dua kolom di laptop. Di HP menjadi tab Isian, Perhitungan, Dokumen, Riwayat dengan aksi tetap di bawah.</span></div>
+    <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px"><span style="font:600 14px var(--font-core);color:var(--pgd-forest)">Rekening</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Selalu tersamar ••••1234 di kedua ukuran. Nomor lengkap hanya di cetakan dan ekspor.</span></div>
+  </div>
+</header>
+
+<section data-screen-label="A1 Dasbor" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">A1. Dasbor</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Umur data karyawan, angka antrean, daftar perhatian</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="flex:none;width:1366px;height:860px;border-radius:12px;border:1px solid var(--neutral-300);box-shadow:var(--shadow-lg);overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;background:var(--neutral-100);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:8px;padding:0 16px"><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="margin-left:16px;padding:5px 14px;border-radius:6px;background:#fff;font:400 13px var(--font-core);color:var(--neutral-600)">hcs-kanwil4.id/admin</span></div>
+      <div style="flex:1;display:flex;min-height:0">
+        <aside style="width:232px;flex:none;background:#fff;border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;padding:20px 12px;gap:4px">
+          <div style="display:flex;align-items:center;gap:10px;padding:0 10px 20px"><img src="assets/logo/pegadaian-mark.png" alt="" style="width:32px;height:32px"><div style="display:flex;flex-direction:column"><span style="font:700 16px/1.1 var(--font-core);color:var(--pgd-forest)">HCS</span><span style="font:400 12px var(--font-core);color:var(--neutral-600)">Admin SDM</span></div></div>
+          <sc-for list="{{ menuA1 }}" as="m" hint-placeholder-count="8"><div style="display:flex;justify-content:space-between;align-items:center;height:40px;padding:0 12px;border-radius:8px;background:{{ m.bg }};box-shadow:{{ m.sh }};color:{{ m.fg }};font:{{ m.fw }} 14px var(--font-core)"><span>{{ m.label }}</span><span style="font:600 12px var(--font-core);color:var(--neutral-600)">{{ m.count }}</span></div></sc-for>
+        </aside>
+        <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:64px;flex:none;background:#fff;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;padding:0 32px">
+            <span style="font:700 24px var(--font-core);color:var(--pgd-forest)">Dasbor</span>
+            <div style="display:flex;align-items:center;gap:16px"><div style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="position:absolute;top:4px;right:2px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#c62828;color:#fff;font:700 11px/18px var(--font-core);text-align:center">5</span></div><div style="display:flex;align-items:center;gap:10px"><span style="width:36px;height:36px;border-radius:50%;background:var(--gradient-forest);color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px var(--font-core)">SR</span><div style="display:flex;flex-direction:column"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Siti Rahmawati</span><span style="font:400 12px var(--font-core);color:var(--neutral-600)">Admin SDM</span></div></div></div>
+          </div>
+          <div style="flex:1;padding:28px 32px;display:flex;flex-direction:column;gap:20px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:12px;background:{{ age.bg }};border:1px solid {{ age.bd }}">
+              <span style="flex:none;width:12px;height:12px;border-radius:50%;background:{{ age.dot }}"></span>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 15px var(--font-core);color:{{ age.fg }}">{{ age.title }}</span><span style="font:400 14px var(--font-core);color:var(--neutral-700)">Sinkronisasi HCMS terakhir {{ age.date }} · {{ age.days }} lalu · oleh Bayu Nugroho</span></div>
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="sm" hint-size="110px,36px">Sinkronkan</x-import>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:6px"><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Dikirim, belum diproses</span><span style="font:700 38px/1 var(--font-core);color:var(--pgd-forest);font-variant-numeric:tabular-nums">8</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">3 masuk hari ini</span></div>
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:6px"><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Diproses</span><span style="font:700 38px/1 var(--font-core);color:var(--pgd-forest);font-variant-numeric:tabular-nums">4</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">1 belum dapat diselesaikan</span></div>
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:6px"><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Perlu revisi, menunggu karyawan</span><span style="font:700 38px/1 var(--font-core);color:var(--pgd-forest);font-variant-numeric:tabular-nums">3</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Terlama 4 hari</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;min-height:0">
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border-subtle)"><span style="font:600 18px var(--font-core);color:var(--pgd-forest)">Perlu perhatian</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">3 item</span></div>
+                <sc-for list="{{ attention }}" as="a" hint-placeholder-count="3"><div style="display:flex;gap:14px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border-subtle)"><span style="flex:none;font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:{{ a.bg }};color:{{ a.fg }}">{{ a.tag }}</span><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font:600 15px var(--font-core);color:var(--neutral-900)">{{ a.title }}</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">{{ a.sub }}</span></div><span style="font:600 14px var(--font-core);color:var(--green-700)">Buka</span></div></sc-for>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border-subtle)"><span style="font:600 18px var(--font-core);color:var(--pgd-forest)">Masuk hari ini</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Buka Tugasku</span></div>
+                <sc-for list="{{ today }}" as="r" hint-placeholder-count="3"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border-subtle)"><div style="display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">{{ r.name }}</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">{{ r.no }} · {{ r.jenis }}</span></div><span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">{{ r.time }}</span></div></sc-for>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div data-screen-label="A1 HP" style="flex:none;width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+        <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>08.05</span><span>4G ▮▮▮</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px 12px 20px"><div style="display:flex;flex-direction:column;gap:2px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Admin SDM</span><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Dasbor</span></div><div style="position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="position:absolute;top:6px;right:4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#c62828;color:#fff;font:700 11px/18px var(--font-core);text-align:center">5</span></div></div>
+      </div>
+      <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:12px;background:{{ age.bg }};border:1px solid {{ age.bd }}">
+          <div style="display:flex;gap:10px;align-items:center"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ age.dot }}"></span><span style="font:600 15px/1.35 var(--font-core);color:{{ age.fg }}">{{ age.title }}</span></div>
+          <span style="font:400 13px/1.4 var(--font-core);color:var(--neutral-700)">Sinkronisasi terakhir {{ age.date }} · {{ age.days }} lalu</span>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="sm" hint-size="110px,36px">Sinkronkan</x-import>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font:700 26px/1 var(--font-core);color:var(--pgd-forest)">8</span><span style="font:400 12px/1.3 var(--font-core);color:var(--neutral-600)">Dikirim</span></div>
+          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font:700 26px/1 var(--font-core);color:var(--pgd-forest)">4</span><span style="font:400 12px/1.3 var(--font-core);color:var(--neutral-600)">Diproses</span></div>
+          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font:700 26px/1 var(--font-core);color:var(--pgd-forest)">3</span><span style="font:400 12px/1.3 var(--font-core);color:var(--neutral-600)">Perlu revisi</span></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border-subtle);font:600 16px var(--font-core);color:var(--pgd-forest)">Perlu perhatian</div>
+          <sc-for list="{{ attention }}" as="a" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border-subtle)"><span style="align-self:flex-start;font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:{{ a.bg }};color:{{ a.fg }}">{{ a.tag }}</span><span style="font:600 14px/1.35 var(--font-core);color:var(--neutral-900)">{{ a.title }}</span><span style="font:400 13px/1.4 var(--font-core);color:var(--neutral-600)">{{ a.sub }}</span></div></sc-for>
+        </div>
+      </div>
+      <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(4,1fr)">
+        <sc-for list="{{ navA1 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ n.fg }};box-shadow:{{ n.sh }};font:{{ n.fw }} 12px var(--font-core)"><span style="width:22px;height:22px;border-radius:6px;border:1.8px solid currentColor;display:flex;align-items:center;justify-content:center;font:700 10px var(--font-core)">{{ n.glyph }}</span><span>{{ n.label }}</span></div></sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="A2 Tugasku" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">A2. Tugasku</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Tab Karyawan / TAD, filter, cari, penanda duplikasi dan rekening kosong</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="flex:none;width:1366px;height:860px;border-radius:12px;border:1px solid var(--neutral-300);box-shadow:var(--shadow-lg);overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;background:var(--neutral-100);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:8px;padding:0 16px"><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="margin-left:16px;padding:5px 14px;border-radius:6px;background:#fff;font:400 13px var(--font-core);color:var(--neutral-600)">hcs-kanwil4.id/admin/tugasku</span></div>
+      <div style="flex:1;display:flex;min-height:0">
+        <aside style="width:232px;flex:none;background:#fff;border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;padding:20px 12px;gap:4px">
+          <div style="display:flex;align-items:center;gap:10px;padding:0 10px 20px"><img src="assets/logo/pegadaian-mark.png" alt="" style="width:32px;height:32px"><div style="display:flex;flex-direction:column"><span style="font:700 16px/1.1 var(--font-core);color:var(--pgd-forest)">HCS</span><span style="font:400 12px var(--font-core);color:var(--neutral-600)">Admin SDM</span></div></div>
+          <sc-for list="{{ menuA2 }}" as="m" hint-placeholder-count="8"><div style="display:flex;justify-content:space-between;align-items:center;height:40px;padding:0 12px;border-radius:8px;background:{{ m.bg }};box-shadow:{{ m.sh }};color:{{ m.fg }};font:{{ m.fw }} 14px var(--font-core)"><span>{{ m.label }}</span><span style="font:600 12px var(--font-core);color:var(--neutral-600)">{{ m.count }}</span></div></sc-for>
+        </aside>
+        <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle);padding:20px 32px 0;display:flex;flex-direction:column;gap:12px">
+            <span style="font:700 24px var(--font-core);color:var(--pgd-forest)">Tugasku</span>
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Tabs" items="{{ tugasTabs }}" value="karyawan" on-change="{{ noop }}" hint-size="100%,44px"></x-import>
+          </div>
+          <div style="flex:1;padding:20px 32px;display:flex;flex-direction:column;gap:16px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:minmax(0,1.6fr) repeat(3,minmax(0,1fr));gap:12px;align-items:end">
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" size="sm" placeholder="Cari nomor, nama, atau No. Surat Tugas" hint-size="100%,36px"></x-import>
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Select" size="sm" options="{{ optStatus }}" default-value="Semua status" hint-size="100%,36px"></x-import>
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Select" size="sm" options="{{ optJenis }}" default-value="Semua layanan" hint-size="100%,36px"></x-import>
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Select" size="sm" options="{{ optTgl }}" default-value="7 hari terakhir" hint-size="100%,36px"></x-import>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:96px minmax(0,1.3fr) minmax(0,1.4fr) minmax(0,1.3fr) 112px 104px minmax(0,1.2fr);gap:12px;align-items:center;height:44px;padding:0 20px;background:var(--neutral-50);border-bottom:1px solid var(--border-subtle);font:600 13px var(--font-core);color:var(--neutral-700)"><span>Nomor</span><span>Nama</span><span>Jenis layanan</span><span>No. Surat Tugas</span><span>Masuk</span><span>Status</span><span>Penanda</span></div>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7"><div style="display:grid;grid-template-columns:96px minmax(0,1.3fr) minmax(0,1.4fr) minmax(0,1.3fr) 112px 104px minmax(0,1.2fr);gap:12px;align-items:center;height:48px;padding:0 20px;border-bottom:1px solid var(--border-subtle);background:{{ r.rowBg }};font:400 14px var(--font-core);color:var(--neutral-900);font-variant-numeric:tabular-nums"><span style="font-weight:600;color:var(--green-700)">{{ r.no }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.jenis }}</span><span style="color:var(--neutral-700)">{{ r.st }}</span><span style="color:var(--neutral-700)">{{ r.time }}</span><span><span style="font:600 12px/1 var(--font-core);padding:4px 8px;border-radius:6px;border:1px solid {{ r.sbd }};background:{{ r.sbg }};color:{{ r.sfg }};white-space:nowrap">{{ r.status }}</span></span><span><sc-if value="{{ r.hasFlag }}" hint-placeholder-val="{{ false }}"><span style="font:600 12px/1 var(--font-core);padding:5px 8px;border-radius:6px;background:{{ r.fbg }};color:{{ r.ffg }};white-space:nowrap">{{ r.flag }}</span></sc-if></span></div></sc-for>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;font:400 13px var(--font-core);color:var(--neutral-600)"><span>Menampilkan 7 dari 12</span><span style="font-weight:600;color:var(--green-700)">Muat lebih banyak</span></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div data-screen-label="A2 HP" style="flex:none;width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+        <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>08.06</span><span>4G ▮▮▮</span></div>
+        <div style="padding:8px 20px 8px"><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Tugasku</span></div>
+        <div style="padding:0 12px"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Tabs" items="{{ tugasTabs }}" value="karyawan" on-change="{{ noop }}" hint-size="100%,44px"></x-import></div>
+      </div>
+      <div style="flex:none;padding:12px 16px 4px;display:flex;gap:8px">
+        <div style="flex:1;min-width:0"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" placeholder="Cari nomor, nama, No. ST" hint-size="100%,44px"></x-import></div>
+        <div style="flex:none;width:44px;height:44px;border-radius:8px;border:1px solid var(--border-default);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest);position:relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg><span style="position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--pgd-green);color:#fff;font:700 10px/16px var(--font-core);text-align:center">1</span></div>
+      </div>
+      <div style="flex:1;overflow:hidden;padding:8px 16px 16px;display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ rowsShort }}" as="r" hint-placeholder-count="4"><div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font:600 15px var(--font-core);color:var(--neutral-900)">{{ r.name }}</span><span style="flex:none;font:600 12px/1 var(--font-core);padding:4px 8px;border-radius:6px;border:1px solid {{ r.sbd }};background:{{ r.sbg }};color:{{ r.sfg }}">{{ r.status }}</span></div><span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">{{ r.no }} · {{ r.jenis }}</span><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">{{ r.st }} · {{ r.time }}</span><sc-if value="{{ r.hasFlag }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font:600 11px/1 var(--font-core);padding:4px 7px;border-radius:6px;background:{{ r.fbg }};color:{{ r.ffg }}">{{ r.flag }}</span></sc-if></div></div></sc-for>
+      </div>
+      <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(4,1fr)">
+        <sc-for list="{{ navA2 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ n.fg }};box-shadow:{{ n.sh }};font:{{ n.fw }} 12px var(--font-core)"><span style="width:22px;height:22px;border-radius:6px;border:1.8px solid currentColor;display:flex;align-items:center;justify-content:center;font:700 10px var(--font-core)">{{ n.glyph }}</span><span>{{ n.label }}</span></div></sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="A3 Detail" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">A3. Detail pengajuan</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Periksa, hitung, putuskan. Selesai nonaktif karena rekening TAD belum lengkap</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="flex:none;width:1366px;height:920px;border-radius:12px;border:1px solid var(--neutral-300);box-shadow:var(--shadow-lg);overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;background:var(--neutral-100);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:8px;padding:0 16px"><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="margin-left:16px;padding:5px 14px;border-radius:6px;background:#fff;font:400 13px var(--font-core);color:var(--neutral-600)">hcs-kanwil4.id/admin/pengajuan/KP-0123</span></div>
+      <div style="flex:1;display:flex;min-height:0">
+        <aside style="width:232px;flex:none;background:#fff;border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;padding:20px 12px;gap:4px">
+          <div style="display:flex;align-items:center;gap:10px;padding:0 10px 20px"><img src="assets/logo/pegadaian-mark.png" alt="" style="width:32px;height:32px"><div style="display:flex;flex-direction:column"><span style="font:700 16px/1.1 var(--font-core);color:var(--pgd-forest)">HCS</span><span style="font:400 12px var(--font-core);color:var(--neutral-600)">Admin SDM</span></div></div>
+          <sc-for list="{{ menuA2 }}" as="m" hint-placeholder-count="8"><div style="display:flex;justify-content:space-between;align-items:center;height:40px;padding:0 12px;border-radius:8px;background:{{ m.bg }};box-shadow:{{ m.sh }};color:{{ m.fg }};font:{{ m.fw }} 14px var(--font-core)"><span>{{ m.label }}</span><span style="font:600 12px var(--font-core);color:var(--neutral-600)">{{ m.count }}</span></div></sc-for>
+        </aside>
+        <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font:400 13px var(--font-core);color:var(--neutral-600)">Tugasku / KP-0123</span>
+              <div style="display:flex;align-items:center;gap:12px"><span style="font:700 24px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin · KP-0123</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--pgd-gold);color:var(--pgd-forest)">Diproses</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <div style="display:flex;gap:8px">
+                <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" variant="ghost" size="sm" hint-size="70px,36px">Cetak</x-import>
+                <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ danger }}" size="sm" hint-size="70px,36px">Tolak</x-import>
+                <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" size="sm" hint-size="110px,36px">Minta revisi</x-import>
+                <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" size="sm" disabled="{{ true }}" hint-size="80px,36px">Selesai</x-import>
+              </div>
+              <span style="font:400 12px var(--font-core);color:#c62828">Lengkapi rekening TAD sebelum menyelesaikan pengajuan.</span>
+            </div>
+          </div>
+          <div style="flex:1;padding:20px 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:20px;overflow:hidden;align-content:start">
+            <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+                <span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Data isian</span>
+                <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 120px minmax(0,1fr);gap:8px 12px;font:400 14px/1.4 var(--font-core)">
+                  <span style="color:var(--neutral-600)">Karyawan</span><span>Rina Puspitasari · P91234</span><span style="color:var(--neutral-600)">No. ST</span><span>ST/0412/KW-IV/2026</span>
+                  <span style="color:var(--neutral-600)">Jabatan</span><span>Analis SDM</span><span style="color:var(--neutral-600)">Tujuan</span><span>Samarinda</span>
+                  <span style="color:var(--neutral-600)">JG / golongan</span><span>JG 12 · Gol. B (dikunci)</span><span style="color:var(--neutral-600)">Tanggal</span><span>6–8 Okt 2026 · menginap</span>
+                  <span style="color:var(--neutral-600)">Unit kerja</span><span>Kanwil IV Balikpapan</span><span style="color:var(--neutral-600)">Transportasi</span><span>Pesawat, tanpa kendinas</span>
+                </div>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
+                <div style="display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border-subtle);flex-wrap:wrap">
+                  <span style="font:600 13px/1 var(--font-core);padding:8px 10px;border-radius:8px;background:var(--lime-100);border:1px solid var(--pgd-lime);color:var(--pgd-forest)">Surat Tugas</span>
+                  <span style="font:400 13px/1 var(--font-core);padding:8px 10px;border-radius:8px;border:1px solid var(--border-default);color:var(--neutral-800)">Kuitansi hotel</span>
+                  <span style="font:400 13px/1 var(--font-core);padding:8px 10px;border-radius:8px;border:1px solid var(--border-default);color:var(--neutral-800)">E-tiket</span>
+                  <span style="font:400 13px/1 var(--font-core);padding:8px 10px;border-radius:8px;border:1px solid var(--border-default);color:var(--neutral-800)">Formulir</span>
+                </div>
+                <div style="height:330px;background:var(--neutral-200);display:flex;justify-content:center;padding:20px 0 0;overflow:hidden">
+                  <div style="width:300px;background:#fff;box-shadow:var(--shadow-md);padding:28px 26px;display:flex;flex-direction:column;gap:10px">
+                    <div style="height:10px;width:40%;background:var(--neutral-300);border-radius:2px"></div><div style="height:8px;width:70%;background:var(--neutral-200);border-radius:2px;margin-bottom:10px"></div>
+                    <div style="height:7px;background:var(--neutral-200);border-radius:2px"></div><div style="height:7px;background:var(--neutral-200);border-radius:2px"></div><div style="height:7px;width:85%;background:var(--neutral-200);border-radius:2px"></div>
+                    <div style="margin-top:8px;padding:8px;border:1.5px solid var(--pgd-gold);background:var(--gold-50);display:flex;flex-direction:column;gap:6px"><div style="height:7px;width:60%;background:var(--gold-300);border-radius:2px"></div><div style="height:7px;width:52%;background:var(--gold-300);border-radius:2px"></div></div>
+                    <div style="height:7px;background:var(--neutral-200);border-radius:2px"></div><div style="height:7px;width:60%;background:var(--neutral-200);border-radius:2px"></div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:10px 16px;font:400 13px var(--font-core);color:var(--neutral-600)"><span>Surat_Tugas_0412.pdf · hal. 1 dari 2</span><span>Nama TAD ditandai untuk verifikasi</span></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+              <div style="display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;background:{{ age.bg }};border:1px solid {{ age.bd }}"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ age.dot }}"></span><span style="font:400 13px/1.4 var(--font-core);color:var(--neutral-800)">{{ age.short }}</span></div>
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+                <div style="height:5px;background:var(--pgd-green)"></div>
+                <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--border-subtle)"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Perhitungan SPPD</span><span style="font:400 12px var(--font-core);color:var(--neutral-600)">SE 145/2026 · tarif berlaku 1 Jan 2026</span></div>
+                <div style="padding:14px 20px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border-subtle);font:400 14px var(--font-core);font-variant-numeric:tabular-nums">
+                  <div style="display:flex;justify-content:space-between;font-weight:600;color:var(--pgd-forest)"><span>Rina Puspitasari · Gol. B</span><span>Rp5.260.000</span></div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) 140px 120px;gap:6px 12px;align-items:center;color:var(--neutral-700)">
+                    <span>Uang harian menginap</span><span style="color:var(--neutral-500)">3 × Rp410.000</span><span style="text-align:right">Rp1.230.000</span>
+                    <span>Transportasi bandara</span><span style="color:var(--neutral-500)">2 × Rp250.000</span><span style="text-align:right">Rp500.000</span>
+                    <span>Hotel (at cost)</span><span></span><span style="height:32px;border:1px solid var(--border-default);border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;color:var(--neutral-900)">1.350.000</span>
+                    <span>Tiket pesawat (at cost)</span><span></span><span style="height:32px;border:1px solid var(--border-default);border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;color:var(--neutral-900)">2.180.000</span>
+                    <span>Penyesuaian</span><span style="color:var(--neutral-500)">alasan wajib bila diisi</span><span style="height:32px;border:1px solid var(--border-default);border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;color:var(--neutral-400)">0</span>
+                  </div>
+                </div>
+                <div style="padding:14px 20px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border-subtle);background:var(--gold-50);font:400 14px var(--font-core);font-variant-numeric:tabular-nums">
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--pgd-forest)"><span style="display:flex;gap:8px;align-items:center">Sri Wahyuni <span style="font:600 11px/1 var(--font-core);padding:3px 6px;border-radius:4px;background:var(--pgd-gold)">TAD</span><span style="font-weight:400;color:var(--neutral-600)">POJ · BRI ••••4821</span></span><span>Rp4.510.000</span></div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) 140px 120px;gap:4px 12px;color:var(--neutral-700)"><span>Uang harian (70% Gol. C)</span><span style="color:var(--neutral-500)">3 × Rp210.000</span><span style="text-align:right">Rp630.000</span><span>Transportasi bandara</span><span style="color:var(--neutral-500)">2 × Rp175.000</span><span style="text-align:right">Rp350.000</span><span>Hotel + tiket (at cost)</span><span></span><span style="text-align:right">Rp3.530.000</span></div>
+                </div>
+                <div style="padding:14px 20px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border-subtle);background:var(--gold-50);font:400 14px var(--font-core);font-variant-numeric:tabular-nums">
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--pgd-forest)"><span style="display:flex;gap:8px;align-items:center">Yusuf Hidayat <span style="font:600 11px/1 var(--font-core);padding:3px 6px;border-radius:4px;background:var(--pgd-gold)">TAD</span><span style="font-weight:400;color:var(--neutral-600)">EPS · input manual</span></span><span>Rp4.510.000</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;background:#fff;border:1px solid #f3c7c2"><span style="font:600 13px var(--font-core);color:#c62828">Data rekening TAD belum lengkap</span><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="sm" hint-size="150px,36px">Lengkapi rekening</x-import></div>
+                </div>
+                <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:baseline;font-variant-numeric:tabular-nums"><span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Total 3 rincian</span><span style="font:700 24px var(--font-core);color:var(--pgd-forest)">Rp14.280.000</span></div>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:10px;font:400 13px var(--font-core);color:var(--neutral-700)"><span style="font-weight:600;color:var(--pgd-forest)">Riwayat</span><span style="width:8px;height:8px;border-radius:50%;background:var(--pgd-forest)"></span>Dikirim 6 Okt 19.40<span style="flex:1;height:1px;background:var(--border-subtle)"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--pgd-gold)"></span>Diproses 7 Okt 08.02 · Siti R.</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div data-screen-label="A3 HP" style="flex:none;width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle)">
+        <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>08.10</span><span>4G ▮▮▮</span></div>
+        <div style="display:flex;align-items:center;padding:0 8px"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div><span style="font:600 15px var(--font-core);color:var(--neutral-600)">Tugasku</span></div>
+        <div style="padding:0 20px 8px;display:flex;flex-direction:column;gap:4px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font:700 20px var(--font-core);color:var(--pgd-forest)">KP-0123</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--pgd-gold);color:var(--pgd-forest)">Diproses</span></div><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Klaim Biaya Perdin · Rina Puspitasari</span></div>
+        <div style="padding:0 8px"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Tabs" items="{{ detailTabs }}" value="hitung" on-change="{{ noop }}" hint-size="100%,44px"></x-import></div>
+      </div>
+      <div style="flex:1;overflow:hidden;padding:12px 16px;display:flex;flex-direction:column;gap:10px;font-variant-numeric:tabular-nums">
+        <div style="display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;background:{{ age.bg }};border:1px solid {{ age.bd }}"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ age.dot }}"></span><span style="font:400 13px/1.4 var(--font-core);color:var(--neutral-800)">{{ age.short }}</span></div>
+        <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font:600 15px var(--font-core);color:var(--pgd-forest)"><span>Rina · Gol. B</span><span>Rp5.260.000</span></div>
+          <div style="display:flex;justify-content:space-between;font:400 13px var(--font-core);color:var(--neutral-700)"><span>Uang harian 3 × 410.000</span><span>1.230.000</span></div>
+          <div style="display:flex;justify-content:space-between;font:400 13px var(--font-core);color:var(--neutral-700)"><span>Bandara 2 × 250.000</span><span>500.000</span></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" size="sm" label="Hotel" prefix="Rp" default-value="1.350.000" hint-size="100%,60px"></x-import><x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" size="sm" label="Tiket" prefix="Rp" default-value="2.180.000" hint-size="100%,60px"></x-import></div>
+        </div>
+        <div style="background:var(--gold-50);border:1px solid var(--gold-200);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;font:600 15px var(--font-core);color:var(--pgd-forest)"><span>Sri Wahyuni · TAD</span><span>Rp4.510.000</span></div>
+          <span style="font:400 13px var(--font-core);color:var(--neutral-600)">POJ · BRI ••••4821</span>
+        </div>
+        <div style="background:var(--gold-50);border:1px solid var(--gold-200);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font:600 15px var(--font-core);color:var(--pgd-forest)"><span>Yusuf Hidayat · TAD</span><span>Rp4.510.000</span></div>
+          <span style="font:600 13px var(--font-core);color:#c62828">Data rekening TAD belum lengkap</span>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="sm" hint-size="150px,36px">Lengkapi rekening</x-import>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 4px 0"><span style="font:600 14px var(--font-core);color:var(--pgd-forest)">Total</span><span style="font:700 22px var(--font-core);color:var(--pgd-forest)">Rp14.280.000</span></div>
+      </div>
+      <div style="flex:none;padding:10px 16px 22px;background:#fff;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+        <span style="font:400 12px var(--font-core);color:#c62828;text-align:center">Lengkapi rekening TAD sebelum menyelesaikan pengajuan.</span>
+        <div style="display:flex;gap:8px"><div style="flex:none;width:44px;height:44px;border-radius:8px;border:1px solid var(--pgd-forest);display:flex;align-items:center;justify-content:center;font:700 18px var(--font-core);color:var(--pgd-forest)">⋯</div><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Minta revisi</x-import></div><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" disabled="{{ true }}" full-width="{{ true }}" hint-size="100%,44px">Selesai</x-import></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="A5 Sinkronisasi" style="padding:40px 56px 72px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">A5. Sinkronisasi HCMS</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">Wizard langkah 3: ringkasan perubahan sebelum Terapkan</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="flex:none;width:1366px;height:820px;border-radius:12px;border:1px solid var(--neutral-300);box-shadow:var(--shadow-lg);overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;background:var(--neutral-100);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:8px;padding:0 16px"><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="width:11px;height:11px;border-radius:50%;background:var(--neutral-300)"></span><span style="margin-left:16px;padding:5px 14px;border-radius:6px;background:#fff;font:400 13px var(--font-core);color:var(--neutral-600)">hcs-kanwil4.id/admin/karyawan/sinkronisasi</span></div>
+      <div style="flex:1;display:flex;min-height:0">
+        <aside style="width:232px;flex:none;background:#fff;border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;padding:20px 12px;gap:4px">
+          <div style="display:flex;align-items:center;gap:10px;padding:0 10px 20px"><img src="assets/logo/pegadaian-mark.png" alt="" style="width:32px;height:32px"><div style="display:flex;flex-direction:column"><span style="font:700 16px/1.1 var(--font-core);color:var(--pgd-forest)">HCS</span><span style="font:400 12px var(--font-core);color:var(--neutral-600)">Admin SDM</span></div></div>
+          <sc-for list="{{ menuA5 }}" as="m" hint-placeholder-count="8"><div style="display:flex;justify-content:space-between;align-items:center;height:40px;padding:0 12px;border-radius:8px;background:{{ m.bg }};box-shadow:{{ m.sh }};color:{{ m.fg }};font:{{ m.fw }} 14px var(--font-core)"><span>{{ m.label }}</span><span style="font:600 12px var(--font-core);color:var(--neutral-600)">{{ m.count }}</span></div></sc-for>
+        </aside>
+        <main style="flex:1;min-width:0;padding:24px 32px;display:flex;flex-direction:column;gap:20px;overflow:hidden">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Data karyawan / Sinkronisasi HCMS</span><span style="font:700 24px var(--font-core);color:var(--pgd-forest)">Ringkasan perubahan</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+            <sc-for list="{{ steps3 }}" as="s" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px"><div style="height:4px;border-radius:2px;background:{{ s.bar }}"></div><span style="font:{{ s.fw }} 13px var(--font-core);color:{{ s.fg }}">{{ s.label }}</span></div></sc-for>
+          </div>
+          <div style="padding:12px 16px;border-radius:10px;background:#fff;border:1px solid var(--border-subtle);font:400 14px var(--font-core);color:var(--neutral-700)">File <b style="color:var(--neutral-900)">Export_HCMS_06102026.xlsx</b> · 873 baris · 12 dari 93 kolom disimpan, kolom lain dibuang</div>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+            <sc-for list="{{ changes }}" as="c" hint-placeholder-count="4"><div style="background:#fff;border:{{ c.bd }};border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:4px"><span style="font:700 30px/1 var(--font-core);color:var(--pgd-forest)">{{ c.n }}</span><span style="font:600 14px var(--font-core);color:var(--neutral-900)">{{ c.label }}</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">{{ c.sub }}</span></div></sc-for>
+          </div>
+          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+            <div style="padding:12px 20px;border-bottom:1px solid var(--border-subtle);display:flex;justify-content:space-between"><span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Berubah JG atau golongan (11)</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Tutup rincian</span></div>
+            <div style="display:grid;grid-template-columns:90px minmax(0,1.4fr) minmax(0,1.4fr) 120px 120px;gap:12px;height:40px;align-items:center;padding:0 20px;background:var(--neutral-50);font:600 13px var(--font-core);color:var(--neutral-700)"><span>NIK</span><span>Nama</span><span>Jabatan</span><span>Sebelumnya</span><span>Menjadi</span></div>
+            <sc-for list="{{ jgRows }}" as="j" hint-placeholder-count="4"><div style="display:grid;grid-template-columns:90px minmax(0,1.4fr) minmax(0,1.4fr) 120px 120px;gap:12px;height:44px;align-items:center;padding:0 20px;border-top:1px solid var(--border-subtle);font:400 14px var(--font-core);font-variant-numeric:tabular-nums"><span style="color:var(--neutral-700)">{{ j.nik }}</span><span>{{ j.name }}</span><span style="color:var(--neutral-700)">{{ j.pos }}</span><span style="color:var(--neutral-600)">{{ j.from }}</span><span style="font-weight:600;color:var(--pgd-forest)">{{ j.to }}</span></div></sc-for>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:auto">
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" hint-size="100px,44px">Kembali</x-import>
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" hint-size="180px,44px">Terapkan sinkronisasi</x-import>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div data-screen-label="A5 HP" style="flex:none;width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+      <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle)">
+        <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>08.20</span><span>4G ▮▮▮</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 8px"><div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Sinkronisasi HCMS</span></div><span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">3 dari 4</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div></div>
+      </div>
+      <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Ringkasan perubahan</span>
+        <span style="font:400 13px/1.4 var(--font-core);color:var(--neutral-600)">Export_HCMS_06102026.xlsx · 873 baris</span>
+        <sc-for list="{{ changes }}" as="c" hint-placeholder-count="4"><div style="background:#fff;border:{{ c.bd }};border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px"><span style="flex:none;width:44px;font:700 24px/1 var(--font-core);color:var(--pgd-forest);text-align:center">{{ c.n }}</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">{{ c.label }}</span><span style="font:400 12px/1.35 var(--font-core);color:var(--neutral-600)">{{ c.sub }}</span></div><span style="font:700 16px var(--font-core);color:var(--neutral-400)">›</span></div></sc-for>
+      </div>
+      <div style="flex:none;padding:12px 16px 24px;background:#fff;border-top:1px solid var(--border-subtle);display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Terapkan</x-import></div></div>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;primaryTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;green-700&quot;,&quot;green&quot;],&quot;default&quot;:&quot;green-700&quot;,&quot;tsType&quot;:&quot;'green-700' | 'green'&quot;,&quot;section&quot;:&quot;Tombol utama&quot;},&quot;dataAge&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;hijau&quot;,&quot;kuning&quot;,&quot;merah&quot;],&quot;default&quot;:&quot;kuning&quot;,&quot;tsType&quot;:&quot;'hijau' | 'kuning' | 'merah'&quot;,&quot;section&quot;:&quot;Umur data karyawan&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const ds = (this.props.primaryTone ?? 'green-700') === 'green';
+    const ageKey = this.props.dataAge ?? 'kuning';
+    const AGE = {
+      hijau: { title: 'Data karyawan mutakhir', days: '3 hari', date: '4 Okt 2026', bg: 'var(--green-50)', bd: 'var(--green-200)', dot: 'var(--pgd-green)', fg: 'var(--green-700)', short: 'Data karyawan disinkronkan 3 hari lalu.' },
+      kuning: { title: 'Segera sinkronkan data karyawan', days: '9 hari', date: '28 Sep 2026', bg: 'var(--gold-50)', bd: 'var(--gold-200)', dot: 'var(--pgd-gold)', fg: 'var(--pgd-forest)', short: 'Data karyawan berumur 9 hari. Pastikan JG sesuai sebelum menyelesaikan.' },
+      merah: { title: 'Data karyawan kedaluwarsa', days: '16 hari', date: '21 Sep 2026', bg: 'var(--status-danger-soft)', bd: '#f3c7c2', dot: '#c62828', fg: '#c62828', short: 'Data karyawan berumur 16 hari. Perhitungan dapat memakai JG lama.' },
+    };
+    const MENU = [['Dasbor', ''], ['Tugasku', '17'], ['Semua pengajuan', ''], ['Data karyawan', ''], ['Data TAD', ''], ['Tarif SPPD', ''], ['Log audit', ''], ['Pengaturan', '']];
+    const menu = (act) => MENU.map(([label, count]) => label === act
+      ? { label, count, bg: 'var(--green-50)', sh: 'inset 3px 0 0 var(--pgd-green)', fg: 'var(--pgd-forest)', fw: 600 }
+      : { label, count, bg: 'transparent', sh: 'none', fg: 'var(--neutral-700)', fw: 400 });
+    const NAV = [['Dasbor', 'D'], ['Tugasku', 'T'], ['Semua', 'S'], ['Lainnya', '⋯']];
+    const nav = (act) => NAV.map(([label, glyph]) => label === act
+      ? { label, glyph, fg: 'var(--pgd-forest)', sh: 'inset 0 3px 0 var(--pgd-green)', fw: 600 }
+      : { label, glyph, fg: 'var(--neutral-500)', sh: 'none', fw: 400 });
+    const ST = {
+      Dikirim: { sbg: 'transparent', sfg: 'var(--pgd-forest)', sbd: 'var(--pgd-forest)' },
+      Diproses: { sbg: 'var(--pgd-gold)', sfg: 'var(--pgd-forest)', sbd: 'var(--pgd-gold)' },
+    };
+    const FL = {
+      'Duplikasi': { fbg: 'var(--status-danger-soft)', ffg: '#c62828' },
+      'Rekening TAD kosong': { fbg: '#fdebd9', ffg: '#a3510a' },
+      'TAD belum terdaftar': { fbg: '#fdebd9', ffg: '#a3510a' },
+    };
+    const raw = [
+      ['KP-0131', 'Ahmad Fauzi', 'Klaim Biaya Perdin', 'ST/0461/KW-IV/2026', '7 Okt 09.12', 'Dikirim', 'Duplikasi'],
+      ['SP-0092', 'Dewi Lestari', 'Permohonan SPPD', 'ST/0470/KW-IV/2026', '7 Okt 08.40', 'Dikirim', ''],
+      ['KP-0123', 'Rina Puspitasari', 'Klaim Biaya Perdin', 'ST/0412/KW-IV/2026', '6 Okt 19.40', 'Diproses', 'Rekening TAD kosong'],
+      ['TP-0044', 'Hendra Wijaya', 'Pemesanan Tiket Pesawat', 'ST/0466/KW-IV/2026', '6 Okt 16.05', 'Dikirim', ''],
+      ['KP-0127', 'Agus Salim', 'Klaim Biaya Perdin', 'ST/0449/KW-IV/2026', '6 Okt 11.30', 'Dikirim', 'TAD belum terdaftar'],
+      ['KD-0021', 'Maya Sari', 'Klaim Perdin Diklat', 'SPW/091/DIKLAT/2026', '5 Okt 14.22', 'Diproses', ''],
+      ['SP-0090', 'Fitri Handayani', 'Permohonan SPPD', 'ST/0468/KW-IV/2026', '5 Okt 10.02', 'Diproses', ''],
+    ];
+    const rows = raw.map(([no, name, jenis, st, time, status, flag]) => ({
+      no, name, jenis, st, time, status, flag, hasFlag: !!flag,
+      rowBg: no === 'KP-0123' ? 'var(--green-50)' : '#fff', ...ST[status], ...(FL[flag] || {}),
+    }));
+    return {
+      pri: { variant: 'primary', style: { background: ds ? 'var(--pgd-green)' : '#08803a' } },
+      sec: { variant: 'secondary', style: { borderColor: 'var(--pgd-forest)' } },
+      danger: { variant: 'secondary', style: { borderColor: '#c62828', color: '#c62828' } },
+      noop: () => {},
+      age: AGE[ageKey] || AGE.kuning,
+      menuA1: menu('Dasbor'), menuA2: menu('Tugasku'), menuA5: menu('Data karyawan'),
+      navA1: nav('Dasbor'), navA2: nav('Tugasku'),
+      attention: [
+        { tag: 'Duplikasi', bg: 'var(--status-danger-soft)', fg: '#c62828', title: 'KP-0131 · Ahmad Fauzi', sub: 'ST/0461 + Klaim Biaya Perdin sudah ada di KP-0128' },
+        { tag: 'TAD belum terdaftar', bg: '#fdebd9', fg: '#a3510a', title: 'KP-0127 · Budi Santoso (input manual)', sub: 'Verifikasi terhadap Surat Tugas, lalu lengkapi data master' },
+        { tag: 'Rekening TAD kosong', bg: '#fdebd9', fg: '#a3510a', title: 'KP-0123 · Yusuf Hidayat', sub: 'Pengajuan tidak dapat Selesai sebelum rekening dilengkapi' },
+      ],
+      today: rows.slice(0, 3),
+      rows, rowsShort: rows.slice(0, 4),
+      tugasTabs: [{ value: 'karyawan', label: 'Karyawan', count: 12 }, { value: 'tad', label: 'TAD', count: 5 }],
+      detailTabs: [{ value: 'isian', label: 'Isian' }, { value: 'hitung', label: 'Perhitungan' }, { value: 'dok', label: 'Dokumen' }, { value: 'riwayat', label: 'Riwayat' }],
+      optStatus: ['Semua status', 'Dikirim', 'Diproses'],
+      optJenis: ['Semua layanan', 'Klaim Biaya Perdin', 'Klaim Perdin Diklat', 'Permohonan SPPD', 'Pemesanan Tiket Pesawat'],
+      optTgl: ['Hari ini', '7 hari terakhir', '30 hari terakhir'],
+      steps3: ['1 Unggah file', '2 Pemeriksaan', '3 Ringkasan perubahan', '4 Terapkan'].map((label, i) => ({ label, bar: i < 3 ? 'var(--pgd-green)' : 'var(--neutral-200)', fg: i === 2 ? 'var(--pgd-forest)' : 'var(--neutral-600)', fw: i === 2 ? 600 : 400 })),
+      changes: [
+        { n: '6', label: 'Karyawan baru', sub: 'Ditambahkan sebagai aktif', bd: '1px solid var(--border-subtle)' },
+        { n: '3', label: 'Tidak ada lagi', sub: 'Dinonaktifkan, tidak dihapus', bd: '1px solid var(--border-subtle)' },
+        { n: '11', label: 'Berubah JG atau golongan', sub: '2 berpindah golongan', bd: '2px solid var(--pgd-green)' },
+        { n: '4', label: 'Pindah unit', sub: 'Unit kerja diperbarui', bd: '1px solid var(--border-subtle)' },
+      ],
+      jgRows: [
+        { nik: 'P88120', name: 'Dewi Lestari', pos: 'Manajer Operasional', from: 'JG 13 · B', to: 'JG 14 · A' },
+        { nik: 'P90455', name: 'Hendra Wijaya', pos: 'Penaksir Madya', from: 'JG 10 · C', to: 'JG 11 · B' },
+        { nik: 'P91877', name: 'Maya Sari', pos: 'Analis Keuangan', from: 'JG 9 · C', to: 'JG 10 · C' },
+        { nik: 'P86302', name: 'Rudi Hartono', pos: 'Pemimpin Cabang', from: 'JG 12 · B', to: 'JG 13 · B' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

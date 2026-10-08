@@ -1,0 +1,64 @@
+# PROGRESS — HCS (Human Capital System)
+
+> File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
+
+**Tahap aktif:** 3 – Bangun MVP · Build Plan Tahap 1 (Persiapan proyek dan Git)
+**Terakhir diperbarui:** 08-10-2026
+
+## Dokumen acuan yang berlaku
+| Dokumen | Versi | Status |
+|---|---|---|
+| `docs/PRD_HCS_v2.1.md` | 2.1 | ✅ Disetujui 08-10-2026 |
+| `docs/DESIGN_BRIEF.md` | 1.1 | ✅ Disetujui 08-10-2026 |
+| `mockup/HCS Mobile.dc.html`, `mockup/HCS Admin.dc.html` | 07-10-2026 | ✅ **Acuan visual utama** |
+| `docs/STANDAR_KEAMANAN_HCS_v1.2.md` | 1.2 | ✅ Wajib (pengetatan Supabase) |
+| `BUILD_PLAN.md` | 2.0 | ✅ Disetujui 08-10-2026 |
+
+Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
+
+## Status tahapan
+| # | Tahap | Status | Catatan singkat |
+|---|-------|--------|-----------------|
+| 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
+| 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 1 dari 15 |
+| 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
+| 5 | Debug Error ⚙️ | 🔒 Terkunci | |
+| 6 | E2E Test (Playwright) | 🔒 Terkunci | |
+| 7 | Refactor & Dead Code | 🔒 Terkunci | |
+| 8 | Git Commit Rapi ⚙️ | 🔒 Terkunci | |
+| 9 | Task → Skill | 🔒 Terkunci | |
+
+Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡 Berjalan · ✅ Selesai · 🔁 Perlu diperbarui
+
+## Keputusan penting
+| Tanggal | Keputusan | Alasan |
+|---------|-----------|--------|
+| 25-09-2026 | HCS dibangun dari nol, terpisah dari HCSS | Arahan user |
+| 25-09-2026 | Nomor Surat Tugas / Surat Pemanggilan menjadi kunci penghubung dan pencegah double bayar | Nomor SPPD kurang tepat |
+| 29-09-2026 | TAD diinput karyawan di dalam pengajuannya sendiri; karyawan tidak melihat tarif/hitungan | Kurangi beban Admin; transparansi setelah Selesai |
+| 06-10-2026 | Jalur Google Workspace dihentikan; aplikasi di Cloudways Velocity, database dan dokumen di Supabase | Kanwil tidak punya tim IT; tidak ingin mengelola server |
+| 08-10-2026 | PRD v2.1 dan Design Brief v1.1 disetujui; **mockup Claude Design menjadi acuan visual utama** | Arahan user |
+| 08-10-2026 | Versi paket dikunci: Next.js 16.4, React 19.3, Express 5.2, TypeScript 5.9, Vitest 5.0; `shell-quote` dipaksa ke 1.12.0 | `npm audit` menemukan celah kritis di vitest 3 dan concurrently |
+| 08-10-2026 | Pembangunan dilanjutkan di **Claude Code** di laptop user (folder D:\HCS), bukan Antigravity | Arahan user; Claude Code bisa menjalankan perintah langsung di laptop |
+| 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
+
+## Pertanyaan terbuka
+1. Kolom isian rinci Pemesanan Tiket Pesawat (dibutuhkan saat tahap 8).
+2. Validasi ulang template TAD final (EPS dan INHOUSE).
+3. Pembayaran tahunan Cloudways dan Supabase lewat pengadaan; nama domain; region Singapura Cloudways Velocity; apakah IP keluar Cloudways tetap (SUPA-10).
+4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
+
+## Langkah berikutnya
+1. Selesaikan Tahap 1 di laptop user: pasang Node.js LTS dan Git, `npm install`, `npm run dev`, lalu buat repo GitHub privat dan push commit pertama.
+2. Aktifkan secret scanning dan Dependabot di GitHub; pastikan tab Actions hijau.
+3. Siapkan proyek Supabase `hcs-dev` (gratis, Singapura) untuk Tahap 2.
+
+## Log sesi
+| Tanggal | Tahap | Yang dikerjakan |
+|---------|-------|-----------------|
+| 25-09-2026 | 1 | Ronde 1–4 PRD, draft v0.1 |
+| 26-09 s.d. 07-10-2026 | 1–2 | PRD v1.0 → v2.1, Design Brief v1.0 → v1.1, Standar Keamanan v1.0 → v1.1, mockup Claude Design |
+| 08-10-2026 | 1–2 → 3 | PRD v2.1 dan Design Brief v1.1 disetujui; mockup jadi acuan visual; Standar Keamanan v1.2 (pengetatan Supabase); mockup diekstrak ke `mockup/` |
+| 08-10-2026 | 3 | Build Plan v2.0 disusun (15 tahap, prompt agen dan tes keamanan per tahap) |
+| 08-10-2026 | 3 | Build Plan disetujui. Tahap 1: kerangka monorepo (Next.js 16, Express 5, TypeScript), token Pegadaian DS + Ronnia, AGENTS.md, CI (typecheck, tes, build, npm audit, gitleaks), Dependabot; dokumen dipindah ke docs/. Lolos uji: 5 tes, build, audit 0 celah |

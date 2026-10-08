@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/pegadaian-design-system-019973fe-4807-49c3-ad4d-ce6938d439d7/styles.css">
+<script src="_ds/pegadaian-design-system-019973fe-4807-49c3-ad4d-ce6938d439d7/_ds_bundle.js"></script>
+<style>body{margin:0;background:#eceeec;font-family:var(--font-core);color:var(--neutral-900);-webkit-font-smoothing:antialiased}a{color:var(--text-link)}a:hover{color:var(--text-link-hover)}*{box-sizing:border-box}</style>
+</helmet>
+
+<header style="padding:48px 56px 8px;display:flex;flex-direction:column;gap:12px;max-width:1200px">
+  <img src="assets/logo/pegadaian-logo-horizontal.png" alt="Pegadaian" style="height:36px;width:auto;align-self:flex-start">
+  <div style="font:600 12px/1 var(--font-core);letter-spacing:.12em;text-transform:uppercase;color:var(--pgd-green-dark)">HCS · Human Capital System · Karyawan (HP)</div>
+  <h1 style="margin:0;font:700 40px/1.1 var(--font-core);letter-spacing:-.02em;color:var(--pgd-forest)">UI mockup aplikasi HP karyawan</h1>
+  <p style="margin:0;max-width:760px;font:400 16px/1.55 var(--font-core);color:var(--neutral-700);text-wrap:pretty">Berdasarkan PRD HCS v2.1 dan Design Brief v1.1. Lebar acuan 360 px. Tombol utama memakai green-700 agar teks putih lolos kontras AA; gold hanya untuk lencana Diproses dan sorotan; forest untuk judul dan navigasi aktif.</p>
+</header>
+
+<section data-screen-label="Bersama" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">1. Bersama</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">U1 Masuk · U2 Akun belum terdaftar · U3 Sesi berakhir</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">U1 · Masuk</div>
+      <div data-screen-label="U1 Masuk" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;position:relative;display:flex;flex-direction:column">
+        <div style="height:36px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+        <div style="position:absolute;right:-120px;top:60px;width:340px;height:340px;border-radius:50%;background:url(assets/patterns/halftone-dots-green.png) center/cover;opacity:.35"></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 24px;gap:28px;position:relative">
+          
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font:600 12px/1 var(--font-core);letter-spacing:.12em;text-transform:uppercase;color:var(--pgd-green-dark)">Kanwil IV Balikpapan</div>
+            <div style="font:700 34px/1.08 var(--font-core);letter-spacing:-.02em;color:var(--pgd-forest)">Human Capital System</div>
+            <div style="font:400 16px/1.5 var(--font-core);color:var(--neutral-700);text-wrap:pretty">Ajukan klaim perjalanan dinas, SPPD, dan tiket pesawat dari satu tempat.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="lg" full-width="{{ true }}" hint-size="100%,52px" style="font-size: 10px">Gunakan Email Corporate</x-import>
+            <div style="font:400 13px/1.4 var(--font-core);color:var(--neutral-600);text-align:center">Gunakan akun @pegadaian.co.id</div>
+          </div>
+          <div style="display:flex;justify-content:center;padding-top:8px;border-top:1px solid var(--border-subtle)"><img src="assets/logo/pegadaian-logo-horizontal.png" alt="Pegadaian" style="height:24px;margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">U1 · Error domain</div>
+      <div data-screen-label="U1 Error" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;position:relative;display:flex;flex-direction:column">
+        <div style="height:36px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 24px;gap:28px">
+          
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font:600 12px/1 var(--font-core);letter-spacing:.12em;text-transform:uppercase;color:var(--pgd-green-dark)">Kanwil IV Balikpapan</div>
+            <div style="font:700 34px/1.08 var(--font-core);letter-spacing:-.02em;color:var(--pgd-forest)">Human Capital System</div>
+          </div>
+          <div style="display:flex;gap:10px;padding:14px 16px;border-radius:12px;background:var(--status-danger-soft);border:1px solid #f3c7c2">
+            <span style="flex:none;width:20px;height:20px;border-radius:50%;background:#c62828;color:#fff;font:700 13px/20px var(--font-core);text-align:center">!</span>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="font:600 15px/1.35 var(--font-core);color:#c62828">Gunakan akun @pegadaian.co.id untuk masuk.</div><div style="font:400 13px/1.4 var(--font-core);color:var(--neutral-700)">Akun yang dipakai: rina.p@gmail.com</div></div>
+          </div>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="lg" full-width="{{ true }}" hint-size="100%,52px" style="font-size: 10px">Gunakan Email Corporate</x-import>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">U2 · Akun belum terdaftar</div>
+      <div data-screen-label="U2 Belum terdaftar" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="height:36px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 24px;gap:20px">
+          <div style="width:56px;height:56px;border-radius:16px;background:var(--gold-50);border:1px solid var(--gold-200);display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></div>
+          <div style="font:700 22px/1.25 var(--font-core);color:var(--pgd-forest)">Akun Anda belum terdaftar di HCS</div>
+          <div style="font:400 16px/1.5 var(--font-core);color:var(--neutral-700)">Silakan hubungi Admin SDM agar akun Anda didaftarkan.</div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:12px;background:var(--neutral-50);border:1px solid var(--border-subtle)">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Email yang dipakai</span><span style="font:600 15px var(--font-core);color:var(--neutral-900)">dimas.ardiansyah@pegadaian.co.id</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Admin SDM Kanwil IV</span><span style="font:600 15px var(--font-core);color:var(--neutral-900)">sdm.kanwil4@pegadaian.co.id</span></div>
+          </div>
+        </div>
+        <div style="padding:16px 24px 28px;display:flex;flex-direction:column;gap:10px">
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Coba akun lain</x-import>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Keluar</x-import>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">U3 · Sesi berakhir</div>
+      <div data-screen-label="U3 Sesi berakhir" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);position:relative;display:flex;flex-direction:column">
+        <div style="height:36px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px;filter:blur(1px)">
+          <div style="height:28px;width:60%;border-radius:8px;background:var(--neutral-200)"></div>
+          <div style="height:120px;border-radius:12px;background:#fff;border:1px solid var(--border-subtle)"></div>
+          <div style="height:120px;border-radius:12px;background:#fff;border:1px solid var(--border-subtle)"></div>
+          <div style="height:120px;border-radius:12px;background:#fff;border:1px solid var(--border-subtle)"></div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(6,78,67,.62);backdrop-filter:blur(3px);display:flex;align-items:flex-end">
+          <div style="width:100%;background:#fff;border-radius:20px 20px 0 0;padding:24px 24px 28px;display:flex;flex-direction:column;gap:12px">
+            <div style="width:40px;height:4px;border-radius:2px;background:var(--neutral-300);align-self:center"></div>
+            <div style="font:700 20px/1.25 var(--font-core);color:var(--pgd-forest)">Sesi Anda berakhir</div>
+            <div style="font:400 15px/1.5 var(--font-core);color:var(--neutral-700)">Tidak ada aktivitas selama 15 menit. Draf form yang belum terkirim tetap tersimpan.</div>
+            <div style="padding-top:8px"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Masuk kembali</x-import></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Beranda" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">2. Pengajuan saya</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">K1 beranda · kosong · loading · K2 pilih layanan</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K1 · Pengajuan saya</div>
+      <div data-screen-label="K1 Pengajuan saya" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 20px 12px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Halo, Rina</span><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Pengajuan saya</span></div>
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" size="sm" hint-size="88px,36px">+ Ajukan</x-import>
+          </div>
+          <div style="display:flex;gap:8px;padding:0 20px 14px;overflow-x:auto;scrollbar-width:none">
+            <div style="flex:none;white-space:nowrap"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Tag" selected="{{ true }}" hint-size="70px,32px">Semua</x-import></div>
+            <div style="flex:none;white-space:nowrap"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Tag" hint-size="80px,32px">Berjalan</x-import></div>
+            <div style="flex:none;white-space:nowrap"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Tag" hint-size="100px,32px">Perlu revisi</x-import></div>
+            <div style="flex:none;white-space:nowrap"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Tag" hint-size="70px,32px">Selesai</x-import></div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border-radius:12px;border:1px solid #f5c9a3;box-shadow:var(--shadow-xs);overflow:hidden">
+            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:#fdebd9;color:#a3510a">Perlu revisi</span></div>
+              <div style="font:400 13px/1.45 var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">KP-0123 · ST/0412/KW-IV/2026</div>
+              <div style="font:400 14px var(--font-core);color:var(--neutral-800)">Samarinda · 6–8 Okt 2026</div>
+            </div>
+            <div style="padding:10px 16px;background:#fdf3ea;border-top:1px solid #f5d9c0;font:400 13px/1.4 var(--font-core);color:#8a4508">Kuitansi hotel belum terbaca. Diperbarui 2 jam lalu</div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);box-shadow:var(--shadow-xs);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Pemesanan Tiket Pesawat</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--pgd-gold);color:var(--pgd-forest)">Diproses</span></div>
+            <div style="font:400 13px/1.45 var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">TP-0041 · ST/0455/KW-IV/2026</div>
+            <div style="display:flex;justify-content:space-between"><span style="font:400 14px var(--font-core);color:var(--neutral-800)">Tarakan · 14–16 Okt 2026</span><span style="font:400 13px var(--font-core);color:var(--neutral-500)">Kemarin</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);box-shadow:var(--shadow-xs);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Permohonan SPPD</span><span style="font:600 12px/1 var(--font-core);padding:4px 8px;border-radius:6px;border:1px solid var(--pgd-forest);color:var(--pgd-forest)">Dikirim</span></div>
+            <div style="font:400 13px/1.45 var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">SP-0087 · ST/0455/KW-IV/2026</div>
+            <div style="display:flex;justify-content:space-between"><span style="font:400 14px var(--font-core);color:var(--neutral-800)">Tarakan · 14–16 Okt 2026</span><span style="font:400 13px var(--font-core);color:var(--neutral-500)">5 Okt</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);box-shadow:var(--shadow-xs);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Perdin Diklat</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--green-50);color:var(--green-700)">Selesai</span></div>
+            <div style="font:400 13px/1.45 var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">KD-0019 · SPW/087/DIKLAT/2026</div>
+            <div style="display:flex;justify-content:space-between"><span style="font:400 14px var(--font-core);color:var(--neutral-800)">Jakarta · 22–25 Sep 2026</span><span style="font:400 13px var(--font-core);color:var(--neutral-500)">30 Sep</span></div>
+          </div>
+        </div>
+        <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--pgd-forest);box-shadow:inset 0 3px 0 var(--pgd-green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg><span style="font:600 12px var(--font-core)">Pengajuan</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500);position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="position:absolute;top:10px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#c62828;color:#fff;font:700 11px/18px var(--font-core);text-align:center">2</span><span style="font:400 12px var(--font-core)">Notifikasi</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span style="font:400 12px var(--font-core)">Profil</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K1 · Kosong</div>
+      <div data-screen-label="K1 Kosong" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 20px 16px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Halo, Rina</span><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Pengajuan saya</span></div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center">
+          <div style="width:120px;height:120px;border-radius:50%;background:url(assets/patterns/halftone-dots-green.png) center/cover;display:flex;align-items:center;justify-content:center"><div style="width:64px;height:64px;border-radius:16px;background:#fff;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;color:var(--pgd-green)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg></div></div>
+          <div style="font:700 20px/1.25 var(--font-core);color:var(--pgd-forest)">Belum ada pengajuan</div>
+          <div style="font:400 15px/1.5 var(--font-core);color:var(--neutral-600);max-width:260px">Pengajuan klaim, SPPD, dan tiket yang Anda kirim akan tampil di sini.</div>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" hint-size="110px,44px">+ Ajukan</x-import>
+        </div>
+        <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--pgd-forest);box-shadow:inset 0 3px 0 var(--pgd-green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg><span style="font:600 12px var(--font-core)">Pengajuan</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="font:400 12px var(--font-core)">Notifikasi</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span style="font:400 12px var(--font-core)">Profil</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K1 · Loading dan error</div>
+      <div data-screen-label="K1 Loading" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▯▯</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 20px 16px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Halo, Rina</span><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Pengajuan saya</span></div>
+          </div>
+        </div>
+        <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:12px;background:var(--status-danger-soft);border:1px solid #f3c7c2">
+            <div style="font:600 15px/1.35 var(--font-core);color:#c62828">Daftar pengajuan gagal dimuat.</div>
+            <div style="font:400 13px/1.4 var(--font-core);color:var(--neutral-700)">Periksa koneksi internet, lalu coba lagi.</div>
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" size="sm" hint-size="100px,36px">Coba lagi</x-import>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:16px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between"><div style="width:150px;height:16px;border-radius:4px;background:var(--neutral-200)"></div><div style="width:64px;height:20px;border-radius:6px;background:var(--neutral-100)"></div></div><div style="width:200px;height:12px;border-radius:4px;background:var(--neutral-100)"></div><div style="width:120px;height:12px;border-radius:4px;background:var(--neutral-100)"></div></div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:16px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between"><div style="width:170px;height:16px;border-radius:4px;background:var(--neutral-200)"></div><div style="width:64px;height:20px;border-radius:6px;background:var(--neutral-100)"></div></div><div style="width:200px;height:12px;border-radius:4px;background:var(--neutral-100)"></div><div style="width:140px;height:12px;border-radius:4px;background:var(--neutral-100)"></div></div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:16px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between"><div style="width:130px;height:16px;border-radius:4px;background:var(--neutral-200)"></div><div style="width:64px;height:20px;border-radius:6px;background:var(--neutral-100)"></div></div><div style="width:200px;height:12px;border-radius:4px;background:var(--neutral-100)"></div><div style="width:110px;height:12px;border-radius:4px;background:var(--neutral-100)"></div></div>
+        </div>
+        <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--pgd-forest);box-shadow:inset 0 3px 0 var(--pgd-green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg><span style="font:600 12px var(--font-core)">Pengajuan</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="font:400 12px var(--font-core)">Notifikasi</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span style="font:400 12px var(--font-core)">Profil</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K2 · Pilih jenis layanan</div>
+      <div data-screen-label="K2 Pilih layanan" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 8px 12px">
+            <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div>
+            <span style="font:700 20px var(--font-core);color:var(--pgd-forest)">Ajukan</span>
+          </div>
+        </div>
+        <div style="flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="font:600 18px/1.3 var(--font-core);color:var(--pgd-forest);padding:0 4px 4px">Pilih jenis layanan</div>
+          <div style="background:#fff;border-radius:12px;border:2px solid var(--pgd-green);box-shadow:var(--shadow-sm);padding:16px;display:flex;gap:14px;align-items:flex-start">
+            <div style="flex:none;width:40px;height:40px;border-radius:10px;background:var(--green-50);color:var(--green-700);display:flex;align-items:center;justify-content:center;font:700 13px var(--font-core)">KP</div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Klaim uang harian dan biaya perjalanan setelah dinas selesai.</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:17px;display:flex;gap:14px;align-items:flex-start">
+            <div style="flex:none;width:40px;height:40px;border-radius:10px;background:var(--green-50);color:var(--green-700);display:flex;align-items:center;justify-content:center;font:700 13px var(--font-core)">KD</div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Perdin Diklat</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Klaim perjalanan untuk workshop atau diklat dengan Surat Pemanggilan.</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:17px;display:flex;gap:14px;align-items:flex-start">
+            <div style="flex:none;width:40px;height:40px;border-radius:10px;background:var(--green-50);color:var(--green-700);display:flex;align-items:center;justify-content:center;font:700 13px var(--font-core)">SP</div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Permohonan SPPD</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Ajukan SPPD sebelum berangkat berdasarkan Surat Tugas.</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:17px;display:flex;gap:14px;align-items:flex-start">
+            <div style="flex:none;width:40px;height:40px;border-radius:10px;background:var(--green-50);color:var(--green-700);display:flex;align-items:center;justify-content:center;font:700 13px var(--font-core)">TP</div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Pemesanan Tiket Pesawat</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Minta Admin SDM memesankan tiket sesuai rute dan tanggal tugas.</span></div>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px 24px;background:#fff;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lanjut</x-import></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Form" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">3. Form Klaim Biaya Perdin</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">K3 · enam langkah, satu langkah per layar, draf tersimpan otomatis</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Langkah 1 Surat tugas</div>
+      <div data-screen-label="K3 Langkah 1" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px">
+            <div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">1 dari 6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:20px">
+          <div style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Surat tugas</div>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" label="Nomor Surat Tugas" default-value="ST/0412/KW-IV/2026" helper="Tertera di kanan atas Surat Tugas." hint-size="100%,96px"></x-import>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Dokumen Surat Tugas</span>
+            <div style="border:1.5px dashed var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--neutral-50)">
+              <div style="color:var(--pgd-green)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 20h16"></path></svg></div>
+              <span style="font:600 15px var(--font-core);color:var(--green-700)">Pilih file atau ambil foto</span>
+              <span style="font:400 13px var(--font-core);color:var(--neutral-600)">PDF, JPG, atau PNG · maks. 5 MB</span>
+            </div>
+            <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center">
+              <div style="flex:none;width:36px;height:44px;border-radius:6px;background:var(--status-danger-soft);color:#c62828;display:flex;align-items:center;justify-content:center;font:700 10px var(--font-core)">PDF</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0">
+                <div style="display:flex;justify-content:space-between;gap:8px"><span style="font:600 14px var(--font-core);color:var(--neutral-900);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Surat_Tugas_0412.pdf</span><span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">1,8 MB</span></div>
+                <div style="height:4px;border-radius:2px;background:var(--neutral-200);overflow:hidden"><div style="width:64%;height:100%;background:var(--pgd-green)"></div></div>
+                <span style="font:400 12px var(--font-core);color:var(--neutral-600)">Mengunggah 64%</span>
+              </div>
+              <div style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:10px 16px 24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 12px var(--font-core);color:var(--neutral-600);text-align:center">Draf tersimpan otomatis · 09.40</div>
+          <div style="display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lanjut</x-import></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Langkah 2 Perjalanan</div>
+      <div data-screen-label="K3 Langkah 2" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.41</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px">
+            <div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">2 dari 6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:18px">
+          <div style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Perjalanan</div>
+          <x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" label="Kota atau unit tujuan" default-value="Samarinda · CP Samarinda Seberang" hint-size="100%,72px"></x-import>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px">
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" label="Berangkat" style="min-width:0;width:100%" default-value="6 Okt 2026" hint-size="100%,72px"></x-import>
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.Input" label="Kembali" style="min-width:0;width:100%" default-value="5 Okt 2026" error="Tanggal kembali sebelum tanggal berangkat." hint-size="100%,96px"></x-import>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Menginap?</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="height:48px;border-radius:8px;border:2px solid var(--pgd-green);background:var(--green-50);display:flex;align-items:center;justify-content:center;font:600 15px var(--font-core);color:var(--pgd-forest)">Ya, menginap</div>
+              <div style="height:48px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font:400 15px var(--font-core);color:var(--neutral-800)">Tidak</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;opacity:1">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-400)">Jarak (hanya jika tidak menginap)</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="height:44px;border-radius:8px;background:var(--neutral-100);display:flex;align-items:center;justify-content:center;font:400 14px var(--font-core);color:var(--neutral-400)">&gt;30–60 km</div>
+              <div style="height:44px;border-radius:8px;background:var(--neutral-100);display:flex;align-items:center;justify-content:center;font:400 14px var(--font-core);color:var(--neutral-400)">&gt;60 km</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:10px 16px 24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 12px var(--font-core);color:var(--neutral-600);text-align:center">Draf tersimpan otomatis · 09.41</div>
+          <div style="display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lanjut</x-import></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Langkah 3 Transportasi</div>
+      <div data-screen-label="K3 Langkah 3" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.42</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px">
+            <div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">3 dari 6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:20px">
+          <div style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Transportasi</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Moda transportasi</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="height:56px;border-radius:8px;border:2px solid var(--pgd-green);background:var(--green-50);display:flex;align-items:center;justify-content:center;font:600 15px var(--font-core);color:var(--pgd-forest)">Pesawat</div>
+              <div style="height:56px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font:400 15px var(--font-core);color:var(--neutral-800)">Kapal</div>
+              <div style="height:56px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font:400 15px var(--font-core);color:var(--neutral-800)">Kereta</div>
+              <div style="height:56px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;font:400 15px var(--font-core);color:var(--neutral-800)">Darat</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Menggunakan kendaraan dinas?</span>
+            <x-import component-from-global-scope="PegadaianDesignSystem_019973.RadioGroup" name="kdinas" options="{{ yaTidak }}" value="Tidak" on-change="{{ noop }}" hint-size="100%,80px"></x-import>
+          </div>
+        </div>
+        <div style="flex:none;padding:10px 16px 24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 12px var(--font-core);color:var(--neutral-600);text-align:center">Draf tersimpan otomatis · 09.42</div>
+          <div style="display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lanjut</x-import></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Langkah 4 TAD (opsional)</div>
+      <div data-screen-label="K3 Langkah 4 TAD" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.43</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px">
+            <div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">4 dari 6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="align-self:flex-start;font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--pgd-gold);color:var(--pgd-forest)">Bagian TAD</div>
+            <div style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">TAD dalam Surat Tugas ini</div>
+            <div style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Tambahkan hanya TAD yang namanya tercantum di Surat Tugas.</div>
+          </div>
+          <div style="border-radius:12px;background:var(--gold-50);border:1px solid var(--gold-200);padding:14px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:8px;background:#fff;border:2px solid var(--pgd-green);box-shadow:0 0 0 3px rgba(117,192,68,.35)">
+              <span style="color:var(--neutral-500)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg></span>
+              <span style="font:400 16px var(--font-core);color:var(--neutral-900)">Andi</span><span style="width:1px;height:20px;background:var(--pgd-forest)"></span>
+            </div>
+            <div style="background:#fff;border-radius:8px;border:1px solid var(--border-subtle);box-shadow:var(--shadow-md);overflow:hidden">
+              <div style="padding:10px 12px;display:flex;flex-direction:column;gap:2px;border-bottom:1px solid var(--border-subtle);background:var(--green-50)"><span style="font:600 15px var(--font-core);color:var(--neutral-900)">Andi Saputra</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">6472xxxx0912 · PKSS · CP Balikpapan</span></div>
+              <div style="padding:10px 12px;display:flex;flex-direction:column;gap:2px;border-bottom:1px solid var(--border-subtle)"><span style="font:600 15px var(--font-core);color:var(--neutral-900)">Andika Pratama</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">6471xxxx0344 · POJ · Kanwil IV</span></div>
+              <div style="padding:10px 12px;display:flex;flex-direction:column;gap:2px;background:var(--neutral-50)"><span style="font:600 15px var(--font-core);color:var(--neutral-400)">Andi Rahman</span><span style="font:400 13px/1.35 var(--font-core);color:#c62828">TAD ini sudah diajukan dalam pengajuan KP-0118.</span></div>
+            </div>
+            <div style="font:400 14px var(--font-core);color:var(--neutral-700)">Tidak ditemukan? <span style="font-weight:600;color:var(--green-700);text-decoration:underline">TAD belum terdaftar</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Ditambahkan (1)</span>
+            <div style="border:1px solid var(--gold-200);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px">
+              <div style="flex:none;width:36px;height:36px;border-radius:50%;background:var(--gold-100);color:var(--pgd-forest);display:flex;align-items:center;justify-content:center;font:700 13px var(--font-core)">YH</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 15px var(--font-core);color:var(--neutral-900)">Yusuf Hidayat</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">6472xxxx1177 · EPS · Kanwil IV</span></div>
+              <div style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:10px 16px 24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 12px var(--font-core);color:var(--neutral-600);text-align:center">Draf tersimpan otomatis · 09.43</div>
+          <div style="display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lanjut</x-import></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Langkah 5 Bukti</div>
+      <div data-screen-label="K3 Langkah 5" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.45</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px">
+            <div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">5 dari 6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--neutral-200)"></div></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:18px">
+          <div style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Bukti perjalanan</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Kuitansi hotel</span>
+            <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center">
+              <div style="flex:none;width:36px;height:44px;border-radius:6px;background:var(--green-50);color:var(--green-700);display:flex;align-items:center;justify-content:center;font:700 10px var(--font-core)">JPG</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Kuitansi_Hotel_Mesra.jpg</span><span style="font:400 13px var(--font-core);color:var(--green-700)">Terunggah · 1,2 MB</span></div>
+              <div style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Kuitansi transportasi</span>
+            <div style="border:1px solid var(--border-subtle);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center">
+              <div style="flex:none;width:36px;height:44px;border-radius:6px;background:var(--status-danger-soft);color:#c62828;display:flex;align-items:center;justify-content:center;font:700 10px var(--font-core)">PDF</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">E-tiket_BPN-SRI.pdf</span><span style="font:400 13px var(--font-core);color:var(--green-700)">Terunggah · 0,4 MB</span></div>
+              <div style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--neutral-600)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 14px var(--font-core);color:var(--neutral-800)">Formulir pengajuan</span>
+            <div style="border:1.5px dashed #c62828;border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--status-danger-soft)">
+              <div style="color:#c62828"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M4 20h16"></path></svg></div>
+              <span style="font:600 15px var(--font-core);color:var(--green-700)">Pilih file atau ambil foto</span>
+            </div>
+            <span style="font:400 13px/1.4 var(--font-core);color:#c62828">Ukuran file melebihi 5 MB. Perkecil file lalu unggah kembali.</span>
+          </div>
+        </div>
+        <div style="flex:none;padding:10px 16px 24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 12px var(--font-core);color:var(--neutral-600);text-align:center">Draf tersimpan otomatis · 09.45</div>
+          <div style="display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lanjut</x-import></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Langkah 6 Tinjau dan kirim</div>
+      <div data-screen-label="K3 Langkah 6" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="flex:none;border-bottom:1px solid var(--border-subtle);background:#fff">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.47</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px">
+            <div style="display:flex;align-items:center"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);padding-right:12px">6 dari 6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:4px 20px 14px"><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div><div style="height:4px;border-radius:2px;background:var(--pgd-green)"></div></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest);padding:4px 4px 0">Tinjau dan kirim</div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between"><span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Surat tugas dan perjalanan</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Ubah</span></div>
+            <div style="display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font:400 14px/1.4 var(--font-core)"><span style="color:var(--neutral-600)">No. ST</span><span style="color:var(--neutral-900)">ST/0412/KW-IV/2026</span><span style="color:var(--neutral-600)">Tujuan</span><span style="color:var(--neutral-900)">Samarinda</span><span style="color:var(--neutral-600)">Tanggal</span><span style="color:var(--neutral-900)">6–8 Okt 2026 · menginap</span><span style="color:var(--neutral-600)">Transportasi</span><span style="color:var(--neutral-900)">Pesawat · tanpa kendaraan dinas</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between"><span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Dokumen (4)</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Ubah</span></div>
+            <span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Surat Tugas, kuitansi hotel, e-tiket, formulir pengajuan</span>
+          </div>
+          <div style="background:var(--gold-50);border-radius:12px;border:1px solid var(--gold-200);padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 15px var(--font-core);color:var(--pgd-forest)">TAD dalam Surat Tugas ini (1)</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Ubah</span></div>
+            <span style="font:400 14px var(--font-core);color:var(--neutral-800)">Yusuf Hidayat · EPS</span>
+            <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid var(--gold-200)"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Checkbox" label="Data TAD yang saya tambahkan sesuai dengan Surat Tugas." checked="{{ true }}" on-change="{{ noop }}" hint-size="100%,44px"></x-import></div>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px 24px;border-top:1px solid var(--border-subtle);background:#fff;display:flex;gap:10px"><div style="flex:1"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import></div><div style="flex:2"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Kirim pengajuan</x-import></div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K3 · Sukses kirim</div>
+      <div data-screen-label="K3 Sukses" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+        <div style="height:36px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>09.47</span><span>4G ▮▮▮</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;padding:24px">
+          <div style="width:88px;height:88px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center"><div style="width:60px;height:60px;border-radius:50%;background:var(--pgd-green);color:#fff;display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></div></div>
+          <div style="font:700 22px/1.25 var(--font-core);color:var(--pgd-forest)">Pengajuan KP-0123 terkirim</div>
+          <div style="font:400 15px/1.5 var(--font-core);color:var(--neutral-700);max-width:280px">Status dapat dipantau di halaman Pengajuan saya. Kami juga mengirim pemberitahuan ke email Anda.</div>
+          <div style="width:100%;margin-top:8px;padding:14px 16px;border-radius:12px;background:var(--neutral-50);border:1px solid var(--border-subtle);display:grid;grid-template-columns:auto 1fr;gap:6px 12px;text-align:left;font:400 14px/1.4 var(--font-core)"><span style="color:var(--neutral-600)">Jenis</span><span style="color:var(--neutral-900)">Klaim Biaya Perdin</span><span style="color:var(--neutral-600)">No. ST</span><span style="color:var(--neutral-900)">ST/0412/KW-IV/2026</span><span style="color:var(--neutral-600)">Status</span><span><span style="font:600 12px/1 var(--font-core);padding:4px 8px;border-radius:6px;border:1px solid var(--pgd-forest);color:var(--pgd-forest)">Dikirim</span></span></div>
+        </div>
+        <div style="flex:none;padding:12px 16px 28px;display:flex;flex-direction:column;gap:10px"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Lihat pengajuan</x-import><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" variant="ghost" full-width="{{ true }}" hint-size="100%,44px">Kembali ke beranda</x-import></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Detail" style="padding:40px 56px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">4. Detail pengajuan</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">K4 · Perlu revisi · Diproses · Selesai (nominal tampil) · Ditolak</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K4 · Perlu revisi</div>
+      <div data-screen-label="K4 Perlu revisi" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>10.12</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;padding:4px 8px 4px"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Detail pengajuan</span></div>
+          <div style="padding:4px 20px 16px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:700 20px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:#fdebd9;color:#a3510a">Perlu revisi</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">KP-0123 · ST/0412/KW-IV/2026</span>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fdf3ea;border:1px solid #f5c9a3;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 15px var(--font-core);color:#8a4508">Catatan Admin SDM</span>
+            <span style="font:400 15px/1.5 var(--font-core);color:var(--neutral-900)">Kuitansi hotel buram dan nominal tidak terbaca. Unggah ulang foto kuitansi yang jelas.</span>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600)">Siti Rahmawati · 7 Okt 2026, 08.14 WITA</span>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Riwayat status</span>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:#e8710a;margin-top:3px"></span><span style="flex:1;width:2px;background:var(--neutral-200)"></span></div><div style="padding-bottom:12px;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Perlu revisi</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">7 Okt, 08.14 · Siti Rahmawati</span></div></div>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-forest);margin-top:3px"></span><span style="flex:1;width:2px;background:var(--neutral-200)"></span></div><div style="padding-bottom:12px;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Diproses</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">7 Okt, 08.02 · Siti Rahmawati</span></div></div>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-forest);margin-top:3px"></span></div><div style="display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Dikirim</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">6 Okt, 19.40 · Rina Puspitasari</span></div></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Ringkasan</span>
+            <div style="display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font:400 14px/1.4 var(--font-core)"><span style="color:var(--neutral-600)">Tujuan</span><span>Samarinda</span><span style="color:var(--neutral-600)">Tanggal</span><span>6–8 Okt 2026</span><span style="color:var(--neutral-600)">TAD</span><span>Yusuf Hidayat · EPS</span></div>
+          </div>
+        </div>
+        <div style="flex:none;padding:12px 16px 24px;border-top:1px solid var(--border-subtle);background:#fff"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ pri }}" full-width="{{ true }}" hint-size="100%,44px">Edit dan kirim ulang</x-import></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K4 · Diproses</div>
+      <div data-screen-label="K4 Diproses" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>10.12</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;padding:4px 8px 4px"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Detail pengajuan</span></div>
+          <div style="padding:4px 20px 16px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:700 20px var(--font-core);color:var(--pgd-forest)">Pemesanan Tiket Pesawat</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--pgd-gold);color:var(--pgd-forest)">Diproses</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">TP-0041 · ST/0455/KW-IV/2026</span>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:var(--gold-50);border:1px solid var(--gold-200);border-radius:12px;padding:14px 16px;font:400 15px/1.5 var(--font-core);color:var(--pgd-forest)">Sedang diproses Admin SDM sejak 6 Okt 2026.</div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Riwayat status</span>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-gold);box-shadow:0 0 0 4px var(--gold-100);margin-top:3px"></span><span style="flex:1;width:2px;background:var(--neutral-200)"></span></div><div style="padding-bottom:12px;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Diproses</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">6 Okt, 13.20 · Bayu Nugroho</span></div></div>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-forest);margin-top:3px"></span><span style="flex:1;width:2px;background:var(--neutral-200)"></span></div><div style="padding-bottom:12px;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Dikirim</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">6 Okt, 09.05 · Rina Puspitasari</span></div></div>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;border:2px solid var(--neutral-300);margin-top:3px"></span></div><div style="display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-400)">Selesai</span><span style="font:400 13px var(--font-core);color:var(--neutral-400)">Menunggu</span></div></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Ringkasan</span>
+            <div style="display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font:400 14px/1.4 var(--font-core)"><span style="color:var(--neutral-600)">Rute</span><span>Balikpapan → Tarakan</span><span style="color:var(--neutral-600)">Berangkat</span><span>14 Okt 2026 · pagi</span><span style="color:var(--neutral-600)">Kembali</span><span>16 Okt 2026 · sore</span></div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Dokumen</span>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:400 14px var(--font-core);color:var(--neutral-900)">Surat_Tugas_0455.pdf</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Unduh</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K4 · Selesai, nominal disetujui</div>
+      <div data-screen-label="K4 Selesai" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>10.12</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;padding:4px 8px 4px"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Detail pengajuan</span></div>
+          <div style="padding:4px 20px 16px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:700 20px var(--font-core);color:var(--pgd-forest)">Klaim Biaya Perdin</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--green-50);color:var(--green-700)">Selesai</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">KP-0109 · ST/0388/KW-IV/2026</span>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border-radius:16px;border:1px solid var(--border-subtle);box-shadow:var(--shadow-sm);overflow:hidden">
+            <div style="height:4px;background:var(--gradient-brand)"></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 12px/1 var(--font-core);letter-spacing:.12em;text-transform:uppercase;color:var(--pgd-green-dark)">Nominal disetujui</span><span style="font:700 30px/1.1 var(--font-core);letter-spacing:-.02em;color:var(--pgd-forest);font-variant-numeric:tabular-nums">Rp9.770.000</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">Disetujui 2 Okt 2026 · 2 rincian</span></div>
+              <div style="border-top:1px solid var(--border-subtle);padding-top:12px;display:flex;flex-direction:column;gap:6px;font:400 14px/1.4 var(--font-core);font-variant-numeric:tabular-nums">
+                <div style="display:flex;justify-content:space-between;font-weight:600;color:var(--pgd-forest)"><span>Rina Puspitasari</span><span>Rp5.260.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Uang harian (3 hari)</span><span>Rp1.230.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Transportasi bandara</span><span>Rp500.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Hotel</span><span>Rp1.350.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Tiket pesawat</span><span>Rp2.180.000</span></div>
+              </div>
+              <div style="border-top:1px solid var(--border-subtle);padding-top:12px;display:flex;flex-direction:column;gap:6px;font:400 14px/1.4 var(--font-core);font-variant-numeric:tabular-nums">
+                <div style="display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--pgd-forest)"><span style="display:flex;gap:8px;align-items:center">Yusuf Hidayat <span style="font:600 11px/1 var(--font-core);padding:3px 6px;border-radius:4px;background:var(--pgd-gold);color:var(--pgd-forest)">TAD</span></span><span>Rp4.510.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Uang harian (3 hari)</span><span>Rp630.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Transportasi bandara</span><span>Rp350.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Hotel</span><span>Rp1.350.000</span></div>
+                <div style="display:flex;justify-content:space-between;color:var(--neutral-700)"><span>Tiket pesawat</span><span>Rp2.180.000</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Riwayat status</span>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-green);margin-top:3px"></span><span style="flex:1;width:2px;background:var(--neutral-200)"></span></div><div style="padding-bottom:10px;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Selesai</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">2 Okt, 15.30 · Siti Rahmawati</span></div></div>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-forest);margin-top:3px"></span></div><div style="display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Diproses</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">1 Okt, 09.10 · Siti Rahmawati</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K4 · Ditolak</div>
+      <div data-screen-label="K4 Ditolak" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="flex:none;background:#fff;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>10.12</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;align-items:center;padding:4px 8px 4px"><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--pgd-forest)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div><span style="font:600 16px var(--font-core);color:var(--pgd-forest)">Detail pengajuan</span></div>
+          <div style="padding:4px 20px 16px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:700 20px var(--font-core);color:var(--pgd-forest)">Permohonan SPPD</span><span style="font:600 12px/1 var(--font-core);padding:5px 9px;border-radius:6px;background:var(--status-danger-soft);color:#c62828">Ditolak</span></div>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600);font-variant-numeric:tabular-nums">SP-0079 · ST/0390/KW-IV/2026</span>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:var(--status-danger-soft);border:1px solid #f3c7c2;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <span style="font:600 15px var(--font-core);color:#c62828">Alasan penolakan</span>
+            <span style="font:400 15px/1.5 var(--font-core);color:var(--neutral-900)">Permohonan SPPD untuk Surat Tugas ini sudah diajukan dalam SP-0074. Pantau pengajuan tersebut.</span>
+            <span style="font:400 13px var(--font-core);color:var(--neutral-600)">Bayu Nugroho · 28 Sep 2026, 10.40 WITA</span>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:1px solid var(--border-subtle);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <span style="font:600 15px var(--font-core);color:var(--pgd-forest)">Riwayat status</span>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:#c62828;margin-top:3px"></span><span style="flex:1;width:2px;background:var(--neutral-200)"></span></div><div style="padding-bottom:10px;display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Ditolak</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">28 Sep, 10.40 · Bayu Nugroho</span></div></div>
+            <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:50%;background:var(--pgd-forest);margin-top:3px"></span></div><div style="display:flex;flex-direction:column;gap:2px"><span style="font:600 14px var(--font-core);color:var(--neutral-900)">Dikirim</span><span style="font:400 13px var(--font-core);color:var(--neutral-600)">27 Sep, 16.02 · Rina Puspitasari</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Notifikasi Profil" style="padding:40px 56px 72px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px"><h2 style="margin:0;font:700 24px/1.2 var(--font-core);color:var(--pgd-forest)">5. Notifikasi dan profil</h2><span style="font:400 14px var(--font-core);color:var(--neutral-600)">K5 · K6 · konfirmasi batalkan</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K5 · Notifikasi</div>
+      <div data-screen-label="K5 Notifikasi" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>10.12</span><span>4G ▮▮▮</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 20px 16px"><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Notifikasi</span><span style="font:600 14px var(--font-core);color:var(--green-700)">Tandai semua dibaca</span></div>
+        </div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div style="padding:14px 20px;background:#fff;border-bottom:1px solid var(--border-subtle);display:flex;gap:12px"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:var(--pgd-green);margin-top:7px"></span><div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 15px/1.35 var(--font-core);color:var(--neutral-900)">KP-0123 perlu revisi</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Kuitansi hotel buram dan nominal tidak terbaca.</span><span style="font:400 12px var(--font-core);color:var(--neutral-500)">7 Okt, 08.14</span></div></div>
+          <div style="padding:14px 20px;background:#fff;border-bottom:1px solid var(--border-subtle);display:flex;gap:12px"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:var(--pgd-green);margin-top:7px"></span><div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 15px/1.35 var(--font-core);color:var(--neutral-900)">TP-0041 sedang diproses</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Pemesanan Tiket Pesawat ke Tarakan diproses Admin SDM.</span><span style="font:400 12px var(--font-core);color:var(--neutral-500)">6 Okt, 13.20</span></div></div>
+          <div style="padding:14px 20px;border-bottom:1px solid var(--border-subtle);display:flex;gap:12px"><span style="flex:none;width:8px;height:8px;margin-top:7px"></span><div style="display:flex;flex-direction:column;gap:4px"><span style="font:400 15px/1.35 var(--font-core);color:var(--neutral-800)">SP-0087 terkirim</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Permohonan SPPD Anda sudah diterima.</span><span style="font:400 12px var(--font-core);color:var(--neutral-500)">5 Okt, 15.48</span></div></div>
+          <div style="padding:14px 20px;border-bottom:1px solid var(--border-subtle);display:flex;gap:12px"><span style="flex:none;width:8px;height:8px;margin-top:7px"></span><div style="display:flex;flex-direction:column;gap:4px"><span style="font:400 15px/1.35 var(--font-core);color:var(--neutral-800)">KP-0109 selesai</span><span style="font:400 14px/1.45 var(--font-core);color:var(--neutral-600)">Nominal yang disetujui dapat dilihat di detail pengajuan.</span><span style="font:400 12px var(--font-core);color:var(--neutral-500)">2 Okt, 15.30</span></div></div>
+        </div>
+        <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg><span style="font:400 12px var(--font-core)">Pengajuan</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--pgd-forest);box-shadow:inset 0 3px 0 var(--pgd-green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="font:600 12px var(--font-core)">Notifikasi</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span style="font:400 12px var(--font-core)">Profil</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K6 · Profil</div>
+      <div data-screen-label="K6 Profil" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);display:flex;flex-direction:column">
+        <div style="background:#fff;flex:none;border-bottom:1px solid var(--border-subtle)">
+          <div style="height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest)"><span>10.12</span><span>4G ▮▮▮</span></div>
+          <div style="padding:8px 20px 16px"><span style="font:700 22px/1.2 var(--font-core);color:var(--pgd-forest)">Profil</span></div>
+        </div>
+        <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border-radius:16px;border:1px solid var(--border-subtle);overflow:hidden">
+            <div style="height:4px;background:var(--gradient-brand)"></div>
+            <div style="padding:20px 16px;display:flex;gap:14px;align-items:center">
+              <div style="flex:none;width:56px;height:56px;border-radius:50%;background:var(--gradient-forest);color:#fff;display:flex;align-items:center;justify-content:center;font:700 20px var(--font-core)">RP</div>
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font:700 18px var(--font-core);color:var(--pgd-forest)">Rina Puspitasari</span><span style="font:400 14px var(--font-core);color:var(--neutral-600)">rina.puspitasari@pegadaian.co.id</span></div>
+            </div>
+            <div style="border-top:1px solid var(--border-subtle);padding:4px 16px">
+              <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-subtle);font:400 15px var(--font-core)"><span style="color:var(--neutral-600)">NIK</span><span style="color:var(--neutral-900);font-variant-numeric:tabular-nums">P91234</span></div>
+              <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-subtle);font:400 15px var(--font-core)"><span style="color:var(--neutral-600)">Jabatan</span><span style="color:var(--neutral-900)">Analis SDM</span></div>
+              <div style="display:flex;justify-content:space-between;padding:12px 0;font:400 15px var(--font-core)"><span style="color:var(--neutral-600)">Unit kerja</span><span style="color:var(--neutral-900)">Kanwil IV Balikpapan</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 16px;border-radius:12px;background:var(--neutral-100);font:400 14px/1.45 var(--font-core);color:var(--neutral-700)">Data tidak sesuai? Hubungi Admin SDM untuk pembaruan data.</div>
+          <div style="margin-top:auto"><x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ danger }}" full-width="{{ true }}" hint-size="100%,44px">Keluar</x-import></div>
+        </div>
+        <div style="flex:none;height:68px;background:#fff;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg><span style="font:400 12px var(--font-core)">Pengajuan</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--neutral-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="font:400 12px var(--font-core)">Notifikasi</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--pgd-forest);box-shadow:inset 0 3px 0 var(--pgd-green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span style="font:600 12px var(--font-core)">Profil</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:600 13px var(--font-core);color:var(--neutral-700)">K4 · Konfirmasi batalkan</div>
+      <div data-screen-label="K4 Batalkan" style="width:376px;height:796px;border:8px solid var(--neutral-900);border-radius:44px;overflow:hidden;background:var(--neutral-50);position:relative;display:flex;flex-direction:column">
+        <div style="height:36px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px var(--font-core);color:var(--pgd-forest);background:#fff"><span>10.12</span><span>4G ▮▮▮</span></div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+          <div style="height:28px;width:70%;border-radius:8px;background:var(--neutral-200)"></div>
+          <div style="height:160px;border-radius:12px;background:#fff;border:1px solid var(--border-subtle)"></div>
+          <div style="height:120px;border-radius:12px;background:#fff;border:1px solid var(--border-subtle)"></div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(6,78,67,.62);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px">
+          <div style="width:100%;background:#fff;border-radius:16px;box-shadow:var(--shadow-xl);padding:24px;display:flex;flex-direction:column;gap:12px">
+            <div style="font:700 20px/1.25 var(--font-core);color:var(--pgd-forest)">Batalkan pengajuan SP-0087?</div>
+            <div style="font:400 15px/1.5 var(--font-core);color:var(--neutral-700)">Pengajuan yang dibatalkan tidak dapat dikirim ulang. Buat pengajuan baru bila diperlukan.</div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding-top:8px">
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ dangerFill }}" full-width="{{ true }}" hint-size="100%,44px">Batalkan pengajuan</x-import>
+              <x-import component-from-global-scope="PegadaianDesignSystem_019973.Button" dc-props="{{ sec }}" full-width="{{ true }}" hint-size="100%,44px">Kembali</x-import>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;primaryTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;green-700&quot;,&quot;green&quot;],&quot;default&quot;:&quot;green-700&quot;,&quot;tsType&quot;:&quot;'green-700' | 'green'&quot;,&quot;section&quot;:&quot;Tombol utama&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const ds = (this.props.primaryTone ?? 'green-700') === 'green';
+    const priBg = ds ? 'var(--pgd-green)' : '#08803a';
+    return {
+      pri: { variant: 'primary', style: { background: priBg } },
+      sec: { variant: 'secondary', style: { borderColor: 'var(--pgd-forest)' } },
+      danger: { variant: 'secondary', style: { borderColor: '#c62828', color: '#c62828' } },
+      dangerFill: { variant: 'primary', style: { background: '#c62828' } },
+      yaTidak: [{ value: 'Ya', label: 'Ya' }, { value: 'Tidak', label: 'Tidak' }],
+      noop: () => {},
+    };
+  }
+}
+</script>
+</body>
+</html>

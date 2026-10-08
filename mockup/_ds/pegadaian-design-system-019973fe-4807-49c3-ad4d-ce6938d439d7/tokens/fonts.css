@@ -1,0 +1,14 @@
+/* Ronnia — Rosetta Type Foundry. Supplied by PT Pegadaian as the corporate typeface. */
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-SemiBold.ttf") format("truetype");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-BoldItalic.ttf") format("truetype");font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-ExtraBold.ttf") format("truetype");font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia";src:url("../assets/fonts/Ronnia-Heavy.ttf") format("truetype");font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia Cond";src:url("../assets/fonts/RonniaCond-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia Cond";src:url("../assets/fonts/RonniaCond-SemiBold.ttf") format("truetype");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia Cond";src:url("../assets/fonts/RonniaCond-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia Cond";src:url("../assets/fonts/RonniaCond-ExtraBold.ttf") format("truetype");font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:"Ronnia Cond";src:url("../assets/fonts/RonniaCond-Heavy.ttf") format("truetype");font-weight:900;font-style:normal;font-display:swap}

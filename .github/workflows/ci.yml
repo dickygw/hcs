@@ -1,0 +1,45 @@
+name: Pemeriksaan otomatis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Siapkan Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Pasang paket
+        run: npm ci
+
+      - name: Periksa penulisan kode
+        run: npm run typecheck
+
+      - name: Tes otomatis
+        run: npm test
+
+      - name: Coba build
+        run: npm run build
+
+      - name: Audit keamanan paket (gagal bila ada temuan tinggi/kritis)
+        run: npm audit --audit-level=high
+
+      - name: Pindai kunci atau password yang bocor
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

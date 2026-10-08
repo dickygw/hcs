@@ -1,0 +1,120 @@
+:root{
+/* ---- Brand core: the three colours mandated for this system ---- */
+--pgd-gold:#fbc513;        /* Kuning Pegadaian — emas, value, highlight */
+--pgd-lime:#75c044;        /* Hijau Muda — growth, secondary accent */
+--pgd-green:#0da94d;       /* Hijau Pegadaian — primary action colour */
+
+/* ---- Brand greens carried over from the logo + corporate deck ---- */
+--pgd-forest:#064e43;      /* deepest green — headings, ink on light */
+--pgd-forest-deep:#02442c;
+--pgd-forest-alt:#004d43;
+--pgd-green-dark:#007249;
+--pgd-green-mid:#018d5b;
+--pgd-green-leaf:#45a748;
+--pgd-lime-logo:#bfd730;   /* left circle of the logo mark */
+--pgd-lime-muted:#bccf47;
+--pgd-navy:#0f1d33;
+
+/* ---- Gold ramp (derived from --pgd-gold) ---- */
+--gold-50:#fffaeb;
+--gold-100:#fef0c3;
+--gold-200:#fde28a;
+--gold-300:#fcd34e;
+--gold-400:#fbc513;
+--gold-500:#e0aa06;
+--gold-600:#b98305;
+--gold-700:#935f0b;
+--gold-800:#7a4c10;
+--gold-900:#683f13;
+
+/* ---- Green ramp (derived from --pgd-green) ---- */
+--green-50:#eefdf3;
+--green-100:#d6f9e1;
+--green-200:#b0f1c8;
+--green-300:#7be4a8;
+--green-400:#3fce83;
+--green-500:#0da94d;
+--green-600:#0a9144;
+--green-700:#08733a;
+--green-800:#095b31;
+--green-900:#064e43;
+--green-950:#02442c;
+
+/* ---- Lime ramp (derived from --pgd-lime) ---- */
+--lime-50:#f4fbec;
+--lime-100:#e5f6d4;
+--lime-200:#cdecae;
+--lime-300:#a9dd7d;
+--lime-400:#75c044;
+--lime-500:#5fae33;
+--lime-600:#498b26;
+--lime-700:#3a6b21;
+--lime-800:#31561f;
+--lime-900:#2a491e;
+
+/* ---- Neutrals: warm-tinted greys so they sit under the greens ---- */
+--neutral-0:#ffffff;
+--neutral-25:#fcfdfc;
+--neutral-50:#fafafa;      /* FAFAFA — the deck's off-white */
+--neutral-100:#f2f4f2;
+--neutral-200:#e4e8e5;
+--neutral-300:#cbd2cd;
+--neutral-400:#9fa9a3;
+--neutral-500:#74807a;
+--neutral-600:#556059;
+--neutral-700:#3d4742;
+--neutral-800:#28302c;
+--neutral-900:#161b18;
+
+/* ---- Semantic: surfaces ---- */
+--surface-page:var(--neutral-0);
+--surface-subtle:var(--neutral-50);
+--surface-sunken:var(--neutral-100);
+--surface-card:var(--neutral-0);
+--surface-inverse:var(--pgd-forest);
+--surface-inverse-alt:var(--pgd-green-dark);
+--surface-accent:var(--pgd-green);
+--surface-accent-soft:var(--green-50);
+--surface-gold:var(--pgd-gold);
+--surface-gold-soft:var(--gold-50);
+--surface-lime:var(--pgd-lime);
+--surface-lime-soft:var(--lime-50);
+--surface-overlay:rgba(6,78,67,.62);
+
+/* ---- Semantic: text ---- */
+--text-heading:var(--pgd-forest);
+--text-body:var(--neutral-700);
+--text-muted:var(--neutral-500);
+--text-disabled:var(--neutral-400);
+--text-on-accent:var(--neutral-0);
+--text-on-gold:var(--pgd-forest);
+--text-on-lime:var(--pgd-forest);
+--text-inverse:var(--neutral-0);
+--text-inverse-muted:rgba(255,255,255,.72);
+--text-link:var(--pgd-green-dark);
+--text-link-hover:var(--pgd-forest);
+
+/* ---- Semantic: borders ---- */
+--border-subtle:var(--neutral-200);
+--border-default:var(--neutral-300);
+--border-strong:var(--neutral-400);
+--border-accent:var(--pgd-green);
+--border-inverse:rgba(255,255,255,.24);
+--focus-ring:var(--pgd-lime);
+
+/* ---- Semantic: status ---- */
+--status-success:var(--pgd-green);
+--status-success-soft:var(--green-50);
+--status-warning:var(--pgd-gold);
+--status-warning-soft:var(--gold-50);
+--status-danger:#c8342b;
+--status-danger-soft:#fdeeec;
+--status-info:#1d6fa5;
+--status-info-soft:#ecf4fa;
+
+/* ---- Gradients + washes ---- */
+--gradient-brand:linear-gradient(90deg,var(--pgd-lime-logo) 0%,var(--pgd-lime) 42%,var(--pgd-green) 100%);
+--gradient-forest:linear-gradient(135deg,var(--pgd-forest) 0%,var(--pgd-green-dark) 100%);
+--gradient-gold:linear-gradient(90deg,var(--gold-300) 0%,var(--pgd-gold) 100%);
+--scrim-bottom:linear-gradient(180deg,rgba(2,68,44,0) 0%,rgba(2,68,44,.78) 100%); /* @kind color */
+}

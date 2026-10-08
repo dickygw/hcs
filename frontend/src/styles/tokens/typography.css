@@ -1,0 +1,56 @@
+:root{
+--font-core:"Ronnia","Ronnia Cond",Georgia,"Times New Roman",serif;
+--font-cond:"Ronnia Cond","Ronnia",Georgia,serif;
+/* Deck roles. The 2025 corporate PPT template was typeset in Poppins + Lato because
+   Ronnia is not available inside Google Slides. In HTML we use the real brand face:
+   Ronnia Bold for slide titles, Ronnia Regular for slide body. See readme.md. */
+--font-deck-display:"Ronnia",Georgia,serif;
+--font-deck-body:"Ronnia",Georgia,serif;
+--font-mono:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+
+--weight-light:300;
+--weight-regular:400;
+--weight-semibold:600;
+--weight-bold:700;
+--weight-extrabold:800;
+--weight-heavy:900;
+
+/* Type scale — 1.25 major third, 16px base */
+--size-3xs:11px;
+--size-2xs:12px;
+--size-xs:13px;
+--size-sm:14px;
+--size-base:16px;
+--size-md:18px;
+--size-lg:20px;
+--size-xl:24px;
+--size-2xl:30px;
+--size-3xl:38px;
+--size-4xl:48px;
+--size-5xl:60px;
+--size-6xl:76px;
+--size-7xl:107px;          /* deck title, 80pt on the 20in corporate slide */
+
+--leading-tight:1.05;
+--leading-snug:1.2;
+--leading-normal:1.45;
+--leading-relaxed:1.62;
+
+--tracking-tight:-0.02em;
+--tracking-snug:-0.01em;
+--tracking-normal:0;
+--tracking-wide:0.04em;
+--tracking-eyebrow:0.12em;
+
+/* Composed roles */
+--text-display:var(--weight-bold) var(--size-6xl)/var(--leading-tight) var(--font-core);
+--text-h1:var(--weight-bold) var(--size-4xl)/var(--leading-snug) var(--font-core);
+--text-h2:var(--weight-bold) var(--size-3xl)/var(--leading-snug) var(--font-core);
+--text-h3:var(--weight-semibold) var(--size-2xl)/var(--leading-snug) var(--font-core);
+--text-h4:var(--weight-semibold) var(--size-xl)/var(--leading-snug) var(--font-core);
+--text-lead:var(--weight-regular) var(--size-lg)/var(--leading-relaxed) var(--font-core);
+--text-body-md:var(--weight-regular) var(--size-base)/var(--leading-normal) var(--font-core);
+--text-body-sm:var(--weight-regular) var(--size-sm)/var(--leading-normal) var(--font-core);
+--text-label:var(--weight-semibold) var(--size-sm)/1.2 var(--font-core);
+--text-caption:var(--weight-regular) var(--size-2xs)/1.35 var(--font-core);
+}

@@ -1,0 +1,27 @@
+# Paket dan hasil build
+node_modules/
+.next/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Rahasia — tidak boleh masuk Git (DATA-02, DATA-03)
+.env
+.env.*
+!.env.example
+
+# Data asli (HCMS, rekening TAD, dll.) — tidak boleh masuk Git
+*.xlsx
+*.xls
+*.csv
+!database/contoh/**
+
+# Arsip besar
+*.zip
+
+# Sistem operasi dan editor
+.DS_Store
+Thumbs.db
+*.log

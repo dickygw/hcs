@@ -1,0 +1,41 @@
+:root{
+/* 4px base step */
+--space-0:0;
+--space-1:4px;
+--space-2:8px;
+--space-3:12px;
+--space-4:16px;
+--space-5:20px;
+--space-6:24px;
+--space-8:32px;
+--space-10:40px;
+--space-12:48px;
+--space-16:64px;
+--space-20:80px;
+--space-24:96px;
+--space-32:128px;
+
+/* Component rhythm */
+--pad-control-x:20px;
+--pad-control-y:11px;
+--pad-card:24px;
+--pad-section:64px;
+--gap-inline:12px;
+--gap-stack:16px;
+--gap-grid:24px;
+
+/* Layout */
+--container-max:1200px;
+--container-wide:1440px;
+--gutter:24px;
+--grid-columns:12; /* @kind other */
+
+/* Slide grid — 1920x1080, values lifted from the corporate PPT template */
+--slide-w:1920px;
+--slide-h:1080px;
+--slide-margin-x:184px;
+--slide-margin-top:105px;
+--slide-header-y:30px;
+--slide-footer-y:1041px;
+--slide-rail:51px;
+}
