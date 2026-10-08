@@ -1,7 +1,7 @@
 {
   "name": "hcs",
   "private": true,
-  "description": "HCS (Human Capital System) \u2014 PT Pegadaian Kanwil IV Balikpapan",
+  "description": "HCS (Human Capital System) — PT Pegadaian Kanwil IV Balikpapan",
   "workspaces": [
     "frontend",
     "backend"
@@ -13,7 +13,10 @@
     "dev": "concurrently -n web,api -c green,yellow \"npm run dev -w frontend\" \"npm run dev -w backend\"",
     "build": "npm run build -w backend && npm run build -w frontend",
     "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend",
-    "test": "npm run test -w backend"
+    "test": "npm run test -w backend",
+    "db:migrasi": "npm run db:migrasi -w backend",
+    "db:seed": "npm run db:seed -w backend",
+    "cek:rls": "npm run cek:rls -w backend"
   },
   "devDependencies": {
     "concurrently": "10.0.5"
