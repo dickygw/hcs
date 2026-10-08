@@ -67,7 +67,7 @@ Yang **berbayar** (Cloudways, Supabase Pro untuk `hcs-prod`, dan domain) baru di
 
 | # | Tahap | Layar mockup | Status | Commit |
 |---|---|---|---|---|
-| 1 | Persiapan proyek dan Git | — | 🟡 | |
+| 1 | Persiapan proyek dan Git | — | ✅ | `c6aa401` |
 | 2 | Database aman dan bucket privat | — | ⬜ | |
 | 3 | Login Google, sesi, dan peran | U1, U2, U3 | ⬜ | |
 | 4 | Data master: sinkronisasi HCMS dan unggah TAD | A5, A6 | ⬜ | |

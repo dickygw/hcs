@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan Tahap 1 (Persiapan proyek dan Git)
+**Tahap aktif:** 3 – Bangun MVP · Build Plan Tahap 1 selesai; Tahap 2 (Database aman dan bucket privat) menunggu persetujuan
 **Terakhir diperbarui:** 08-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 1 dari 15 |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 1 dari 15 ✅; berikutnya Tahap 2 |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -50,9 +50,9 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. Selesaikan Tahap 1 di laptop user: pasang Node.js LTS dan Git, `npm install`, `npm run dev`, lalu buat repo GitHub privat dan push commit pertama.
-2. Aktifkan secret scanning dan Dependabot di GitHub; pastikan tab Actions hijau.
-3. Siapkan proyek Supabase `hcs-dev` (gratis, Singapura) untuk Tahap 2.
+1. Tunggu persetujuan user untuk memulai Build Plan Tahap 2.
+2. Siapkan proyek Supabase `hcs-dev` (gratis, Singapura) untuk Tahap 2.
+3. Push dari laptop dijalankan user sendiri (`git -C D:/HCS push`); pengaman Claude Code menolak push oleh agen.
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -62,3 +62,4 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 08-10-2026 | 1–2 → 3 | PRD v2.1 dan Design Brief v1.1 disetujui; mockup jadi acuan visual; Standar Keamanan v1.2 (pengetatan Supabase); mockup diekstrak ke `mockup/` |
 | 08-10-2026 | 3 | Build Plan v2.0 disusun (15 tahap, prompt agen dan tes keamanan per tahap) |
 | 08-10-2026 | 3 | Build Plan disetujui. Tahap 1: kerangka monorepo (Next.js 16, Express 5, TypeScript), token Pegadaian DS + Ronnia, AGENTS.md, CI (typecheck, tes, build, npm audit, gitleaks), Dependabot; dokumen dipindah ke docs/. Lolos uji: 5 tes, build, audit 0 celah |
+| 08-10-2026 | 3 | Build Plan Tahap 1 selesai: Node 22.14 dan Git 2.55 terpasang; typecheck, 5 tes, audit 0 celah, build lolos; lencana "Server terhubung" hijau; commit pertama `c6aa401` di repo privat github.com/dickygw/hcs; secret scanning, Dependabot, dan Actions hijau |
