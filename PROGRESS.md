@@ -2,8 +2,8 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan Tahap 2 (Database aman dan bucket privat) berjalan: kode selesai, menunggu pengaturan dasbor Supabase hcs-dev
-**Terakhir diperbarui:** 08-10-2026
+**Tahap aktif:** 3 – Bangun MVP · Build Plan Tahap 2 selesai di hcs-dev; tinggal 2 cek mandiri user, lalu Tahap 3 (Login Google, sesi, dan peran)
+**Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
 | Dokumen | Versi | Status |
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 1 dari 15 ✅; Tahap 2 🟡 (kode selesai, belum dipasang ke hcs-dev) |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 1–2 dari 15 ✅ |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -51,15 +51,12 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Lanjutan Build Plan Tahap 2 (sesi berikutnya):
-1. User di dasbor Supabase `hcs-dev`:
-   1. ✅ Sertifikat SSL sudah ada di `database/prod-ca-2021.crt`. Di `.env`, ubah `DATABASE_CA_FILE` menjadi `../database/prod-ca-2021.crt`.
-   2. Lengkapi `.env` (sudah dibuat; password `hcs_app` dan `ENCRYPTION_KEY` sudah terisi): ganti `[REF]`, `[HOST]` (Connect → Session pooler), `[PASSWORD-POSTGRES]`.
-   3. Matikan Data API; aktifkan Enforce SSL; matikan signup Supabase Auth.
-   4. Buat bucket privat `dokumen` (5 MB; PDF/JPG/PNG).
-   5. Buat S3 access key, isi baris `SUPABASE_S3_...` di `.env`.
-2. Agen: `npm run db:migrasi`, `npm run db:seed`, `npm run cek:rls` ke hcs-dev; uji `/rest/v1/` tidak tersedia; user cek Security Advisor (0 Error).
-3. Commit akhir, centang Tahap 2 di `BUILD_PLAN.md`, user push (`git -C D:/HCS push`) dan cek job "database" di GitHub Actions hijau.
+1. User (cek mandiri Tahap 2):
+   1. Dasbor hcs-dev → Advisors → Security Advisor: pastikan 0 Error.
+   2. Uji `/rest/v1/` dengan anon/publishable key (Project Settings → API Keys) → harus tidak tersedia (bukan daftar tabel).
+   3. Push: `git -C D:/HCS push`, lalu cek job "database" di GitHub Actions hijau.
+2. Konfirmasi tanggal berlaku tarif SE 145/2026 (sementara 01-01-2026). Bila berubah, dibuat migrasi baru.
+3. Tahap 3: Login Google, sesi, dan peran (perlu OAuth Client ID Google Cloud, dipandu agen).
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -71,3 +68,4 @@ Lanjutan Build Plan Tahap 2 (sesi berikutnya):
 | 08-10-2026 | 3 | Build Plan disetujui. Tahap 1: kerangka monorepo (Next.js 16, Express 5, TypeScript), token Pegadaian DS + Ronnia, AGENTS.md, CI (typecheck, tes, build, npm audit, gitleaks), Dependabot; dokumen dipindah ke docs/. Lolos uji: 5 tes, build, audit 0 celah |
 | 08-10-2026 | 3 | Build Plan Tahap 1 selesai: Node 22.14 dan Git 2.55 terpasang; typecheck, 5 tes, audit 0 celah, build lolos; lencana "Server terhubung" hijau; commit pertama `c6aa401` di repo privat github.com/dickygw/hcs; secret scanning, Dependabot, dan Actions hijau |
 | 08-10-2026 | 3 | Build Plan Tahap 2 (sebagian): migrasi 0001 (skema hcs, 14 tabel, RLS tolak semua, REVOKE, peran hcs_app) dan 0002 (jenis layanan, tarif SPPD); skema Drizzle; enkripsi AES-256-GCM + 7 tes; seed dummy 30 karyawan + 15 TAD; `cek:rls` + job CI database. Diuji di Postgres lokal: migrasi, seed, cek:rls lolos; 6 kerusakan sengaja tertangkap. Belum dipasang ke hcs-dev |
+| 09-10-2026 | 3 | Build Plan Tahap 2 selesai: `.env` hcs-dev lengkap (DB, SSL, S3); migrasi 0001–0002 terpasang di hcs-dev; seed 30 karyawan + 15 TAD; `cek:rls` 8/8 lolos; hcs_app terverifikasi tidak bisa hapus log dan tidak bisa ubah struktur; 13 rekening tersimpan terenkripsi (0 angka polos); typecheck dan 12 tes lolos |
