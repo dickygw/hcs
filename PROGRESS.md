@@ -52,9 +52,9 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 
 ## Langkah berikutnya
 1. User (cek mandiri Tahap 2):
-   1. Dasbor hcs-dev → Advisors → Security Advisor: pastikan 0 Error.
-   2. Uji `/rest/v1/` dengan anon/publishable key (Project Settings → API Keys) → harus tidak tersedia (bukan daftar tabel).
-   3. Push: `git -C D:/HCS push`, lalu cek job "database" di GitHub Actions hijau.
+   1. ✅ Security Advisor 0 Error (09-10-2026).
+   2. ✅ `/rest/v1/` dengan publishable key → "Secret API key required"; query tabel → 503, tidak ada data.
+   3. Commit sudah ter-push; cek job "database" di GitHub Actions hijau.
 2. Konfirmasi tanggal berlaku tarif SE 145/2026 (sementara 01-01-2026). Bila berubah, dibuat migrasi baru.
 3. Tahap 3: Login Google, sesi, dan peran (perlu OAuth Client ID Google Cloud, dipandu agen).
 
