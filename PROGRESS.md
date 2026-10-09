@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · **DIHENTIKAN SEMENTARA**: IT Security pusat menolak arsitektur Cloudways + Supabase (09-10-2026). Menunggu keputusan user soal jalur Google Apps Script atau vendor; PRD, Standar Keamanan, dan Build Plan perlu direvisi sebelum membangun lagi
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 **Tahap 0 (uji kecepatan)** berjalan: HCS-POC ter-deploy, menunggu 3 penguji
 **Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -59,11 +59,11 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. ✅ Jalur Apps Script dipilih; PRD v2.2 disetujui 09-10-2026.
-2. ✅ Pengaturan domain Pegadaian di Google Cloud (Gmail), Supabase hcs-dev, dan akses aplikasi di akun kantor sudah dihapus user. Kode jalur server diarsipkan di cabang `arsip/jalur-server`.
-3. ✅ Standar Keamanan v1.3 disetujui 09-10-2026.
-4. Build Plan v3.0 (draf) disusun; menunggu persetujuan user.
-5. Setelah disetujui: Tahap 0 uji kecepatan (persiapan bagian C: Apps Script API aktif, clasp login akun unit, 3 penguji).
+Build Plan v3.0 Tahap 0 (uji kecepatan):
+1. ✅ clasp login akun unit; proyek HCS-POC dibuat; siapkanPoc, isiDataDummy, cekBerbagi dijalankan (0 file dibagikan).
+2. ✅ Deployment versi 1 (akses pegadaian.co.id, dijalankan sebagai akun unit).
+3. User: cek pengaturan deployment (WS-14), bagikan alamat ke 3 penguji (min. 1 Admin SDM), uji di HP 4G dan laptop kantor, total ≥ 30 kali per aksi.
+4. Agen: baca layar Hasil uji, laporkan median/p75 per aksi, Lulus/Tidak lulus.
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -78,3 +78,4 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 09-10-2026 | 3 | Build Plan Tahap 2 selesai: `.env` hcs-dev lengkap (DB, SSL, S3); migrasi 0001–0002 terpasang di hcs-dev; seed 30 karyawan + 15 TAD; `cek:rls` 8/8 lolos; hcs_app terverifikasi tidak bisa hapus log dan tidak bisa ubah struktur; 13 rekening tersimpan terenkripsi (0 angka polos); typecheck dan 12 tes lolos |
 | 09-10-2026 | 3 | Build Plan Tahap 3 (kode): migrasi 0003 tabel sesi (terpasang di hcs-dev); login Google lewat backend (tanda tangan, audience, kedaluwarsa, hd, email terverifikasi, state); sesi cookie HttpOnly/Secure/SameSite=Lax, diam 15 menit, maks 12 jam, keluar mencabut sesi; satu pemeriksa peran tolak-bawaan; CSRF; rate limit per IP dan per email; layar U1, U1 error, U2, U3, kerangka navigasi karyawan (K1 kosong, K5 kosong, K6 Profil) dan Admin. 33 tes lolos (14 tes keamanan login), cek:rls lolos, audit 0 celah, build lolos |
 | 09-10-2026 | 3 | Login Google berhasil di hcs-dev (Admin dicky.widyatama), logo dan peringatan hydration diperbaiki. IT Security pusat menolak aplikasi di luar Workspace Pegadaian → pembangunan dihentikan sementara, menunggu keputusan jalur |
+| 09-10-2026 | 3 | PRD v2.2, Standar Keamanan v1.3, Build Plan v3.0 (jalur Apps Script) disetujui. Tahap 0: aplikasi uji kecepatan (poc/) dibuat, data dummy 3 tahun diisi, ter-deploy di HCS-POC akun unit. clasp dijalankan lewat npx versi terkunci (celah braces di clasp, tidak masuk daftar paket) |
