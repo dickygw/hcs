@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 **Tahap 0 (uji kecepatan)** berjalan: HCS-POC ter-deploy, menunggu 3 penguji
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0 ✅ (lulus dengan catatan); **Tahap 1** (persiapan proyek Apps Script dan pemeriksaan otomatis) berjalan
 **Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -47,6 +47,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 09-10-2026 | Login tetap Google (Pilihan 1); OAuth client dibuat dengan akun Gmail admin sistem karena akun kantor tidak diberi akses Google Cloud. Cadangan bila Pegadaian memblokir aplikasi pihak ketiga: kode sekali pakai lewat email (perlu ubah AUTH-01) | Arahan user |
 | 09-10-2026 | Admin masuk dengan email kantor pribadi (sementara: dicky.widyatama@pegadaian.co.id). `manohc.balikpapan@pegadaian.co.id` hanya kontak Admin SDM di U2, bukan akun login | Jejak tindakan per orang (PRD 10.3) |
 | 09-10-2026 | **IT Security pusat menolak**: aplikasi dan data tidak boleh keluar dari lingkungan Workspace/Google Pegadaian. Pilihan resmi: lewat vendor, atau dikembangkan di Kanwil memakai Google Apps Script | Surat ke pusat, dijawab IT Security |
+| 09-10-2026 | Uji kecepatan lulus dengan catatan: rancangan **sheet aktif kecil + arsip per tahun**, cache hanya sheet aktif dan master, kunci hanya untuk penghitung nomor dan cek unik, detail dimuat bersama daftar (batas bawah ±0,9 dtk per panggilan Google). HP 4G belum diuji → Tahap 13/pilot | `docs/HASIL_UJI_KECEPATAN.md`; arahan user untuk lanjut |
 | 09-10-2026 | Standar Keamanan v1.3 disetujui: lima lapis kunci Workspace (WS-01 s.d. WS-14), cache browser hanya di memori (WEB-06); teknik kecepatan Apps Script dirinci di PRD 9.1 | Arahan user |
 | 09-10-2026 | PRD v2.2 disetujui: jalur Google Apps Script, target kecepatan dilonggarkan (buka ≤ 4 dtk, filter ≤ 3 dtk, 20 pengguna bersamaan), pemegang akun unit: dicky.widyatama | Arahan user |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
@@ -59,11 +60,9 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Build Plan v3.0 Tahap 0 (uji kecepatan):
-1. ✅ clasp login akun unit; proyek HCS-POC dibuat; siapkanPoc, isiDataDummy, cekBerbagi dijalankan (0 file dibagikan).
-2. ✅ Deployment versi 1 (akses pegadaian.co.id, dijalankan sebagai akun unit).
-3. User: cek pengaturan deployment (WS-14), bagikan alamat ke 3 penguji (min. 1 Admin SDM), uji di HP 4G dan laptop kantor, total ≥ 30 kali per aksi.
-4. Agen: baca layar Hasil uji, laporkan median/p75 per aksi, Lulus/Tidak lulus.
+Build Plan v3.0 Tahap 1 (persiapan proyek Apps Script dan pemeriksaan otomatis), lihat BUILD_PLAN.md.
+Catatan dari Tahap 0 yang wajib diterapkan: `docs/HASIL_UJI_KECEPATAN.md` bagian 3.
+Proyek HCS-POC di akun unit boleh dihapus user setelah Tahap 1 (kode tetap ada di riwayat Git).
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -79,3 +78,4 @@ Build Plan v3.0 Tahap 0 (uji kecepatan):
 | 09-10-2026 | 3 | Build Plan Tahap 3 (kode): migrasi 0003 tabel sesi (terpasang di hcs-dev); login Google lewat backend (tanda tangan, audience, kedaluwarsa, hd, email terverifikasi, state); sesi cookie HttpOnly/Secure/SameSite=Lax, diam 15 menit, maks 12 jam, keluar mencabut sesi; satu pemeriksa peran tolak-bawaan; CSRF; rate limit per IP dan per email; layar U1, U1 error, U2, U3, kerangka navigasi karyawan (K1 kosong, K5 kosong, K6 Profil) dan Admin. 33 tes lolos (14 tes keamanan login), cek:rls lolos, audit 0 celah, build lolos |
 | 09-10-2026 | 3 | Login Google berhasil di hcs-dev (Admin dicky.widyatama), logo dan peringatan hydration diperbaiki. IT Security pusat menolak aplikasi di luar Workspace Pegadaian → pembangunan dihentikan sementara, menunggu keputusan jalur |
 | 09-10-2026 | 3 | PRD v2.2, Standar Keamanan v1.3, Build Plan v3.0 (jalur Apps Script) disetujui. Tahap 0: aplikasi uji kecepatan (poc/) dibuat, data dummy 3 tahun diisi, ter-deploy di HCS-POC akun unit. clasp dijalankan lewat npx versi terkunci (celah braces di clasp, tidak masuk daftar paket) |
+| 09-10-2026 | 3 | Tahap 0 selesai: 5 versi aplikasi uji; v5 (sheet aktif + arsip per tahun) lulus di laptop, semua aksi baca ±1 dtk, 20 kiriman bersamaan tanpa error. Catatan: antrean tulis dan uji HP 4G dibawa ke Tahap 2 dan 13 |

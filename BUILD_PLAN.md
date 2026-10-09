@@ -63,8 +63,8 @@ Tidak ada biaya.
 
 | # | Tahap | Layar mockup | Status | Commit |
 |---|---|---|---|---|
-| 0 | Uji kecepatan (POC) | — | 🟡 | |
-| 1 | Persiapan proyek Apps Script dan pemeriksaan otomatis | — | ⬜ | |
+| 0 | Uji kecepatan (POC) | — | ✅ | lulus dengan catatan, `docs/HASIL_UJI_KECEPATAN.md` |
+| 1 | Persiapan proyek Apps Script dan pemeriksaan otomatis | — | 🟡 | |
 | 2 | Struktur spreadsheet, enkripsi rekening, data dummy | — | ⬜ | |
 | 3 | Identitas, peran, kunci layar, kerangka navigasi | U2, U3, K6 | ⬜ | |
 | 4 | Data master: sinkronisasi HCMS dan unggah TAD | A5, A6 | ⬜ | |
