@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| **Versi** | 2.2 (Draf) |
+| **Versi** | 2.2 (Disetujui) |
 | **Tanggal** | 09-10-2026 |
 | **Lingkup penggunaan** | Kantor Wilayah IV Balikpapan |
 | **Arsitektur** | **Google Workspace Pegadaian**: Apps Script Web App, Google Sheets, Google Drive, MailApp |
 | **Dokumen terkait** | Standar Keamanan HCS v1.3 (wajib, sedang disusun), Design Brief v1.1, Mockup Claude Design di folder `mockup/` (acuan visual utama) |
-| **Status** | Menunggu persetujuan pemilik proyek |
+| **Status** | **Disetujui** pemilik proyek, 09-10-2026 |
 
 ### Riwayat versi
 
@@ -335,7 +335,7 @@ Rincian setiap tahap, beserta prompt agen, disusun di **Build Plan v3.0**.
 1. Validasi ulang template TAD final setelah TAD EPS dan INHOUSE ditambahkan.
 2. File web font Ronnia (format WOFF2) dari tim brand.
 3. Kolom isian rinci Pemesanan Tiket Pesawat.
-4. Siapa orang kedua yang memegang akses akun unit `manohc.balikpapan`.
+4. Orang kedua pemegang akses akun unit `manohc.balikpapan` selain dicky.widyatama@pegadaian.co.id (wajib sebelum Tahap 14).
 5. Tautan pendek internal untuk alamat HCS (bila tersedia di Kanwil).
 
-**Terjawab di v2.2:** platform (Google Workspace Pegadaian, arahan IT Security pusat); akun pemilik (akun unit `manohc.balikpapan`); Admin memakai email kantor masing-masing. **Tidak berlaku lagi:** pembayaran Cloudways/Supabase, nama domain, region Singapura.
+**Terjawab di v2.2:** target kecepatan disesuaikan dengan Apps Script (disetujui); pemegang akses akun unit: dicky.widyatama@pegadaian.co.id; platform (Google Workspace Pegadaian, arahan IT Security pusat); akun pemilik (akun unit `manohc.balikpapan`); Admin memakai email kantor masing-masing. **Tidak berlaku lagi:** pembayaran Cloudways/Supabase, nama domain, region Singapura.

@@ -8,11 +8,11 @@
 ## Dokumen acuan yang berlaku
 | Dokumen | Versi | Status |
 |---|---|---|
-| `docs/PRD_HCS_v2.1.md` | 2.1 | ✅ Disetujui 08-10-2026 |
+| `docs/PRD_HCS_v2.2.md` | 2.2 | ✅ Disetujui 09-10-2026 (jalur Apps Script) |
 | `docs/DESIGN_BRIEF.md` | 1.1 | ✅ Disetujui 08-10-2026 |
 | `mockup/HCS Mobile.dc.html`, `mockup/HCS Admin.dc.html` | 07-10-2026 | ✅ **Acuan visual utama** |
-| `docs/STANDAR_KEAMANAN_HCS_v1.2.md` | 1.2 | ✅ Wajib (pengetatan Supabase) |
-| `BUILD_PLAN.md` | 2.0 | ✅ Disetujui 08-10-2026 |
+| `docs/STANDAR_KEAMANAN_HCS_v1.2.md` | 1.2 | 🔁 Direvisi ke v1.3 (jalur Apps Script) |
+| `BUILD_PLAN.md` | 2.0 | 🔁 Tidak berlaku (jalur server); diganti v3.0 |
 
 Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 
@@ -47,6 +47,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 09-10-2026 | Login tetap Google (Pilihan 1); OAuth client dibuat dengan akun Gmail admin sistem karena akun kantor tidak diberi akses Google Cloud. Cadangan bila Pegadaian memblokir aplikasi pihak ketiga: kode sekali pakai lewat email (perlu ubah AUTH-01) | Arahan user |
 | 09-10-2026 | Admin masuk dengan email kantor pribadi (sementara: dicky.widyatama@pegadaian.co.id). `manohc.balikpapan@pegadaian.co.id` hanya kontak Admin SDM di U2, bukan akun login | Jejak tindakan per orang (PRD 10.3) |
 | 09-10-2026 | **IT Security pusat menolak**: aplikasi dan data tidak boleh keluar dari lingkungan Workspace/Google Pegadaian. Pilihan resmi: lewat vendor, atau dikembangkan di Kanwil memakai Google Apps Script | Surat ke pusat, dijawab IT Security |
+| 09-10-2026 | PRD v2.2 disetujui: jalur Google Apps Script, target kecepatan dilonggarkan (buka ≤ 4 dtk, filter ≤ 3 dtk, 20 pengguna bersamaan), pemegang akun unit: dicky.widyatama | Arahan user |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
@@ -57,10 +58,9 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. User memutuskan: Google Apps Script di Workspace Pegadaian (dibangun Kanwil) atau vendor.
-2. Bila Apps Script: revisi PRD (v2.2, arsitektur dari arsip `PRD_HCS_Workspace_v1.2.md`), Standar Keamanan (v1.3, ganti bagian Supabase/Cloudways), Build Plan (v3.0), lalu uji kecepatan (`docs/arsip/SPEC_UJI_KECEPATAN_HCS.md`) sebelum membangun.
-3. Hentikan login ke hcs-dev dengan akun kantor; hapus test user dan OAuth client di proyek Google Cloud Gmail.
-4. Kode jalur server (Next.js, Express, Supabase) disimpan sebagai arsip; tidak dilanjutkan.
+1. ✅ Jalur Apps Script dipilih; PRD v2.2 disetujui 09-10-2026.
+2. ✅ Pengaturan domain Pegadaian di Google Cloud (Gmail), Supabase hcs-dev, dan akses aplikasi di akun kantor sudah dihapus user. Kode jalur server diarsipkan di cabang `arsip/jalur-server`.
+3. Berikutnya: Standar Keamanan v1.3 (ganti bagian Supabase/Cloudways dengan aturan Apps Script), lalu Build Plan v3.0, lalu uji kecepatan (Tahap 0).
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |

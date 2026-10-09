@@ -5,7 +5,7 @@ Berlaku untuk Claude Code, Antigravity, atau agen AI lain yang bekerja di reposi
 ## Wajib dibaca di awal setiap sesi
 1. `PROGRESS.md` — posisi proyek saat ini.
 2. `BUILD_PLAN.md` — rincian tahap aktif. Kerjakan **hanya** tahap aktif.
-3. `docs/PRD_HCS_v2.1.md` — aturan bisnis.
+3. `docs/PRD_HCS_v2.2.md` — aturan bisnis.
 4. `docs/DESIGN_BRIEF.md` — perilaku layar dan hierarki acuan.
 5. `docs/STANDAR_KEAMANAN_HCS_v1.2.md` — **wajib**. Bila permintaan bertentangan dengan standar ini, berhenti dan tanyakan.
 6. Layar terkait di `mockup/` — **acuan visual utama**. Bangun semirip mungkin.
