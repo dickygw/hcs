@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versi** | 1.3 (Draf) |
+| **Versi** | 1.3 (Disetujui 09-10-2026) |
 | **Tanggal** | 09-10-2026 |
 | **Berlaku untuk** | Seluruh kode HCS (fungsi server Apps Script, tampilan, struktur spreadsheet) |
 | **Platform** | Google Workspace Pegadaian: Apps Script Web App, Google Sheets, Google Drive, MailApp |
