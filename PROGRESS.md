@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0 ✅ (lulus dengan catatan); **Tahap 1** (persiapan proyek Apps Script dan pemeriksaan otomatis) berjalan
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–1 ✅; **Tahap 2** (struktur spreadsheet, enkripsi rekening, data dummy) berjalan
 **Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -82,3 +82,4 @@ Catatan: Index.html 1,15 MB karena huruf Ronnia TTF (±920 KB); WOFF2 dari tim b
 | 09-10-2026 | 3 | PRD v2.2, Standar Keamanan v1.3, Build Plan v3.0 (jalur Apps Script) disetujui. Tahap 0: aplikasi uji kecepatan (poc/) dibuat, data dummy 3 tahun diisi, ter-deploy di HCS-POC akun unit. clasp dijalankan lewat npx versi terkunci (celah braces di clasp, tidak masuk daftar paket) |
 | 09-10-2026 | 3 | Tahap 0 selesai: 5 versi aplikasi uji; v5 (sheet aktif + arsip per tahun) lulus di laptop, semua aksi baca ±1 dtk, 20 kiriman bersamaan tanpa error. Catatan: antrean tulis dan uji HP 4G dibawa ke Tahap 2 dan 13 |
 | 09-10-2026 | 3 | Tahap 1 (kode): repo dirapikan ke apps-script/ + tampilan/ + alat/; pembungkus pemeriksa AKSES-01 (satu pintu `api`, rute terdaftar, tolak bawaan); build esbuild + Vite → Code.js 3 KB, Index.html 1,15 MB; cek:keamanan + CI; proyek HCS-dev dibuat dan ter-deploy. 23 tes lolos, audit 0 celah (vite-plugin-singlefile dan clasp tidak dipasang karena celah braces) |
+| 09-10-2026 | 3 | Tahap 1 selesai: halaman HCS-dev tampil dengan Ronnia dan "Server terhubung" (diuji user). Temuan: HtmlService merusak pola `<huruf` di dalam skrip → JS tampilan dikirim base64 dan diperiksa saat build |
