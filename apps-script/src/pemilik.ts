@@ -3,7 +3,8 @@
  * Fungsi ini menjadi fungsi top-level sehingga terlihat oleh google.script.run; karena itu SETIAP fungsi
  * wajib diawali hanyaPemilik() (diperiksa cek:keamanan).
  */
-import { denganKunci, gantiSemua, idBaru, sekarang } from "./data";
+import { DOMAIN } from "./akses";
+import { baca, denganKunci, gantiSemua, idBaru, sekarang } from "./data";
 import { buatDataDummy } from "./dummy";
 import { enkripsi, KUNCI_PROPERTI, kunciAcakBaru, kunciTersimpan, nonceBaru } from "./enkripsi";
 import { lingkungan } from "./lingkungan";
@@ -88,4 +89,28 @@ export function pasangTrigger() {
   for (const t of ScriptApp.getProjectTriggers()) if (t.getHandlerFunction() === "cekBerbagi") ScriptApp.deleteTrigger(t);
   ScriptApp.newTrigger("cekBerbagi").timeBased().onWeekDay(ScriptApp.WeekDay.MONDAY).atHour(7).create();
   console.log("Trigger cekBerbagi dipasang: setiap Senin pukul 07.00.");
+}
+
+/**
+ * Mendaftarkan atau mengaktifkan Admin. Fungsi editor tidak menerima isian, jadi email dibaca dari
+ * Script Property TAMBAH_ADMIN (Project Settings → Script properties), lalu property itu dihapus.
+ * Admin berikutnya dikelola lewat A9 Pengaturan (Tahap 11).
+ */
+export function tambahAdmin() {
+  hanyaPemilik();
+  const props = PropertiesService.getScriptProperties();
+  const email = String(props.getProperty("TAMBAH_ADMIN") ?? "").trim().toLowerCase();
+  if (!/^[a-z0-9._%+-]+@/.test(email) || !email.endsWith("@" + DOMAIN)) {
+    throw new Error(`Isi Script Property TAMBAH_ADMIN dengan email @${DOMAIN} yang akan dijadikan Admin.`);
+  }
+  denganKunci(() => {
+    const daftar = baca("pengguna");
+    const kini = sekarang();
+    const ada = daftar.find((p) => p.email === email);
+    if (ada) Object.assign(ada, { peran: "admin", aktif: "ya", diperbarui_pada: kini });
+    else daftar.push({ email, peran: "admin", aktif: "ya", dibuat_pada: kini, diperbarui_pada: kini });
+    gantiSemua("pengguna", daftar);
+  });
+  props.deleteProperty("TAMBAH_ADMIN");
+  console.log(`${email} terdaftar sebagai Admin di HCS ${lingkungan()}.`);
 }

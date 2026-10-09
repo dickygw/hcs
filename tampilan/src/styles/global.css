@@ -16,3 +16,7 @@
 body {
   background: var(--neutral-50);
 }
+
+button {
+  font-family: inherit;
+}
