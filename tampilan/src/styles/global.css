@@ -1,0 +1,18 @@
+/* Token Pegadaian Design System, disalin dari mockup/_ds/tokens/ agar sama dengan mockup. */
+@import "./tokens/fonts.css";
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/radius.css";
+@import "./tokens/elevation.css";
+@import "./tokens/motion.css";
+@import "./tokens/base.css";
+
+:root {
+  /* Cadangan huruf sistem bila Ronnia belum termuat (Design Brief 2.3). */
+  --font-core: "Ronnia", system-ui, sans-serif;
+}
+
+body {
+  background: var(--neutral-50);
+}

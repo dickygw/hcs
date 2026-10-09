@@ -1,28 +1,31 @@
 {
   "name": "hcs",
   "private": true,
-  "description": "HCS (Human Capital System) — PT Pegadaian Kanwil IV Balikpapan",
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
+  "description": "HCS (Human Capital System) — PT Pegadaian Kanwil IV Balikpapan, Google Apps Script",
+  "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "dev": "concurrently -n web,api -c green,yellow \"npm run dev -w frontend\" \"npm run dev -w backend\"",
-    "build": "npm run build -w backend && npm run build -w frontend",
-    "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend",
-    "test": "npm run test -w backend",
-    "db:migrasi": "npm run db:migrasi -w backend",
-    "db:seed": "npm run db:seed -w backend",
-    "cek:rls": "npm run cek:rls -w backend",
-    "db:tambah-pengguna": "npm run db:tambah-pengguna -w backend --"
+    "build": "node alat/bangun.mjs",
+    "typecheck": "tsc --noEmit -p apps-script && tsc --noEmit -p tampilan",
+    "test": "vitest run",
+    "cek:keamanan": "node alat/cek-keamanan.mjs",
+    "kirim:dev": "npm run build && npm run cek:keamanan && cd apps-script && npx --yes @google/clasp@3.4.1 push --force"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
-    "concurrently": "10.0.5"
-  },
-  "overrides": {
-    "shell-quote": "1.12.0"
+    "@types/google-apps-script": "2.0.13",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "esbuild": "0.28.2",
+    "typescript": "5.9.3",
+    "vite": "8.3.1",
+    "vitest": "5.0.3"
   }
 }

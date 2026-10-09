@@ -1,11 +1,9 @@
 # Paket dan hasil build
 node_modules/
-.next/
 dist/
 out/
 coverage/
 *.tsbuildinfo
-next-env.d.ts
 
 # Rahasia — tidak boleh masuk Git (DATA-02, DATA-03)
 .env
@@ -16,7 +14,6 @@ next-env.d.ts
 *.xlsx
 *.xls
 *.csv
-!database/contoh/**
 
 # Arsip besar
 *.zip

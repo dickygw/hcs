@@ -60,9 +60,11 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Build Plan v3.0 Tahap 1 (persiapan proyek Apps Script dan pemeriksaan otomatis), lihat BUILD_PLAN.md.
-Catatan dari Tahap 0 yang wajib diterapkan: `docs/HASIL_UJI_KECEPATAN.md` bagian 3.
-Proyek HCS-POC di akun unit boleh dihapus user setelah Tahap 1 (kode tetap ada di riwayat Git).
+Build Plan v3.0 Tahap 1 (kode selesai, menunggu uji user):
+1. User buka alamat HCS-dev dengan akun kantor (sekali sebagai akun unit untuk memberi izin), lalu dengan Gmail pribadi (harus ditolak).
+2. User push ke GitHub dan cek Actions hijau.
+3. Setelah lolos: centang Tahap 1, lanjut Tahap 2 (struktur spreadsheet, enkripsi rekening, data dummy) dengan catatan `docs/HASIL_UJI_KECEPATAN.md` bagian 3.
+Catatan: Index.html 1,15 MB karena huruf Ronnia TTF (±920 KB); WOFF2 dari tim brand atau subset huruf bila buka aplikasi di HP lambat.
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -79,3 +81,4 @@ Proyek HCS-POC di akun unit boleh dihapus user setelah Tahap 1 (kode tetap ada d
 | 09-10-2026 | 3 | Login Google berhasil di hcs-dev (Admin dicky.widyatama), logo dan peringatan hydration diperbaiki. IT Security pusat menolak aplikasi di luar Workspace Pegadaian → pembangunan dihentikan sementara, menunggu keputusan jalur |
 | 09-10-2026 | 3 | PRD v2.2, Standar Keamanan v1.3, Build Plan v3.0 (jalur Apps Script) disetujui. Tahap 0: aplikasi uji kecepatan (poc/) dibuat, data dummy 3 tahun diisi, ter-deploy di HCS-POC akun unit. clasp dijalankan lewat npx versi terkunci (celah braces di clasp, tidak masuk daftar paket) |
 | 09-10-2026 | 3 | Tahap 0 selesai: 5 versi aplikasi uji; v5 (sheet aktif + arsip per tahun) lulus di laptop, semua aksi baca ±1 dtk, 20 kiriman bersamaan tanpa error. Catatan: antrean tulis dan uji HP 4G dibawa ke Tahap 2 dan 13 |
+| 09-10-2026 | 3 | Tahap 1 (kode): repo dirapikan ke apps-script/ + tampilan/ + alat/; pembungkus pemeriksa AKSES-01 (satu pintu `api`, rute terdaftar, tolak bawaan); build esbuild + Vite → Code.js 3 KB, Index.html 1,15 MB; cek:keamanan + CI; proyek HCS-dev dibuat dan ter-deploy. 23 tes lolos, audit 0 celah (vite-plugin-singlefile dan clasp tidak dipasang karena celah braces) |

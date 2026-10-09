@@ -33,8 +33,11 @@ jobs:
       - name: Tes otomatis
         run: npm test
 
-      - name: Coba build
+      - name: Coba build (Code.js dan Index.html untuk Apps Script)
         run: npm run build
+
+      - name: Periksa aturan keamanan (AI-02)
+        run: npm run cek:keamanan
 
       - name: Audit keamanan paket (gagal bila ada temuan tinggi/kritis)
         run: npm audit --audit-level=high
@@ -43,51 +46,3 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Kunci database (AI-02): migrasi dipasang ke Postgres kosong, lalu cek:rls harus lolos.
-  database:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
-    env:
-      DATABASE_SSL: nonaktif
-      DATABASE_URL_MIGRASI: postgresql://postgres:postgres@localhost:5432/postgres
-    steps:
-      - name: Ambil kode
-        uses: actions/checkout@v4
-
-      - name: Siapkan Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Pasang paket
-        run: npm ci
-
-      - name: Buat password dan kunci sementara
-        run: |
-          echo "DATABASE_URL=postgresql://hcs_app:$(openssl rand -hex 24)@localhost:5432/postgres" >> "$GITHUB_ENV"
-          echo "ENCRYPTION_KEY=$(openssl rand -base64 32)" >> "$GITHUB_ENV"
-
-      - name: Buat peran bawaan Supabase (anon, authenticated)
-        run: psql "$DATABASE_URL_MIGRASI" -c "CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN;"
-
-      - name: Pasang migrasi
-        run: npm run db:migrasi
-
-      - name: Isi data dummy
-        run: npm run db:seed
-
-      - name: Periksa kunci database
-        run: npm run cek:rls
-
-      - name: Tes login, sesi, dan hak akses (memakai database)
-        run: npm test -w backend
