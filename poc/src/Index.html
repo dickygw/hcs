@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root { --forest:#064e43; --hijau:#08803a; --abu:#616e7c; --garis:#e4e8e5; --latar:#fafafa; --merah:#c62828; --emas:#fbc513; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.45 system-ui, sans-serif; color:#1f2933; background:var(--latar); }
+  header { background:#fff; border-bottom:1px solid var(--garis); padding:12px 16px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; }
+  header b { color:var(--forest); font-size:18px; }
+  nav { display:flex; gap:4px; overflow-x:auto; background:#fff; border-bottom:1px solid var(--garis); padding:0 8px; }
+  nav button { border:0; background:none; padding:12px; font:inherit; color:var(--abu); cursor:pointer; white-space:nowrap; }
+  nav button.aktif { color:var(--forest); font-weight:600; box-shadow:inset 0 -3px 0 #0da94d; }
+  main { padding:16px; max-width:960px; margin:0 auto; }
+  .kartu { background:#fff; border:1px solid var(--garis); border-radius:12px; padding:12px 14px; margin-bottom:8px; cursor:pointer; }
+  .kartu small { color:var(--abu); }
+  .lencana { display:inline-block; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px; border:1px solid var(--forest); color:var(--forest); }
+  .Diproses { background:var(--emas); border-color:var(--emas); }
+  .Selesai { background:#d6f9e1; border-color:#d6f9e1; color:var(--hijau); }
+  .Ditolak { background:#fdeeec; border-color:#fdeeec; color:var(--merah); }
+  button.utama, button.kedua { min-height:44px; padding:10px 18px; border-radius:8px; font:600 15px system-ui; cursor:pointer; }
+  button.utama { background:var(--hijau); color:#fff; border:0; }
+  button.kedua { background:#fff; color:var(--forest); border:1px solid var(--forest); }
+  label { display:block; margin:10px 0 4px; font-weight:600; }
+  input, select { width:100%; min-height:44px; padding:8px 10px; border:1px solid #cfd5d1; border-radius:8px; font:inherit; }
+  .baris { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0; }
+  .baris > * { flex:1; min-width:140px; }
+  .saran div { padding:8px 10px; border-bottom:1px solid var(--garis); cursor:pointer; }
+  .pesan { padding:10px 12px; border-radius:8px; background:#eefdf3; margin:8px 0; }
+  .galat { background:#fdeeec; color:var(--merah); }
+  table { width:100%; border-collapse:collapse; background:#fff; font-size:14px; }
+  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--garis); }
+  .lulus { color:var(--hijau); font-weight:600; } .gagal { color:var(--merah); font-weight:600; }
+  .sembunyi { display:none; }
+</style>
+</head>
+<body>
+<header>
+  <div><b>HCS · Uji kecepatan</b><br><small id="info">Memuat…</small></div>
+  <div class="baris" style="margin:0;flex:0">
+    <select id="peran" aria-label="Lihat sebagai"><option value="karyawan">Lihat sebagai: Karyawan</option><option value="admin">Lihat sebagai: Admin</option></select>
+  </div>
+</header>
+<nav id="tab"></nav>
+<main id="isi"></main>
+
+<script>
+// ---------------------------------------------------------------------------
+// Pengukuran: setiap panggilan dicatat (waktu total di browser + waktu server), dikirim per 10 catatan.
+// ---------------------------------------------------------------------------
+const PERANGKAT = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'HP' : 'Laptop';
+const NIK_UJI = 'P90001';
+const antrean = [];
+const TARGET = { buka_aplikasi: 4000, riwayat_halaman: 1000, detail: 1000, muat_daftar_tad: 3000, saran_tad: 500, kirim_dirasakan: 1000, unggah: 10000, tugasku_filter: 3000, ekspor: 3000, detail_hitung: 1000, ubah_status_dirasakan: 1000 };
+
+function catat(aksi, totalMs, serverMs, sukses, cache) {
+  antrean.push({ aksi, totalMs: Math.round(totalMs), serverMs: serverMs || 0, perangkat: PERANGKAT, sukses, cache: cache || '' });
+  if (antrean.length >= 10) kirimCatatan();
+}
+function kirimCatatan() {
+  if (!antrean.length) return Promise.resolve();
+  const baris = antrean.splice(0);
+  return panggil('catatKinerja', { baris }).catch(() => antrean.unshift(...baris));
+}
+document.addEventListener('visibilitychange', () => document.visibilityState === 'hidden' && kirimCatatan());
+
+function panggil(aksi, arg) {
+  return new Promise((ok, gagal) => google.script.run.withSuccessHandler(ok).withFailureHandler(gagal).api(aksi, arg));
+}
+/** Panggil + ukur. namaUkur kosong = tidak dicatat. */
+async function ukur(namaUkur, aksi, arg) {
+  const t0 = performance.now();
+  try {
+    const h = await panggil(aksi, arg);
+    if (namaUkur) catat(namaUkur, performance.now() - t0, h.serverMs, true, h.cache);
+    return h.data;
+  } catch (e) {
+    if (namaUkur) catat(namaUkur, performance.now() - t0, 0, false);
+    throw e;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Bantuan tampilan (tanpa innerHTML untuk data, WEB-01)
+// ---------------------------------------------------------------------------
+function el(tag, sifat, ...anak) {
+  const e = document.createElement(tag);
+  Object.entries(sifat || {}).forEach(([k, v]) => (k.startsWith('on') ? e.addEventListener(k.slice(2), v) : k === 'class' ? (e.className = v) : (e[k] = v)));
+  anak.flat().forEach((a) => a != null && e.append(a instanceof Node ? a : String(a)));
+  return e;
+}
+const isi = document.getElementById('isi');
+const tampil = (...n) => isi.replaceChildren(...n);
+const pesan = (teks, galat) => el('div', { class: 'pesan' + (galat ? ' galat' : '') }, teks);
+const rupiah = (n) => 'Rp' + Number(n || 0).toLocaleString('id-ID');
+const lencana = (s) => el('span', { class: 'lencana ' + s }, s);
+
+// Cache di browser: hanya di memori halaman (WEB-06).
+const cacheBrowser = new Map();
+
+// ---------------------------------------------------------------------------
+// Tab
+// ---------------------------------------------------------------------------
+const TAB = { karyawan: [['riwayat', 'Pengajuan saya'], ['form', 'Ajukan klaim'], ['hasil', 'Hasil uji']], admin: [['tugasku', 'Tugasku'], ['hasil', 'Hasil uji']] };
+const LAYAR = { riwayat: layarRiwayat, form: layarForm, tugasku: layarTugasku, hasil: layarHasil };
+function bukaTab(id) {
+  document.querySelectorAll('#tab button').forEach((b) => b.classList.toggle('aktif', b.dataset.id === id));
+  LAYAR[id]();
+}
+function aturTab() {
+  const daftar = TAB[document.getElementById('peran').value];
+  document.getElementById('tab').replaceChildren(...daftar.map(([id, label]) => el('button', { onclick: () => bukaTab(id) }, label)));
+  document.querySelectorAll('#tab button').forEach((b, i) => (b.dataset.id = daftar[i][0]));
+  bukaTab(daftar[0][0]);
+}
+document.getElementById('peran').addEventListener('change', aturTab);
+
+// ---------------------------------------------------------------------------
+// Layar 1 — Riwayat pengajuan (karyawan)
+// ---------------------------------------------------------------------------
+async function layarRiwayat() {
+  const daftar = el('div');
+  const tombol = el('button', { class: 'kedua', onclick: () => muat(ke + 1) }, 'Muat lebih banyak');
+  let ke = 0;
+  tampil(el('h2', {}, 'Pengajuan saya'), daftar, tombol);
+  async function muat(halaman) {
+    ke = halaman;
+    const kunci = 'riwayat:' + halaman;
+    let d = cacheBrowser.get(kunci);
+    if (!d) {
+      d = await ukur('riwayat_halaman', 'riwayat', { nik: NIK_UJI, ke: halaman });
+      cacheBrowser.set(kunci, d);
+    }
+    d.isi.forEach((p) => daftar.append(kartuPengajuan(p, () => layarDetail(p.nomor))));
+    tombol.classList.toggle('sembunyi', !d.ada);
+  }
+  for (let i = 0; i <= ke; i++) await muat(i);
+}
+function kartuPengajuan(p, klik) {
+  return el('div', { class: 'kartu', onclick: klik }, el('div', {}, el('b', {}, p.jenis), ' ', lencana(p.status)), el('small', {}, p.nomor + ' · ' + p.noST + ' · berangkat ' + p.berangkat + (p.jumlahTad > 0 ? ' · ' + p.jumlahTad + ' TAD' : '')));
+}
+async function layarDetail(nomor) {
+  tampil(pesan('Memuat detail…'));
+  const kunci = 'detail:' + nomor;
+  let d = cacheBrowser.get(kunci);
+  if (!d) {
+    d = await ukur('detail', 'detail', { nomor, nik: NIK_UJI });
+    cacheBrowser.set(kunci, d);
+  }
+  tampil(
+    el('button', { class: 'kedua', onclick: layarRiwayat }, 'Kembali'),
+    el('h2', {}, d.pengajuan.jenis + ' ' + d.pengajuan.nomor), lencana(d.pengajuan.status),
+    d.nominal ? pesan('Nominal disetujui: ' + rupiah(d.nominal)) : null,
+    el('h3', {}, 'Riwayat status'),
+    d.riwayat.map((r) => el('div', { class: 'kartu' }, el('b', {}, r.status), el('br'), el('small', {}, r.pada.slice(0, 16).replace('T', ' ') + ' · ' + r.oleh + (r.catatan ? ' · ' + r.catatan : '')))),
+    d.tad.length ? el('h3', {}, 'TAD dalam Surat Tugas ini') : null,
+    d.tad.map((t) => el('div', { class: 'kartu' }, el('b', {}, t.nama), el('br'), el('small', {}, t.nik + ' · ' + t.vendor))),
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Layar 2 — Form Klaim Perdin dengan saran TAD (dicari di perangkat) dan unggah
+// ---------------------------------------------------------------------------
+let daftarTad = null;
+async function layarForm() {
+  const f = { tad: [] };
+  const masukan = (nama, label, tipe) => [el('label', { htmlFor: nama }, label), el('input', { id: nama, type: tipe || 'text', oninput: (e) => (f[nama] = e.target.value) })];
+  const saran = el('div', { class: 'saran' });
+  const terpilih = el('div');
+  const status = el('div');
+  const cariTad = el('input', { id: 'cariTad', placeholder: 'Ketik minimal 3 huruf', oninput: (e) => tampilSaran(e.target.value) });
+  tampil(
+    el('h2', {}, 'Ajukan Klaim Biaya Perdin'),
+    masukan('noST', 'Nomor Surat Tugas'), masukan('tujuan', 'Kota/unit tujuan'),
+    el('div', { class: 'baris' }, el('div', {}, masukan('berangkat', 'Tanggal berangkat', 'date')), el('div', {}, masukan('kembali', 'Tanggal kembali', 'date'))),
+    el('h3', {}, 'TAD dalam Surat Tugas ini'), el('label', { htmlFor: 'cariTad' }, 'Cari nama TAD'), cariTad, saran, terpilih,
+    el('h3', {}, 'Bukti'), el('input', { type: 'file', accept: 'application/pdf,image/jpeg,image/png', onchange: (e) => unggah(e.target.files[0], status) }),
+    status,
+    el('div', { class: 'baris' }, el('button', { class: 'utama', onclick: () => kirim(f, status) }, 'Kirim pengajuan')),
+  );
+  if (!daftarTad) {
+    status.replaceChildren(pesan('Memuat daftar TAD…'));
+    daftarTad = await ukur('muat_daftar_tad', 'dataForm');
+    status.replaceChildren();
+  }
+  function tampilSaran(q) {
+    const t0 = performance.now();
+    const kata = q.trim().toLowerCase();
+    const hasil = kata.length < 3 ? [] : daftarTad.filter((t) => t[2].toLowerCase().includes(kata)).slice(0, 8);
+    saran.replaceChildren(...hasil.map((t) => el('div', { onclick: () => { f.tad.push([t[0], t[2], t[1], t[3]]); terpilih.append(pesan('TAD ditambahkan: ' + t[2])); saran.replaceChildren(); cariTad.value = ''; } }, el('b', {}, t[2]), el('br'), el('small', {}, t[1].slice(0, 4) + '•••• · ' + t[3] + ' · ' + t[4]))));
+    if (kata.length >= 3) catat('saran_tad', performance.now() - t0, 0, true);
+  }
+}
+async function kirim(f, status) {
+  const t0 = performance.now();
+  status.replaceChildren(pesan('Pengajuan terkirim. Nomor menyusul…')); // tampilan optimistis
+  catat('kirim_dirasakan', performance.now() - t0, 0, true);
+  try {
+    const d = await ukur('kirim_server', 'kirim', { nik: NIK_UJI, form: f });
+    status.replaceChildren(pesan('Pengajuan ' + d.nomor + ' terkirim.'));
+    cacheBrowser.clear();
+  } catch (e) {
+    status.replaceChildren(pesan('Pengajuan gagal dikirim. Isian Anda masih tersimpan.', true));
+  }
+}
+/** Foto diperkecil di perangkat sebelum diunggah; PDF dikirim apa adanya. */
+async function unggah(file, status) {
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024 && file.type === 'application/pdf') return status.replaceChildren(pesan('Ukuran file melebihi 5 MB. Perkecil file lalu unggah kembali.', true));
+  const t0 = performance.now();
+  status.replaceChildren(pesan('Mengunggah ' + file.name + '…'));
+  let blob = file;
+  if (file.type.startsWith('image/')) {
+    const gambar = await createImageBitmap(file);
+    const skala = Math.min(1, 1600 / Math.max(gambar.width, gambar.height));
+    const kanvas = el('canvas', { width: Math.round(gambar.width * skala), height: Math.round(gambar.height * skala) });
+    kanvas.getContext('2d').drawImage(gambar, 0, 0, kanvas.width, kanvas.height);
+    blob = await new Promise((ok) => kanvas.toBlob(ok, 'image/jpeg', 0.8));
+  }
+  const base64 = await new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.readAsDataURL(blob); });
+  try {
+    const h = await panggil('unggah', { isi: base64 });
+    catat('unggah', performance.now() - t0, h.serverMs, true, (file.size / 1048576).toFixed(1) + ' MB');
+    status.replaceChildren(pesan('Terunggah (' + (h.data.ukuran / 1048576).toFixed(2) + ' MB) dalam ' + ((performance.now() - t0) / 1000).toFixed(1) + ' detik.'));
+  } catch (e) {
+    catat('unggah', performance.now() - t0, 0, false);
+    status.replaceChildren(pesan(e.message || 'Unggah gagal.', true));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Layar 3 — Tugasku (Admin)
+// ---------------------------------------------------------------------------
+async function layarTugasku() {
+  const saring = { tab: 'Karyawan', status: '', jenis: '', cari: '', ke: 0 };
+  const hitung = el('div', { class: 'baris' });
+  const daftar = el('div');
+  const tombol = el('button', { class: 'kedua', onclick: () => muat(saring.ke + 1, false) }, 'Muat lebih banyak');
+  const pilihan = (nama, opsi) => el('select', { onchange: (e) => { saring[nama] = e.target.value; muat(0, true); } }, opsi.map(([v, l]) => el('option', { value: v }, l)));
+  tampil(
+    el('h2', {}, 'Tugasku'), hitung,
+    el('div', { class: 'baris' },
+      pilihan('status', [['', 'Dikirim + Diproses'], ['Dikirim', 'Dikirim'], ['Diproses', 'Diproses'], ['Selesai', 'Selesai']]),
+      pilihan('jenis', [['', 'Semua layanan'], ['Klaim Biaya Perdin', 'Klaim Biaya Perdin'], ['Klaim Perdin Diklat', 'Klaim Perdin Diklat'], ['Permohonan SPPD', 'Permohonan SPPD'], ['Pemesanan Tiket Pesawat', 'Pemesanan Tiket Pesawat']]),
+      el('input', { placeholder: 'Cari nomor, nama, No. Surat Tugas', onchange: (e) => { saring.cari = e.target.value; muat(0, true); } }),
+      el('button', { class: 'kedua', onclick: () => ekspor(saring) }, 'Ekspor CSV')),
+    daftar, tombol);
+  async function muat(halaman, baru) {
+    saring.ke = halaman;
+    const d = await ukur('tugasku_filter', 'tugasku', saring);
+    hitung.replaceChildren(...['Karyawan', 'TAD'].map((t) => el('button', { class: t === saring.tab ? 'utama' : 'kedua', onclick: () => { saring.tab = t; muat(0, true); } }, t + ' (' + d.hitung[t] + ')')));
+    if (baru) daftar.replaceChildren();
+    d.isi.forEach((p) => daftar.append(kartuPengajuan(Object.assign({}, p, { jenis: p.jenis + ' · ' + p.nama }), () => layarDetailAdmin(p.nomor))));
+    tombol.classList.toggle('sembunyi', !d.ada);
+  }
+  await muat(0, true);
+}
+async function layarDetailAdmin(nomor) {
+  tampil(pesan('Memuat detail dan perhitungan…'));
+  const d = await ukur('detail_hitung', 'detailAdmin', { nomor });
+  const status = el('span', {}, lencana(d.pengajuan.status));
+  const ubah = (s) => async () => {
+    const t0 = performance.now();
+    status.replaceChildren(lencana(s)); // tampilan optimistis
+    catat('ubah_status_dirasakan', performance.now() - t0, 0, true);
+    try { await ukur('ubah_status_server', 'ubahStatus', { nomor, status: s }); cacheBrowser.clear(); }
+    catch (e) { status.replaceChildren(lencana(d.pengajuan.status), pesan('Status gagal diubah.', true)); }
+  };
+  tampil(
+    el('button', { class: 'kedua', onclick: layarTugasku }, 'Kembali'),
+    el('h2', {}, d.pengajuan.jenis + ' ' + d.pengajuan.nomor), status,
+    el('h3', {}, 'Perhitungan SPPD'),
+    el('div', { class: 'kartu' }, el('b', {}, d.pengajuan.nama), ' · ', rupiah(d.hitung.karyawan)),
+    d.hitung.tad.map((t) => el('div', { class: 'kartu' }, 'TAD ', el('b', {}, t.nama), ' · ', rupiah(t.nominal))),
+    el('div', { class: 'baris' }, el('button', { class: 'utama', onclick: ubah('Diproses') }, 'Proses'), el('button', { class: 'kedua', onclick: ubah('Selesai') }, 'Selesai')),
+    el('h3', {}, 'Riwayat status'),
+    d.riwayat.map((r) => el('div', { class: 'kartu' }, el('b', {}, r.status), el('br'), el('small', {}, r.pada.slice(0, 16).replace('T', ' ') + ' · ' + r.oleh))),
+  );
+}
+async function ekspor(saring) {
+  const baris = await ukur('ekspor', 'ekspor', saring);
+  const netral = (v) => { const s = String(v); return /^[=+\-@]/.test(s) ? "'" + s : s; }; // INPUT-04
+  const csv = [['Nomor', 'Jenis', 'Nama', 'No. Surat Tugas', 'Status', 'Dibuat']].concat(baris).map((r) => r.map((v) => '"' + netral(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const a = el('a', { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: 'tugasku.csv' });
+  a.click();
+}
+
+// ---------------------------------------------------------------------------
+// Layar 4 — Hasil uji + simulasi 20 pengguna bersamaan
+// ---------------------------------------------------------------------------
+async function layarHasil() {
+  tampil(pesan('Mengirim catatan dan menghitung hasil…'));
+  await kirimCatatan();
+  const data = (await panggil('hasil')).data.sort((a, b) => (a.aksi + a.perangkat < b.aksi + b.perangkat ? -1 : 1));
+  const simulasi = el('div');
+  tampil(
+    el('h2', {}, 'Hasil uji'),
+    el('table', {}, el('tr', {}, ['Aksi', 'Perangkat', 'Jumlah', 'Median', 'p75', 'Target', 'Gagal', 'Status'].map((h) => el('th', {}, h))),
+      data.map((r) => {
+        const target = TARGET[r.aksi];
+        const lulus = target ? r.p75 <= target && !r.gagal : null;
+        return el('tr', {}, el('td', {}, r.aksi), el('td', {}, r.perangkat), el('td', {}, r.n), el('td', {}, (r.median / 1000).toFixed(2) + ' dtk'), el('td', {}, (r.p75 / 1000).toFixed(2) + ' dtk'), el('td', {}, target ? '≤ ' + target / 1000 + ' dtk' : '-'), el('td', {}, r.gagal),
+          el('td', { class: lulus == null ? '' : lulus ? 'lulus' : 'gagal' }, lulus == null ? 'Info' : lulus ? 'Lulus' : 'Tidak lulus'));
+      })),
+    el('div', { class: 'baris' }, el('button', { class: 'utama', onclick: () => jalankanSimulasi(simulasi) }, 'Simulasi 20 pengguna bersamaan')),
+    simulasi,
+  );
+}
+async function jalankanSimulasi(wadah) {
+  wadah.replaceChildren(pesan('Menjalankan 20 permintaan bersamaan…'));
+  const t0 = performance.now();
+  const hasil = await Promise.allSettled(Array.from({ length: 20 }, () => { const s = performance.now(); return panggil('simulasi', { perangkat: PERANGKAT }).then(() => performance.now() - s); }));
+  const ok = hasil.filter((h) => h.status === 'fulfilled').map((h) => h.value).sort((a, b) => a - b);
+  const gagal = hasil.length - ok.length;
+  catat('simulasi_20', performance.now() - t0, 0, gagal === 0, gagal + ' gagal');
+  wadah.replaceChildren(pesan('20 permintaan: ' + ok.length + ' berhasil, ' + gagal + ' gagal. Terlama ' + ((ok[ok.length - 1] || 0) / 1000).toFixed(1) + ' dtk, total ' + ((performance.now() - t0) / 1000).toFixed(1) + ' dtk.', gagal > 0));
+}
+
+// ---------------------------------------------------------------------------
+// Buka aplikasi: satu panggilan memuat data layar pertama.
+// ---------------------------------------------------------------------------
+(async () => {
+  try {
+    const d = await ukur('', 'awal', { nik: NIK_UJI });
+    cacheBrowser.set('riwayat:0', d.riwayat);
+    catat('buka_aplikasi', performance.now(), 0, true); // sejak halaman HCS mulai dimuat
+    document.getElementById('info').textContent = 'Perangkat: ' + PERANGKAT + ' · dimuat dalam ' + (performance.now() / 1000).toFixed(1) + ' dtk';
+    aturTab();
+  } catch (e) {
+    tampil(pesan('Gagal memuat: ' + (e.message || e), true));
+  }
+})();
+</script>
+</body>
+</html>

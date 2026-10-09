@@ -2,11 +2,11 @@
 
 | | |
 |---|---|
-| **Versi** | 3.0 (Draf) |
+| **Versi** | 3.0 (Disetujui) |
 | **Tanggal** | 09-10-2026 |
 | **Acuan** | PRD v2.2, Design Brief v1.1, mockup Claude Design (`mockup/`), Standar Keamanan v1.3 |
 | **Platform** | Google Workspace Pegadaian: Apps Script, Sheets, Drive, MailApp |
-| **Status** | Menunggu persetujuan pemilik proyek |
+| **Status** | **Disetujui** pemilik proyek, 09-10-2026 |
 
 Build Plan v2.0 (jalur Cloudways + Supabase) tidak berlaku sejak keputusan IT Security pusat 09-10-2026; kodenya diarsipkan di cabang Git `arsip/jalur-server`.
 
@@ -63,7 +63,7 @@ Tidak ada biaya.
 
 | # | Tahap | Layar mockup | Status | Commit |
 |---|---|---|---|---|
-| 0 | Uji kecepatan (POC) | — | ⬜ | |
+| 0 | Uji kecepatan (POC) | — | 🟡 | |
 | 1 | Persiapan proyek Apps Script dan pemeriksaan otomatis | — | ⬜ | |
 | 2 | Struktur spreadsheet, enkripsi rekening, data dummy | — | ⬜ | |
 | 3 | Identitas, peran, kunci layar, kerangka navigasi | U2, U3, K6 | ⬜ | |
