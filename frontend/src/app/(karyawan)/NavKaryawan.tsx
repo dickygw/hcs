@@ -43,7 +43,7 @@ export default function NavKaryawan() {
     <nav className={styles.nav} aria-label="Menu utama">
       <span className={styles.merek}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/pegadaian-mark.png" alt="" width={28} height={28} />
+        <img src="/brand/pegadaian-mark.png" alt="" width={55} height={24} />
         HCS
       </span>
       {MENU.map((m) => {

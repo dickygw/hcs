@@ -42,7 +42,7 @@ export default function KerangkaAdmin({ children }: { children: React.ReactNode 
       <aside className={styles.samping}>
         <div className={styles.merek}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/pegadaian-mark.png" alt="" width={32} height={32} />
+          <img src="/brand/pegadaian-mark.png" alt="" width={64} height={28} />
           <div>
             <strong>HCS</strong>
             <span>Admin SDM</span>
