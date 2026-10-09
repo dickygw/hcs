@@ -296,11 +296,11 @@ async function layarHasil() {
   const simulasi = el('div');
   tampil(
     el('h2', {}, 'Hasil uji'),
-    el('table', {}, el('tr', {}, ['Aksi', 'Perangkat', 'Jumlah', 'Median', 'p75', 'Target', 'Gagal', 'Status'].map((h) => el('th', {}, h))),
+    el('table', {}, el('tr', {}, ['Aksi', 'Perangkat', 'Jumlah', 'Median', 'p75', 'Target', 'Server (median)', 'Cache terpakai', 'Gagal', 'Status'].map((h) => el('th', {}, h))),
       data.map((r) => {
         const target = TARGET[r.aksi];
         const lulus = target ? r.p75 <= target && !r.gagal : null;
-        return el('tr', {}, el('td', {}, r.aksi), el('td', {}, r.perangkat), el('td', {}, r.n), el('td', {}, (r.median / 1000).toFixed(2) + ' dtk'), el('td', {}, (r.p75 / 1000).toFixed(2) + ' dtk'), el('td', {}, target ? '≤ ' + target / 1000 + ' dtk' : '-'), el('td', {}, r.gagal),
+        return el('tr', {}, el('td', {}, r.aksi), el('td', {}, r.perangkat), el('td', {}, r.n), el('td', {}, (r.median / 1000).toFixed(2) + ' dtk'), el('td', {}, (r.p75 / 1000).toFixed(2) + ' dtk'), el('td', {}, target ? '≤ ' + target / 1000 + ' dtk' : '-'), el('td', {}, r.serverMedian == null ? '-' : (r.serverMedian / 1000).toFixed(2) + ' dtk'), el('td', {}, r.cachePersen == null ? '-' : r.cachePersen + '%'), el('td', {}, r.gagal),
           el('td', { class: lulus == null ? '' : lulus ? 'lulus' : 'gagal' }, lulus == null ? 'Info' : lulus ? 'Lulus' : 'Tidak lulus'));
       })),
     el('div', { class: 'baris' }, el('button', { class: 'utama', onclick: () => jalankanSimulasi(simulasi) }, 'Simulasi 20 pengguna bersamaan')),
@@ -322,9 +322,10 @@ async function jalankanSimulasi(wadah) {
 // ---------------------------------------------------------------------------
 (async () => {
   try {
-    const d = await ukur('', 'awal', { nik: NIK_UJI });
+    const h = await panggil('awal', { nik: NIK_UJI });
+    const d = h.data;
     cacheBrowser.set('riwayat:0', d.riwayat);
-    catat('buka_aplikasi', performance.now(), 0, true); // sejak halaman HCS mulai dimuat
+    catat('buka_aplikasi', performance.now(), h.serverMs, true, h.cache); // sejak halaman HCS mulai dimuat
     document.getElementById('info').textContent = 'Perangkat: ' + PERANGKAT + ' · dimuat dalam ' + (performance.now() / 1000).toFixed(1) + ' dtk';
     aturTab();
   } catch (e) {

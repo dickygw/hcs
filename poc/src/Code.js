@@ -306,8 +306,14 @@ function aksiHasil_() {
   const kelompok = {};
   baris.forEach((r) => {
     const k = r[1] + '|' + r[4];
-    (kelompok[k] = kelompok[k] || { aksi: r[1], perangkat: r[4], ms: [], gagal: 0 }).ms.push(Number(r[2]));
-    if (r[6] !== 'Ya') kelompok[k].gagal++;
+    const g = (kelompok[k] = kelompok[k] || { aksi: r[1], perangkat: r[4], ms: [], server: [], hit: 0, adaCache: 0, gagal: 0 });
+    g.ms.push(Number(r[2]));
+    if (Number(r[3])) g.server.push(Number(r[3]));
+    if (r[7] && /hit|miss/.test(r[7])) {
+      g.adaCache++;
+      if (!/miss/.test(r[7])) g.hit++;
+    }
+    if (r[6] !== 'Ya') g.gagal++;
   });
   const persentil = (a, p) => {
     const s = a.slice().sort((x, y) => x - y);
@@ -316,7 +322,11 @@ function aksiHasil_() {
   return {
     data: Object.keys(kelompok).map((k) => {
       const g = kelompok[k];
-      return { aksi: g.aksi, perangkat: g.perangkat, n: g.ms.length, median: persentil(g.ms, 50), p75: persentil(g.ms, 75), gagal: g.gagal };
+      return {
+        aksi: g.aksi, perangkat: g.perangkat, n: g.ms.length, median: persentil(g.ms, 50), p75: persentil(g.ms, 75), gagal: g.gagal,
+        serverMedian: g.server.length ? persentil(g.server, 50) : null,
+        cachePersen: g.adaCache ? Math.round((100 * g.hit) / g.adaCache) : null,
+      };
     }),
   };
 }
