@@ -296,9 +296,18 @@ function aksiCatatKinerja_(arg, email) {
 
 /** Satu permintaan simulasi: baca Pengajuan + tulis satu baris log (di dalam kunci). */
 function aksiSimulasi_(arg, email) {
-  baca_('Pengajuan');
-  denganKunci_(() => tambah_('LogKinerja', [[new Date().toISOString(), 'simulasi-tulis', 0, 0, arg.perangkat || '', email, 'Ya', '']]));
-  return { data: true };
+  const t0 = Date.now();
+  const b = baca_('Pengajuan');
+  const t1 = Date.now();
+  const kunci = LockService.getScriptLock();
+  kunci.waitLock(30000);
+  const t2 = Date.now();
+  try {
+    tambah_('LogKinerja', [[new Date().toISOString(), 'simulasi-tulis', 0, 0, arg.perangkat || '', email, 'Ya', '']]);
+  } finally {
+    kunci.releaseLock();
+  }
+  return { data: { bacaMs: t1 - t0, tungguMs: t2 - t1, tulisMs: Date.now() - t2, cache: b.cache } };
 }
 
 function aksiHasil_() {

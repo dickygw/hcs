@@ -310,11 +310,22 @@ async function layarHasil() {
 async function jalankanSimulasi(wadah) {
   wadah.replaceChildren(pesan('Menjalankan 20 permintaan bersamaan…'));
   const t0 = performance.now();
-  const hasil = await Promise.allSettled(Array.from({ length: 20 }, () => { const s = performance.now(); return panggil('simulasi', { perangkat: PERANGKAT }).then(() => performance.now() - s); }));
-  const ok = hasil.filter((h) => h.status === 'fulfilled').map((h) => h.value).sort((a, b) => a - b);
+  const hasil = await Promise.allSettled(Array.from({ length: 20 }, () => {
+    const s = performance.now();
+    return panggil('simulasi', { perangkat: PERANGKAT }).then((h) => Object.assign({ totalMs: performance.now() - s }, h.data));
+  }));
+  const ok = hasil.filter((h) => h.status === 'fulfilled').map((h) => h.value);
+  const galat = {};
+  hasil.filter((h) => h.status === 'rejected').forEach((h) => { const m = String((h.reason && h.reason.message) || h.reason); galat[m] = (galat[m] || 0) + 1; });
   const gagal = hasil.length - ok.length;
+  const maks = (k) => (ok.length ? Math.max(...ok.map((o) => o[k])) / 1000 : 0).toFixed(1);
+  const rata = (k) => (ok.length ? ok.reduce((t, o) => t + o[k], 0) / ok.length / 1000 : 0).toFixed(2);
   catat('simulasi_20', performance.now() - t0, 0, gagal === 0, gagal + ' gagal');
-  wadah.replaceChildren(pesan('20 permintaan: ' + ok.length + ' berhasil, ' + gagal + ' gagal. Terlama ' + ((ok[ok.length - 1] || 0) / 1000).toFixed(1) + ' dtk, total ' + ((performance.now() - t0) / 1000).toFixed(1) + ' dtk.', gagal > 0));
+  wadah.replaceChildren(
+    pesan('20 permintaan: ' + ok.length + ' berhasil, ' + gagal + ' gagal. Total ' + ((performance.now() - t0) / 1000).toFixed(1) + ' dtk.', gagal > 0),
+    ok.length ? pesan('Berhasil — terlama ' + maks('totalMs') + ' dtk. Rata-rata: baca ' + rata('bacaMs') + ' dtk, tunggu antrean tulis ' + rata('tungguMs') + ' dtk (terlama ' + maks('tungguMs') + '), tulis ' + rata('tulisMs') + ' dtk. Cache: ' + ok.filter((o) => o.cache === 'hit').length + '/' + ok.length + ' hit.') : null,
+    Object.keys(galat).map((m) => pesan(galat[m] + '× ' + m, true)),
+  );
 }
 
 // ---------------------------------------------------------------------------
