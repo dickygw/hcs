@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–2 ✅; **Tahap 3** (identitas, peran, kunci layar, kerangka navigasi) kode selesai, menunggu uji user
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–2 ✅; **Tahap 3** (identitas, peran, kunci layar, kerangka navigasi) hampir selesai: tinggal uji kunci layar 15 menit dan Keluar
 **Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -60,10 +60,18 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Tahap 3 (uji user di HCS-dev):
-1. Script Property TAMBAH_ADMIN = dicky.widyatama@pegadaian.co.id, jalankan `tambahAdmin` (akun unit).
-2. Buka HCS-dev sebagai dicky → kerangka Admin; sebagai manohc (belum terdaftar) → U2; diam 15 menit → U3; Keluar → layar sudah keluar.
-3. Tampilan karyawan dengan akun asli baru bisa dicoba setelah sinkronisasi HCMS (Tahap 4); sementara dibuktikan lewat simulasi.
+Lanjutan Tahap 3 (sesi berikutnya):
+1. ✅ Admin pertama terdaftar (`tambahAdmin`): dicky.widyatama@pegadaian.co.id → kerangka Admin tampil di HCS-dev.
+2. ✅ Akun tidak terdaftar (manohc.balikpapan, Incognito) → layar U2.
+3. User uji: diam 15 menit sebagai dicky → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
+4. Bila lolos: centang Tahap 3 di BUILD_PLAN.md, user push (`git -C D:/HCS push origin main`), cek Actions hijau.
+5. Lalu Tahap 4: data master (sinkronisasi HCMS dan unggah TAD). Tampilan karyawan dengan akun asli diuji setelah sinkronisasi HCMS.
+
+Info lingkungan HCS-dev:
+- Editor: https://script.google.com/d/1DvFXJzHuJPjCRTSOaRK6hEsBHcuXG-uog_rzqpu4XTAgrMRB1TQeyLIJ/edit (akun unit manohc.balikpapan)
+- Web app: https://script.google.com/a/macros/pegadaian.co.id/s/AKfycbyElbpFuUj1RF9ewfuVG6VoB8a03vGddcsjfTL74jsIpxn6bU8jh8D_kfWaTv9fkgkj/exec
+- Kirim kode: `npm run kirim:dev`, lalu perbarui deployment: `cd apps-script && npx --yes @google/clasp@3.4.1 update-deployment AKfycbyElbpFuUj1RF9ewfuVG6VoB8a03vGddcsjfTL74jsIpxn6bU8jh8D_kfWaTv9fkgkj`
+- Proyek HCS-POC (uji kecepatan) boleh dihapus user; kodenya ada di riwayat Git.
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -84,3 +92,4 @@ Tahap 3 (uji user di HCS-dev):
 | 09-10-2026 | 3 | Tahap 1 selesai: halaman HCS-dev tampil dengan Ronnia dan "Server terhubung" (diuji user). Temuan: HtmlService merusak pola `<huruf` di dalam skrip → JS tampilan dikirim base64 dan diperiksa saat build |
 | 09-10-2026 | 3 | Tahap 2 selesai: skema 15 tabel (3 spreadsheet), modul data (baca sekaligus, cache tabel kecil, netralisasi rumus), enkripsi AES-256-GCM (@noble/ciphers, berjalan tanpa fitur browser), migrasi bernomor, fungsi pemilik (migrasi, kunci, dummy, cekBerbagi, trigger). User menjalankan kelima fungsi di HCS-dev tanpa error. 48 tes lolos, cek:keamanan lolos, audit 0 celah |
 | 09-10-2026 | 3 | Tahap 3 (kode): sesi HCS di CacheService (15 menit diam, maks 12 jam, keluar menghapus sesi), pembatas 120 panggilan/menit per email, peran dari tabel pengguna + data master karyawan, rute mulai/keluar, layar U2, U3, sudah keluar, kerangka karyawan (K1 kosong, K5 kosong, K6) dan Admin, fungsi tambahAdmin. Gambar halftone diperkecil 584 → 18 KB. 60 tes lolos |
+| 09-10-2026 | 3 | Uji Tahap 3: U2 tampil untuk manohc (tidak terdaftar); setelah tambahAdmin, dicky masuk ke kerangka Admin. Sisa uji: kunci layar 15 menit dan Keluar. Sesi dihentikan atas arahan user |
