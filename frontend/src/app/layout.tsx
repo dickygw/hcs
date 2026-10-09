@@ -16,7 +16,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      {/* Ekstensi browser sering menambah atribut ke <body>; abaikan perbedaan atribut di tag ini saja. */}
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
