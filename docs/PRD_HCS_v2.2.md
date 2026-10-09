@@ -17,7 +17,7 @@
 | 1.1–1.3 (Server), 1.0–1.2 (Workspace) | 29-09-2026 | Dua jalur arsitektur; aturan data master, TAD, dan transparansi |
 | 2.0 | 06-10-2026 | Konsolidasi menjadi satu PRD; hosting Cloudways Velocity + Supabase; Pulse Check Fase 2 |
 | 2.1 | 07-10-2026 | Jawaban pertanyaan terbuka (akun admin sistem, ringkasan 08.00 WITA, Ronnia, transport bandara TAD 70%, TAD EPS dan INHOUSE) |
-| **2.2** | 09-10-2026 | **Arsitektur diganti ke Google Workspace Pegadaian** (Apps Script, Sheets, Drive) mengikuti keputusan IT Security pusat: aplikasi dan data tidak boleh keluar dari lingkungan Workspace Pegadaian. **Aturan bisnis (bagian 1–6) dan notifikasi (bagian 8) tidak berubah.** Login ditangani Google (layar U1 tidak dipakai). Biaya operasional Rp0. |
+| **2.2** | 09-10-2026 | Teknik kecepatan Apps Script dirinci di 9.1 (satu kali baca, halaman per 20 baris, satu panggilan per layar, cache server dan browser). **Arsitektur diganti ke Google Workspace Pegadaian** (Apps Script, Sheets, Drive) mengikuti keputusan IT Security pusat: aplikasi dan data tidak boleh keluar dari lingkungan Workspace Pegadaian. **Aturan bisnis (bagian 1–6) dan notifikasi (bagian 8) tidak berubah.** Login ditangani Google (layar U1 tidak dipakai). Biaya operasional Rp0. |
 
 PRD ini **menggantikan** PRD v2.1. Arsitektur di bawah mengambil bahan dari arsip PRD Workspace v1.2, disesuaikan dengan Standar Keamanan.
 
@@ -266,7 +266,18 @@ Target disesuaikan dengan karakter Apps Script (setiap panggilan ke server ±0,3
 | Buka detail + hitung SPPD (Admin) | ≤ 1 detik |
 | 20 pengguna bersamaan | Tanpa error |
 
-**Teknik wajib:** aplikasi satu halaman; baca/tulis Sheets per blok; cache untuk data master, tarif, dan daftar TAD; saran nama TAD dicari di perangkat (daftar tanpa rekening); tampilan optimistis saat kirim dan ubah status; LockService saat menulis; tanpa rumus spreadsheet; email lewat antrean; pengarsipan pengajuan lama; waktu aksi dicatat di `log_kinerja`.
+**Teknik wajib agar Apps Script tidak lambat:**
+
+| # | Teknik | Penerapan di HCS |
+|---|---|---|
+| 1 | **Satu kali baca, olah di memori** | Satu sheet dibaca sekaligus dengan `getDataRange().getValues()` (satu akses ke Google Sheets), lalu dicari, disaring, dan dihitung dengan loop di memori. Dilarang membaca atau menulis per sel (`getValue`/`setValue` di dalam loop). Penulisan juga sekaligus dengan `setValues()`. |
+| 2 | **Hanya kirim data yang diperlukan** | Daftar (Pengajuan saya, Tugasku, Semua pengajuan, log) dikirim **per halaman** (mis. 20 baris, tombol "Muat lebih banyak") dan hanya kolom yang dibutuhkan layar. Sheet log yang terus bertambah dibaca dari baris terakhir saja, bukan seluruhnya. Pengajuan Selesai/Ditolak > 90 hari dipindah ke arsip agar sheet aktif tetap kecil. |
+| 3 | **Sedikit panggilan ke server** | Satu layar dimuat dengan **satu panggilan** yang mengembalikan semua data layar itu (mis. detail + riwayat status + daftar dokumen sekaligus), bukan beberapa panggilan berurutan. |
+| 4 | **Cache di server** | Data master, tarif, dan daftar TAD (tanpa rekening) disimpan di CacheService; dibaca ulang dari sheet hanya bila cache kosong atau data master berubah. |
+| 5 | **Cache di browser** | Data yang sudah diambil disimpan di memori halaman, sehingga kembali ke layar sebelumnya tidak memanggil server lagi; diperbarui di latar belakang setelah aksi yang mengubah data. Daftar TAD untuk saran nama dikirim sekali, lalu dicari di perangkat. Aturan keamanannya di Standar Keamanan WEB-06. |
+| 6 | **Tampilan optimistis** | Saat kirim pengajuan dan ubah status, layar langsung menampilkan hasil; penyimpanan berjalan di latar belakang dan dibatalkan dengan pesan bila gagal. |
+| 7 | **Kerja berat di latar belakang** | Email lewat antrean dan trigger; tanpa rumus spreadsheet (semua perhitungan di kode); LockService hanya sesingkat proses tulis. |
+| 8 | **Diukur** | Waktu setiap aksi utama dicatat di `log_kinerja`. |
 
 ### 9.2 Batas platform
 

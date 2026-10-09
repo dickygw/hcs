@@ -84,6 +84,7 @@ Istilah: **fungsi server** = fungsi Apps Script yang dapat dipanggil dari tampil
 | WEB-03 | Data hanya dipertukarkan lewat `google.script.run` (terikat ke akun Google pengguna). **Tidak ada `doPost`** dan `doGet` tidak mengembalikan data berdasarkan parameter alamat. |
 | WEB-04 | Tidak ada API publik: dilarang `ContentService` yang mengembalikan data, dan dilarang men-deploy proyek sebagai *API executable*. |
 | WEB-05 | Pesan error ke pengguna bersifat umum; detail teknis hanya di log Apps Script. |
+| WEB-06 | **Cache di browser** hanya di memori halaman (variabel JavaScript). Dilarang menyimpan data pengajuan, data pribadi, atau data Admin di `localStorage`, `sessionStorage`, IndexedDB, atau cookie. Cache dihapus saat Keluar dan saat layar terkunci (AUTH-05). Cache hanya berisi data yang sudah lolos penyaringan server untuk pengguna itu, sehingga tidak pernah memuat rekening untuk Karyawan. Draf form boleh disimpan di server (sheet), bukan di browser. |
 
 ## 7. Data Sensitif dan Rahasia
 
