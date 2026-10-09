@@ -69,7 +69,7 @@ Yang **berbayar** (Cloudways, Supabase Pro untuk `hcs-prod`, dan domain) baru di
 |---|---|---|---|---|
 | 1 | Persiapan proyek dan Git | — | ✅ | `c6aa401` |
 | 2 | Database aman dan bucket privat | — | ✅ | `d91bcf9` |
-| 3 | Login Google, sesi, dan peran | U1, U2, U3 | ⬜ | |
+| 3 | Login Google, sesi, dan peran | U1, U2, U3 | 🟡 | |
 | 4 | Data master: sinkronisasi HCMS dan unggah TAD | A5, A6 | ⬜ | |
 | 5 | Klaim Biaya Perdin, termasuk bagian TAD | K1, K2, K3, K4 | ⬜ | |
 | 6 | Klaim Biaya Perdin Diklat | K3 (varian Diklat) | ⬜ | |

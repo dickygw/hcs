@@ -1,0 +1,51 @@
+.latar {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(6, 78, 67, 0.62);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.lembar {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .latar {
+    align-items: center;
+  }
+  .lembar {
+    border-radius: 20px;
+  }
+  .pegangan {
+    display: none;
+  }
+}
+
+.pegangan {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--neutral-300);
+  align-self: center;
+}
+
+.judul {
+  font: 700 20px/1.25 var(--font-core);
+  color: var(--pgd-forest);
+}
+
+.teks {
+  font: 400 15px/1.5 var(--font-core);
+  color: var(--neutral-700);
+  padding-bottom: 8px;
+}

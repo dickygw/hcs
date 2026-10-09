@@ -1,17 +1,20 @@
-import styles from "./page.module.css";
-import StatusServer from "./StatusServer";
+"use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { api, BERANDA, type Peran } from "@/lib/api";
+
+/** Pintu masuk: arahkan ke beranda sesuai peran, atau ke U1 bila belum masuk. */
 export default function Beranda() {
-  return (
-    <main className={styles.halaman}>
-      <div className={styles.kartu}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/pegadaian-mark.png" alt="Logo Pegadaian" className={styles.logo} />
-        <span className={styles.wilayah}>Kanwil IV Balikpapan</span>
-        <h1 className={styles.judul}>Human Capital System</h1>
-        <p className={styles.keterangan}>Kerangka aplikasi siap. Fitur dibangun bertahap sesuai Build Plan.</p>
-        <StatusServer />
-      </div>
-    </main>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    api("/api/auth/sesi")
+      .then(async (res) => {
+        if (!res.ok) return router.replace("/masuk");
+        const { pengguna }: { pengguna: { peran: Peran } } = await res.json();
+        router.replace(BERANDA[pengguna.peran]);
+      })
+      .catch(() => router.replace("/masuk"));
+  }, [router]);
+  return null;
 }

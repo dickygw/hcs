@@ -1,8 +1,11 @@
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 import { createApp } from "../src/app.js";
+import type { Google } from "../src/auth/google.js";
+import type { Db } from "../src/auth/sesi.js";
 
-const app = createApp();
+// Tes kerangka tidak menyentuh database atau Google.
+const app = createApp({ db: {} as Db, google: {} as Google });
 
 describe("Kerangka server HCS", () => {
   it("pemeriksaan kesehatan menjawab ok", async () => {
@@ -11,10 +14,10 @@ describe("Kerangka server HCS", () => {
     expect(res.body).toEqual({ status: "ok" });
   });
 
-  it("alamat tidak dikenal ditolak dengan pesan umum", async () => {
+  it("alamat lain tertutup sebelum login", async () => {
     const res = await request(app).get("/api/rahasia");
-    expect(res.status).toBe(404);
-    expect(res.body).toEqual({ pesan: "Halaman tidak ditemukan." });
+    expect(res.status).toBe(401);
+    expect(res.body.kode).toBe("belum_masuk");
   });
 
   it("header keamanan aktif dan identitas server disembunyikan", async () => {

@@ -1,0 +1,247 @@
+.kerangka {
+  min-height: 100dvh;
+  background: var(--neutral-50);
+  display: flex;
+  flex-direction: column;
+}
+
+.utama {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 68px; /* ruang navigasi bawah */
+}
+
+/* HP: navigasi bawah 3 menu. */
+.nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  height: 68px;
+  background: #fff;
+  border-top: 1px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.merek {
+  display: none;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--neutral-500);
+  font: 400 12px var(--font-core);
+  text-decoration: none;
+}
+.menu:hover {
+  color: var(--pgd-forest);
+}
+.aktif {
+  color: var(--pgd-forest);
+  font-weight: 600;
+  box-shadow: inset 0 3px 0 var(--pgd-green);
+}
+
+/* Laptop: menu atas. */
+@media (min-width: 768px) {
+  .utama {
+    padding-bottom: 0;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .nav {
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    height: 64px;
+    border-top: 0;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    gap: 8px;
+    padding: 0 max(24px, calc((100% - 960px) / 2));
+  }
+  .merek {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto;
+    font: 700 16px var(--font-core);
+    color: var(--pgd-forest);
+  }
+  .menu {
+    flex-direction: row;
+    gap: 8px;
+    padding: 0 16px;
+    font-size: 15px;
+  }
+  .aktif {
+    box-shadow: inset 0 -3px 0 var(--pgd-green);
+  }
+}
+
+/* Kepala halaman putih seperti mockup. */
+.kepala {
+  background: #fff;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+@media (min-width: 768px) {
+  .kepala {
+    background: transparent;
+    border-bottom: 0;
+    padding: 28px 20px 8px;
+  }
+}
+
+.sapaan {
+  font: 400 13px var(--font-core);
+  color: var(--neutral-600);
+}
+
+.kosong {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.ilustrasi {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: url(/brand/halftone-dots-green.png) center / cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ilustrasi > span {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pgd-green);
+}
+
+.judulKosong {
+  font: 700 20px/1.25 var(--font-core);
+  color: var(--pgd-forest);
+}
+
+.teksKosong {
+  font: 400 15px/1.5 var(--font-core);
+  color: var(--neutral-600);
+  max-width: 280px;
+}
+
+/* K6 Profil */
+.isi {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .isi {
+    max-width: 480px;
+  }
+}
+
+.kartu {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.garisMerek {
+  height: 4px;
+  background: var(--gradient-brand);
+}
+
+.identitas {
+  padding: 20px 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.avatar {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gradient-forest);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 20px var(--font-core);
+}
+
+.nama {
+  font: 700 18px var(--font-core);
+  color: var(--pgd-forest);
+}
+
+.email {
+  font: 400 14px var(--font-core);
+  color: var(--neutral-600);
+  overflow-wrap: anywhere;
+}
+
+.rincian {
+  border-top: 1px solid var(--border-subtle);
+  padding: 4px 16px;
+}
+.rincian div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  font: 400 15px var(--font-core);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.rincian div:last-child {
+  border-bottom: 0;
+}
+.rincian dt {
+  color: var(--neutral-600);
+}
+.rincian dd {
+  color: var(--neutral-900);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.catatan {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--neutral-100);
+  font: 400 14px/1.45 var(--font-core);
+  color: var(--neutral-700);
+}
+
+.bawah {
+  margin-top: auto;
+  padding-top: 12px;
+}

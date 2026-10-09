@@ -88,3 +88,6 @@ jobs:
 
       - name: Periksa kunci database
         run: npm run cek:rls
+
+      - name: Tes login, sesi, dan hak akses (memakai database)
+        run: npm test -w backend

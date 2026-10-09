@@ -211,3 +211,14 @@ export const riwayatSinkronisasi = hcs.table("riwayat_sinkronisasi", {
   jumlahNonaktif: integer("jumlah_nonaktif").notNull().default(0),
   pada: waktu("pada").notNull().defaultNow(),
 });
+
+export const sesi = hcs.table("sesi", {
+  id: id(),
+  tokenHash: text("token_hash").notNull().unique(),
+  penggunaId: ref("pengguna_id").notNull().references(() => pengguna.id),
+  csrfToken: text("csrf_token").notNull(),
+  dibuatPada: waktu("dibuat_pada").notNull().defaultNow(),
+  aktivitasTerakhir: waktu("aktivitas_terakhir").notNull().defaultNow(),
+  kedaluwarsaPada: waktu("kedaluwarsa_pada").notNull(),
+  dicabutPada: waktu("dicabut_pada"),
+});
