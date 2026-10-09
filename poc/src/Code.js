@@ -2,18 +2,19 @@
  * HCS-POC — uji kecepatan Apps Script + Sheets (Build Plan v3.0 Tahap 0).
  * KODE BUANGAN: dihapus setelah uji lulus. Hanya data dummy.
  *
- * Teknik yang diuji (PRD v2.2 bagian 9.1):
- * 1. satu kali baca getDataRange().getValues(), olah di memori; tulis sekaligus setValues()
- * 2. daftar dikirim per halaman, hanya kolom yang dibutuhkan
- * 3. satu panggilan per layar
- * 4. cache di server (CacheService, dipecah per 90 KB)
- * 6. tampilan optimistis (di Index.html)
- * 7. LockService hanya saat menulis
+ * Rancangan v5 (mengikuti PRD v2.2 7.1 dan 9.1):
+ * - Sheet aktif kecil: pengajuan berjalan + selesai/ditolak ≤ 90 hari. Sisanya di arsip per tahun.
+ * - Satu kali baca getDataRange().getValues(), olah di memori.
+ * - Cache server untuk sheet aktif dan master (kecil, aman dari batas CacheService);
+ *   setelah menulis, cache diperbarui di tempat, tidak dibuang.
+ * - Kunci sesingkat mungkin: nomor dari penghitung, appendRow, perbarui cache kecil.
+ * - Daftar per halaman; satu panggilan per layar.
  */
 
 const UKURAN_HALAMAN = 20;
-const CACHE_DETIK = 600;
+const CACHE_DETIK = 21600; // 6 jam; sheet hanya diubah lewat kode ini, cache selalu diperbarui saat menulis
 const POTONGAN = 90000; // batas CacheService 100 KB per kunci
+const TAHUN_ARSIP = 3;
 
 // ---------------------------------------------------------------------------
 // Web app
@@ -55,22 +56,23 @@ const AKSI_ = {
 };
 
 // ---------------------------------------------------------------------------
-// Akses data: baca sekaligus + cache, tulis sekaligus
+// Akses data
 // ---------------------------------------------------------------------------
-function ss_(nama) {
-  const id = PropertiesService.getScriptProperties().getProperty('SS_' + nama);
-  if (!id) throw new Error('Jalankan siapkanPoc dulu.');
-  return SpreadsheetApp.openById(id);
-}
-
 const LETAK_ = {
   Karyawan: 'Master', TAD: 'Master', TarifSPPD: 'Master',
   Pengajuan: 'Data', PengajuanTAD: 'Data', RiwayatStatus: 'Data',
   LogKinerja: 'Log',
 };
 
+function ss_(nama) {
+  const id = PropertiesService.getScriptProperties().getProperty('SS_' + nama);
+  if (!id) throw new Error('Jalankan siapkanPoc dan isiDataDummy dulu.');
+  return SpreadsheetApp.openById(id);
+}
+
+/** Sheet aktif, atau sheet arsip bila nama berakhiran _TAHUN (mis. Pengajuan_2025). Arsip yang belum ada → null. */
 function sheet_(tabel) {
-  return ss_(LETAK_[tabel]).getSheetByName(tabel);
+  return /_\d{4}$/.test(tabel) ? ss_('Arsip').getSheetByName(tabel) : ss_(LETAK_[tabel]).getSheetByName(tabel);
 }
 
 /** Baris tabel (tanpa header). Dari cache bila ada; jika tidak, satu kali getDataRange().getValues(). */
@@ -81,16 +83,15 @@ function baca_(tabel) {
     const kunci = [];
     for (let i = 0; i < jumlah; i++) kunci.push('c_' + tabel + '_' + i);
     const isi = cache.getAll(kunci);
-    if (Object.keys(isi).length === jumlah) {
-      return { baris: JSON.parse(kunci.map((k) => isi[k]).join('')), cache: 'hit' };
-    }
+    if (Object.keys(isi).length === jumlah) return { baris: JSON.parse(kunci.map((k) => isi[k]).join('')), cache: 'hit' };
   }
-  const baris = sheet_(tabel).getDataRange().getValues().slice(1);
+  const sh = sheet_(tabel);
+  const baris = sh ? sh.getDataRange().getValues().slice(1) : [];
   simpanCache_(tabel, baris);
   return { baris: baris, cache: 'miss' };
 }
 
-/** Simpan seluruh tabel ke cache, dipecah per 90 KB. */
+/** Simpan seluruh tabel ke cache, dipecah per 90 KB. Hanya untuk tabel kecil (aktif, master, arsip per tahun). */
 function simpanCache_(tabel, baris) {
   const cache = CacheService.getScriptCache();
   const teks = JSON.stringify(baris);
@@ -101,12 +102,8 @@ function simpanCache_(tabel, baris) {
     cache.putAll(potongan, CACHE_DETIK);
     cache.put('n_' + tabel, String(n), CACHE_DETIK);
   } catch (e) {
-    cache.remove('n_' + tabel); // ponytail: tabel terlalu besar untuk cache → tetap jalan tanpa cache
+    cache.remove('n_' + tabel); // ponytail: terlalu besar untuk cache → tetap jalan tanpa cache
   }
-}
-
-function lupakan_(tabel) {
-  CacheService.getScriptCache().remove('n_' + tabel);
 }
 
 /** Teks diawali = + - @ dinetralkan agar tidak menjadi rumus (INPUT-02). */
@@ -114,36 +111,32 @@ function aman_(baris) {
   return baris.map((v) => (typeof v === 'string' && /^[=+\-@]/.test(v) ? "'" + v : v));
 }
 
-/**
- * Tambah baris. Satu baris → appendRow (satu panggilan, aman dipakai bersamaan).
- * Bila isiCache diberikan (hasil baca_ di dalam kunci yang sama), cache diperbarui di tempat,
- * bukan dibuang; tanpa isiCache, cache tabel dibuang.
- */
-function tambah_(tabel, baris, isiCache) {
-  const sh = sheet_(tabel);
-  const bersih = baris.map(aman_);
-  if (bersih.length === 1) sh.appendRow(bersih[0]);
-  else tulisMulai_(sh, sh.getLastRow() + 1, bersih);
-  if (isiCache) {
-    bersih.forEach((b) => isiCache.push(b));
-    simpanCache_(tabel, isiCache);
-  } else {
-    lupakan_(tabel);
-  }
+/** Tambah satu baris dengan appendRow (satu panggilan) dan perbarui cache di tempat. Panggil di dalam kunci. */
+function tambahBaris_(tabel, baris) {
+  const isi = baca_(tabel).baris;
+  const bersih = aman_(baris);
+  sheet_(tabel).appendRow(bersih);
+  isi.push(bersih);
+  simpanCache_(tabel, isi);
 }
 
-/** Untuk isi data dummy: tulis blok besar sekaligus; tambah baris sheet bila kurang. */
+/** Untuk data dummy dan log: tulis blok sekaligus; tambah baris sheet bila kurang. */
 function tulisMulai_(sh, baris, nilai) {
   const perlu = baris + nilai.length - 1 - sh.getMaxRows();
   if (perlu > 0) sh.insertRowsAfter(sh.getMaxRows(), perlu);
   sh.getRange(baris, 1, nilai.length, nilai[0].length).setValues(nilai);
 }
 
+/** Jalankan fn di dalam kunci; hasil diberi catatan waktu tunggu antrean dan waktu kerja di dalam kunci. */
 function denganKunci_(fn) {
   const kunci = LockService.getScriptLock();
+  const t0 = Date.now();
   kunci.waitLock(30000);
+  const t1 = Date.now();
   try {
-    return fn();
+    const hasil = fn();
+    hasil.waktu = { tungguMs: t1 - t0, dalamKunciMs: Date.now() - t1 };
+    return hasil;
   } finally {
     kunci.releaseLock();
   }
@@ -155,14 +148,11 @@ const P = {
   menginap: 8, jarak: 9, moda: 10, dinas: 11, golongan: 12, status: 13, dibuat: 14, diperbarui: 15, jumlahTad: 16, nominal: 17,
 };
 
-function ringkas_(r) {
-  return { nomor: r[P.nomor], jenis: r[P.jenis], noST: r[P.noST], nama: r[P.nama], tujuan: r[P.tujuan], berangkat: r[P.berangkat], status: r[P.status], diperbarui: r[P.diperbarui], jumlahTad: r[P.jumlahTad] };
+function ringkas_(r, tahunArsip) {
+  return { nomor: r[P.nomor], jenis: r[P.jenis], noST: r[P.noST], nama: r[P.nama], tujuan: r[P.tujuan], berangkat: r[P.berangkat], status: r[P.status], diperbarui: r[P.diperbarui], jumlahTad: r[P.jumlahTad], arsip: tahunArsip || '' };
 }
 
-function halaman_(daftar, ke) {
-  const awal = (ke || 0) * UKURAN_HALAMAN;
-  return { isi: daftar.slice(awal, awal + UKURAN_HALAMAN), total: daftar.length, ada: awal + UKURAN_HALAMAN < daftar.length };
-}
+const terbaru_ = (a, b) => (a[P.diperbarui] < b[P.diperbarui] ? 1 : -1);
 
 // ---------------------------------------------------------------------------
 // Aksi karyawan
@@ -172,22 +162,41 @@ function aksiAwal_(arg) {
   return { data: { riwayat: r.data }, cache: r.cache };
 }
 
+/**
+ * Pengajuan saya. Halaman diambil dari sheet aktif dulu; arsip per tahun (terbaru dulu)
+ * baru dibaca bila halaman yang diminta melewati jumlah pengajuan aktif.
+ */
 function aksiRiwayat_(arg) {
-  const t = baca_('Pengajuan');
-  const milik = t.baris.filter((r) => r[P.nik] === arg.nik).sort((a, b) => (a[P.diperbarui] < b[P.diperbarui] ? 1 : -1));
-  return { data: halaman_(milik.map(ringkas_), arg.ke), cache: t.cache };
+  const aktif = baca_('Pengajuan');
+  const daftar = aktif.baris.filter((r) => r[P.nik] === arg.nik).sort(terbaru_).map((r) => ringkas_(r));
+  const cache = [aktif.cache];
+  const perlu = ((arg.ke || 0) + 1) * UKURAN_HALAMAN;
+  const tahunIni = new Date().getFullYear();
+  let tahun = tahunIni;
+  while (daftar.length < perlu + 1 && tahun > tahunIni - TAHUN_ARSIP) {
+    const arsip = baca_('Pengajuan_' + tahun);
+    arsip.baris.filter((r) => r[P.nik] === arg.nik).sort(terbaru_).forEach((r) => daftar.push(ringkas_(r, tahun)));
+    cache.push(tahun + ':' + arsip.cache);
+    tahun--;
+  }
+  const awal = (arg.ke || 0) * UKURAN_HALAMAN;
+  return {
+    data: { isi: daftar.slice(awal, awal + UKURAN_HALAMAN), ada: daftar.length > awal + UKURAN_HALAMAN, bacaArsip: cache.length > 1 },
+    cache: cache.join('/'),
+  };
 }
 
 /** Satu panggilan: pengajuan + riwayat status + TAD. Kepemilikan disaring di server. */
 function aksiDetail_(arg) {
-  const p = baca_('Pengajuan');
-  const baris = p.baris.find((r) => r[P.nomor] === arg.nomor && r[P.nik] === arg.nik);
+  const akhiran = arg.arsip ? '_' + Number(arg.arsip) : '';
+  const p = baca_('Pengajuan' + akhiran);
+  const baris = p.baris.find((r) => r[P.nomor] === arg.nomor && (arg.nik === undefined || r[P.nik] === arg.nik));
   if (!baris) throw new Error('Pengajuan tidak ditemukan.');
-  const rs = baca_('RiwayatStatus');
-  const tad = baca_('PengajuanTAD');
+  const rs = baca_('RiwayatStatus' + akhiran);
+  const tad = baca_('PengajuanTAD' + akhiran);
   return {
     data: {
-      pengajuan: ringkas_(baris),
+      pengajuan: ringkas_(baris, arg.arsip),
       nominal: baris[P.status] === 'Selesai' ? baris[P.nominal] : null,
       riwayat: rs.baris.filter((r) => r[0] === arg.nomor).map((r) => ({ status: r[1], oleh: r[2], pada: r[3], catatan: r[4] })),
       tad: tad.baris.filter((r) => r[0] === arg.nomor).map((r) => ({ nama: r[2], nik: r[3], vendor: r[4] })),
@@ -203,21 +212,22 @@ function aksiDataForm_() {
 }
 
 function aksiKirim_(arg, email) {
-  return denganKunci_(() => kirimPengajuan_(arg.nik, arg.form || {}, email, 'Dikirim'));
+  return kirimPengajuan_(arg.nik, arg.form || {}, email, 'Dikirim');
 }
 
-/**
- * Inti kirim pengajuan (dipakai juga simulasi). Di dalam kunci: nomor dari data cache,
- * appendRow, lalu cache diperbarui di tempat (tidak dibuang).
- */
+/** Inti kirim pengajuan (dipakai juga simulasi). Di dalam kunci hanya: penghitung, appendRow, perbarui cache aktif. */
 function kirimPengajuan_(nik, f, email, status) {
-  const p = baca_('Pengajuan');
-  const nomor = 'KP-' + String(p.baris.length + 1).padStart(5, '0');
   const kini = new Date().toISOString();
-  tambah_('Pengajuan', [[nomor, 'Klaim Biaya Perdin', nik, f.nama || '', f.noST || '', f.tujuan || '', f.berangkat || '', f.kembali || '', f.menginap ? 'Ya' : 'Tidak', f.jarak || '', f.moda || '', f.dinas ? 'Ya' : 'Tidak', 'C', status, kini, kini, (f.tad || []).length, '']], p.baris);
-  tambah_('RiwayatStatus', [[nomor, status, email, kini, '']], baca_('RiwayatStatus').baris);
-  if ((f.tad || []).length) tambah_('PengajuanTAD', f.tad.map((t) => [nomor, t[0], t[1], t[2], t[3]]));
-  return { data: { nomor: nomor }, cache: p.cache };
+  return denganKunci_(() => {
+    const props = PropertiesService.getScriptProperties();
+    const no = Number(props.getProperty('NOMOR_TERAKHIR') || 0) + 1;
+    props.setProperty('NOMOR_TERAKHIR', String(no));
+    const nomor = 'KP-' + String(no).padStart(5, '0');
+    tambahBaris_('Pengajuan', [nomor, 'Klaim Biaya Perdin', nik, f.nama || '', f.noST || '', f.tujuan || '', f.berangkat || '', f.kembali || '', f.menginap ? 'Ya' : 'Tidak', f.jarak || '', f.moda || '', f.dinas ? 'Ya' : 'Tidak', 'C', status, kini, kini, (f.tad || []).length, '']);
+    tambahBaris_('RiwayatStatus', [nomor, status, email, kini, '']);
+    (f.tad || []).forEach((t) => tambahBaris_('PengajuanTAD', [nomor, t[0], t[1], t[2], t[3]]));
+    return { data: { nomor: nomor } };
+  });
 }
 
 /** Unggah: jenis file diperiksa dari isi (magic bytes), maks 5 MB, nama acak, folder privat. */
@@ -235,34 +245,42 @@ function aksiUnggah_(arg) {
 }
 
 // ---------------------------------------------------------------------------
-// Aksi Admin
+// Aksi Admin (sheet aktif)
 // ---------------------------------------------------------------------------
+const BERJALAN_ = (r) => r[P.status] === 'Dikirim' || r[P.status] === 'Diproses';
+
 function aksiTugasku_(arg) {
   const t = baca_('Pengajuan');
   const cari = String(arg.cari || '').toLowerCase();
   const cocok = t.baris.filter((r) =>
     (arg.tab === 'TAD' ? r[P.jumlahTad] > 0 : true) &&
-    (arg.status ? r[P.status] === arg.status : r[P.status] === 'Dikirim' || r[P.status] === 'Diproses') &&
+    (arg.status ? r[P.status] === arg.status : BERJALAN_(r)) &&
     (arg.jenis ? r[P.jenis] === arg.jenis : true) &&
     (!cari || String(r[P.nomor]).toLowerCase().includes(cari) || String(r[P.nama]).toLowerCase().includes(cari) || String(r[P.noST]).toLowerCase().includes(cari)));
   cocok.sort((a, b) => (a[P.dibuat] < b[P.dibuat] ? 1 : -1));
-  const hitungTad = t.baris.filter((r) => r[P.jumlahTad] > 0 && (r[P.status] === 'Dikirim' || r[P.status] === 'Diproses')).length;
-  const hitungSemua = t.baris.filter((r) => r[P.status] === 'Dikirim' || r[P.status] === 'Diproses').length;
-  return { data: { ...halaman_(cocok.map(ringkas_), arg.ke), hitung: { Karyawan: hitungSemua, TAD: hitungTad } }, cache: t.cache };
+  const awal = (arg.ke || 0) * UKURAN_HALAMAN;
+  return {
+    data: {
+      isi: cocok.slice(awal, awal + UKURAN_HALAMAN).map((r) => ringkas_(r)),
+      ada: cocok.length > awal + UKURAN_HALAMAN,
+      hitung: { Karyawan: t.baris.filter(BERJALAN_).length, TAD: t.baris.filter((r) => BERJALAN_(r) && r[P.jumlahTad] > 0).length },
+    },
+    cache: t.cache,
+  };
 }
 
 function aksiUbahStatus_(arg, email) {
+  const kini = new Date().toISOString();
   return denganKunci_(() => {
     const p = baca_('Pengajuan'); // posisi baris diketahui dari cache, tanpa membaca sheet
     const i = p.baris.findIndex((r) => r[P.nomor] === arg.nomor);
     if (i < 0) throw new Error('Pengajuan tidak ditemukan.');
-    const kini = new Date().toISOString();
     const baris = p.baris[i];
     baris[P.status] = arg.status;
     baris[P.diperbarui] = kini;
-    sheet_('Pengajuan').getRange(i + 2, 1, 1, baris.length).setValues([aman_(baris)]); // satu kali tulis
+    sheet_('Pengajuan').getRange(i + 2, 1, 1, baris.length).setValues([aman_(baris)]);
     simpanCache_('Pengajuan', p.baris);
-    tambah_('RiwayatStatus', [[arg.nomor, arg.status, email, kini, arg.catatan || '']], baca_('RiwayatStatus').baris);
+    tambahBaris_('RiwayatStatus', [arg.nomor, arg.status, email, kini, arg.catatan || '']);
     return { data: { status: arg.status }, cache: p.cache };
   });
 }
@@ -280,32 +298,23 @@ function hitungSppd_(pengajuan, tarif) {
   const hari = Math.max(1, Math.round((new Date(pengajuan.kembali) - new Date(pengajuan.berangkat)) / 86400000) + 1);
   const t = tarif[pengajuan.golongan] || tarif.C;
   if (pengajuan.menginap === 'Ya') return hari * t.harian + 2 * t.bandara;
-  return t[pengajuan.jarak === '>60' ? 'jauh' : 'dekat'];
+  return Number(t[pengajuan.jarak === '>60' ? 'jauh' : 'dekat']);
 }
 
 /** Detail Admin + hitung SPPD dalam satu panggilan. */
 function aksiDetailAdmin_(arg) {
-  const p = baca_('Pengajuan');
-  const baris = p.baris.find((r) => r[P.nomor] === arg.nomor);
-  if (!baris) throw new Error('Pengajuan tidak ditemukan.');
-  const rs = baca_('RiwayatStatus');
-  const tad = baca_('PengajuanTAD');
+  const d = aksiDetail_({ nomor: arg.nomor, arsip: arg.arsip });
+  const p = baca_('Pengajuan' + (arg.arsip ? '_' + Number(arg.arsip) : '')).baris.find((r) => r[P.nomor] === arg.nomor);
   const tr = baca_('TarifSPPD');
   const tarif = {};
   tr.baris.forEach((r) => (tarif[r[0]] = { harian: r[1], bandara: r[2], dekat: r[3], jauh: r[4] }));
-  const isi = { golongan: baris[P.golongan], menginap: baris[P.menginap], jarak: baris[P.jarak], berangkat: baris[P.berangkat], kembali: baris[P.kembali] };
-  const daftarTad = tad.baris.filter((r) => r[0] === arg.nomor);
-  return {
-    data: {
-      pengajuan: ringkas_(baris),
-      riwayat: rs.baris.filter((r) => r[0] === arg.nomor).map((r) => ({ status: r[1], oleh: r[2], pada: r[3], catatan: r[4] })),
-      hitung: {
-        karyawan: hitungSppd_(isi, tarif),
-        tad: daftarTad.map((r) => ({ nama: r[2], nominal: Math.round(hitungSppd_(Object.assign({}, isi, { golongan: 'TAD' }), tarif)) })),
-      },
-    },
-    cache: [p.cache, rs.cache, tad.cache, tr.cache].join('/'),
+  const isi = { golongan: p[P.golongan], menginap: p[P.menginap], jarak: p[P.jarak], berangkat: p[P.berangkat], kembali: p[P.kembali] };
+  d.data.hitung = {
+    karyawan: hitungSppd_(isi, tarif),
+    tad: d.data.tad.map((t) => ({ nama: t.nama, nominal: Math.round(hitungSppd_(Object.assign({}, isi, { golongan: 'TAD' }), tarif)) })),
   };
+  d.cache += '/' + tr.cache;
+  return d;
 }
 
 // ---------------------------------------------------------------------------
@@ -313,28 +322,21 @@ function aksiDetailAdmin_(arg) {
 // ---------------------------------------------------------------------------
 function aksiCatatKinerja_(arg, email) {
   if (!arg.baris || !arg.baris.length) return { data: 0 };
-  denganKunci_(() => tambah_('LogKinerja', arg.baris.map((b) => [new Date().toISOString(), b.aksi, b.totalMs, b.serverMs, b.perangkat, email, b.sukses ? 'Ya' : 'Tidak', b.cache || ''])));
-  return { data: arg.baris.length };
+  const baris = arg.baris.map((b) => [new Date().toISOString(), b.aksi, b.totalMs, b.serverMs, b.perangkat, email, b.sukses ? 'Ya' : 'Tidak', b.cache || '']);
+  // Log hanya ditambah: appendRow per baris aman dipakai bersamaan, tanpa kunci.
+  const sh = sheet_('LogKinerja');
+  baris.forEach((b) => sh.appendRow(b));
+  return { data: baris.length };
 }
 
-/** Satu permintaan simulasi: baca Pengajuan + tulis satu baris log (di dalam kunci). */
 /** Satu permintaan simulasi = satu kiriman pengajuan sungguhan (status "Simulasi", tidak masuk Tugasku). */
 function aksiSimulasi_(arg, email) {
-  const t0 = Date.now();
-  const kunci = LockService.getScriptLock();
-  kunci.waitLock(30000);
-  const t1 = Date.now();
-  let h;
-  try {
-    h = kirimPengajuan_('SIMULASI', { noST: 'SIM' }, email, 'Simulasi');
-  } finally {
-    kunci.releaseLock();
-  }
-  return { data: { tungguMs: t1 - t0, dalamKunciMs: Date.now() - t1, cache: h.cache } };
+  const h = kirimPengajuan_('SIMULASI', { noST: 'SIM' }, email, 'Simulasi');
+  return { data: h.waktu };
 }
 
 function aksiHasil_() {
-  const baris = sheet_('LogKinerja').getDataRange().getValues().slice(1).filter((r) => r[1] !== 'simulasi-tulis');
+  const baris = sheet_('LogKinerja').getDataRange().getValues().slice(1);
   const kelompok = {};
   baris.forEach((r) => {
     const k = r[1] + '|' + r[4];

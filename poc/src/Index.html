@@ -129,23 +129,26 @@ async function layarRiwayat() {
     const kunci = 'riwayat:' + halaman;
     let d = cacheBrowser.get(kunci);
     if (!d) {
-      d = await ukur('riwayat_halaman', 'riwayat', { nik: NIK_UJI, ke: halaman });
+      const t0 = performance.now();
+      const h = await panggil('riwayat', { nik: NIK_UJI, ke: halaman });
+      d = h.data;
+      catat(d.bacaArsip ? 'riwayat_dari_arsip' : 'riwayat_halaman', performance.now() - t0, h.serverMs, true, h.cache);
       cacheBrowser.set(kunci, d);
     }
-    d.isi.forEach((p) => daftar.append(kartuPengajuan(p, () => layarDetail(p.nomor))));
+    d.isi.forEach((p) => daftar.append(kartuPengajuan(p, () => layarDetail(p.nomor, p.arsip))));
     tombol.classList.toggle('sembunyi', !d.ada);
   }
   for (let i = 0; i <= ke; i++) await muat(i);
 }
 function kartuPengajuan(p, klik) {
-  return el('div', { class: 'kartu', onclick: klik }, el('div', {}, el('b', {}, p.jenis), ' ', lencana(p.status)), el('small', {}, p.nomor + ' · ' + p.noST + ' · berangkat ' + p.berangkat + (p.jumlahTad > 0 ? ' · ' + p.jumlahTad + ' TAD' : '')));
+  return el('div', { class: 'kartu', onclick: klik }, el('div', {}, el('b', {}, p.jenis), ' ', lencana(p.status)), el('small', {}, p.nomor + ' · ' + p.noST + ' · berangkat ' + p.berangkat + (p.jumlahTad > 0 ? ' · ' + p.jumlahTad + ' TAD' : '') + (p.arsip ? ' · arsip ' + p.arsip : '')));
 }
-async function layarDetail(nomor) {
+async function layarDetail(nomor, arsip) {
   tampil(pesan('Memuat detail…'));
   const kunci = 'detail:' + nomor;
   let d = cacheBrowser.get(kunci);
   if (!d) {
-    d = await ukur('detail', 'detail', { nomor, nik: NIK_UJI });
+    d = await ukur(arsip ? 'detail_arsip' : 'detail', 'detail', { nomor, nik: NIK_UJI, arsip });
     cacheBrowser.set(kunci, d);
   }
   tampil(
@@ -323,8 +326,8 @@ async function jalankanSimulasi(wadah) {
   catat('simulasi_20', performance.now() - t0, 0, gagal === 0, gagal + ' gagal');
   wadah.replaceChildren(
     pesan('20 permintaan: ' + ok.length + ' berhasil, ' + gagal + ' gagal. Total ' + ((performance.now() - t0) / 1000).toFixed(1) + ' dtk.', gagal > 0),
-    ok.length ? pesan('Berhasil — terlama ' + maks('totalMs') + ' dtk. Rata-rata: tunggu antrean ' + rata('tungguMs') + ' dtk (terlama ' + maks('tungguMs') + '), kerja di dalam kunci (baca + tulis + perbarui cache) ' + rata('dalamKunciMs') + ' dtk (terlama ' + maks('dalamKunciMs') + '). Cache: ' + ok.filter((o) => o.cache === 'hit').length + '/' + ok.length + ' hit.') : null,
-    Object.keys(galat).map((m) => pesan(galat[m] + '× ' + m, true)),
+    ok.length ? pesan('Berhasil — terlama ' + maks('totalMs') + ' dtk. Rata-rata: tunggu antrean ' + rata('tungguMs') + ' dtk (terlama ' + maks('tungguMs') + '), kerja di dalam kunci (nomor + tulis + perbarui cache) ' + rata('dalamKunciMs') + ' dtk (terlama ' + maks('dalamKunciMs') + ').') : null,
+    ...Object.keys(galat).map((m) => pesan(galat[m] + '× ' + m, true)),
   );
 }
 

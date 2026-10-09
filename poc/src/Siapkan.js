@@ -72,14 +72,14 @@ function isiDataDummy() {
   const kini = Date.now();
   const pengajuan = [], ptad = [], riwayat = [];
   for (let i = 0; i < 10000; i++) {
-    const k = i < 40 ? karyawan[0] : pilih(karyawan);
+    const k = i % 250 === 0 ? karyawan[0] : pilih(karyawan); // 40 pengajuan P90001 tersebar 3 tahun
     const jenis = pilih(JENIS);
     const nomor = AWALAN[jenis] + '-' + String(i + 1).padStart(5, '0');
     const umurHari = Math.floor(((10000 - i) / 10000) * 1095); // makin besar i makin baru
     const dibuat = new Date(kini - umurHari * 86400000);
     const berangkat = new Date(dibuat.getTime() + 3 * 86400000);
     const kembali = new Date(berangkat.getTime() + acak(5) * 86400000);
-    const status = umurHari < 14 ? pilih(['Dikirim', 'Diproses']) : pilih(['Selesai', 'Selesai', 'Selesai', 'Ditolak', 'Perlu revisi']);
+    const status = umurHari < 14 ? pilih(['Dikirim', 'Diproses']) : umurHari < 30 ? pilih(['Selesai', 'Ditolak', 'Perlu revisi']) : pilih(['Selesai', 'Selesai', 'Selesai', 'Ditolak']);
     const menginap = Math.random() < 0.7;
     const jumlahTad = Math.random() < 0.2 ? 1 + acak(3) : 0;
     const iso = (d) => d.toISOString();
@@ -96,21 +96,69 @@ function isiDataDummy() {
     }
   }
 
-  const isi = { Karyawan: karyawan, TAD: tad, TarifSPPD: tarif, Pengajuan: pengajuan, PengajuanTAD: ptad, RiwayatStatus: riwayat };
+  // Sheet aktif: berjalan + selesai/ditolak ≤ 90 hari (PRD 7.1). Sisanya ke arsip per tahun.
+  const batas = new Date(kini - 90 * 86400000).toISOString();
+  const nomorArsip = {};
+  pengajuan.forEach((r) => {
+    if ((r[13] === 'Selesai' || r[13] === 'Ditolak') && r[15] < batas) nomorArsip[r[0]] = r[14].slice(0, 4);
+  });
+  const pisah = (daftar) => {
+    const aktif = [], arsip = {};
+    daftar.forEach((r) => {
+      const th = nomorArsip[r[0]];
+      if (th) (arsip[th] = arsip[th] || []).push(r);
+      else aktif.push(r);
+    });
+    return { aktif, arsip };
+  };
+  const isi = { Karyawan: karyawan, TAD: tad, TarifSPPD: tarif };
+  const tabelPengajuan = { Pengajuan: pengajuan, PengajuanTAD: ptad, RiwayatStatus: riwayat };
+  Object.keys(tabelPengajuan).forEach((t) => {
+    const p = pisah(tabelPengajuan[t]);
+    isi[t] = p.aktif;
+    Object.keys(p.arsip).forEach((th) => (isi[t + '_' + th] = p.arsip[th]));
+  });
+
+  siapkanArsip_(Object.keys(isi).filter((t) => /_\d{4}$/.test(t)));
   Object.keys(isi).forEach((tabel) => {
     const sh = sheet_(tabel);
     if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).clearContent();
-    tulisMulai_(sh, 2, isi[tabel]);
-    lupakan_(tabel);
+    if (isi[tabel].length) tulisMulai_(sh, 2, isi[tabel]);
+    simpanCache_(tabel, isi[tabel]);
   });
+  const log = sheet_('LogKinerja');
+  if (log.getLastRow() > 1) log.getRange(2, 1, log.getLastRow() - 1, log.getLastColumn()).clearContent(); // hasil uji mulai dari nol
+  PropertiesService.getScriptProperties().setProperty('NOMOR_TERAKHIR', String(pengajuan.length));
   Logger.log('Data dummy: ' + Object.keys(isi).map((t) => t + ' ' + isi[t].length).join(', '));
+}
+
+/** Spreadsheet HCS_POC_Arsip dan sheet per tahun (mis. Pengajuan_2025). */
+function siapkanArsip_(namaSheet) {
+  const props = PropertiesService.getScriptProperties();
+  if (!props.getProperty('SS_Arsip')) {
+    const ss = SpreadsheetApp.create('HCS_POC_Arsip');
+    const induk = DriveApp.getFolderById(props.getProperty('FOLDER_DOKUMEN')).getParents().next();
+    DriveApp.getFileById(ss.getId()).moveTo(induk);
+    props.setProperty('SS_Arsip', ss.getId());
+  }
+  const ss = ss_('Arsip');
+  namaSheet.forEach((nama) => {
+    if (ss.getSheetByName(nama)) return;
+    const sh = ss.insertSheet(nama);
+    sh.getRange('A:Z').setNumberFormat('@');
+    const kolom = KOLOM_[nama.replace(/_\d{4}$/, '')];
+    sh.getRange(1, 1, 1, kolom.length).setValues([kolom]);
+    sh.setFrozenRows(1);
+  });
+  // hapus lembar bawaan spreadsheet baru (namanya bisa "Sheet1" atau "Lembar1")
+  ss.getSheets().filter((sh) => !/_\d{4}$/.test(sh.getName())).forEach((sh) => ss.getSheets().length > 1 && ss.deleteSheet(sh));
 }
 
 /** WS-03: laporkan file POC yang dibagikan ke selain pemilik. */
 function cekBerbagi() {
   hanyaPemilik_();
   const props = PropertiesService.getScriptProperties();
-  const ids = ['SS_Master', 'SS_Data', 'SS_Log'].map((k) => props.getProperty(k));
+  const ids = ['SS_Master', 'SS_Data', 'SS_Log', 'SS_Arsip'].map((k) => props.getProperty(k)).filter(Boolean);
   const temuan = [];
   ids.forEach((id) => {
     const f = DriveApp.getFileById(id);
