@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan Tahap 3 (Login Google, sesi, dan peran) berjalan: kode dan tes selesai, menunggu OAuth Client ID Google dan uji coba user
+**Tahap aktif:** 3 – Bangun MVP · **DIHENTIKAN SEMENTARA**: IT Security pusat menolak arsitektur Cloudways + Supabase (09-10-2026). Menunggu keputusan user soal jalur Google Apps Script atau vendor; PRD, Standar Keamanan, dan Build Plan perlu direvisi sebelum membangun lagi
 **Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -46,6 +46,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 09-10-2026 | Sesi tidak dihapus dari database; keluar/kedaluwarsa ditandai `dicabut_pada` | hcs_app tidak boleh DELETE (cek:rls) |
 | 09-10-2026 | Login tetap Google (Pilihan 1); OAuth client dibuat dengan akun Gmail admin sistem karena akun kantor tidak diberi akses Google Cloud. Cadangan bila Pegadaian memblokir aplikasi pihak ketiga: kode sekali pakai lewat email (perlu ubah AUTH-01) | Arahan user |
 | 09-10-2026 | Admin masuk dengan email kantor pribadi (sementara: dicky.widyatama@pegadaian.co.id). `manohc.balikpapan@pegadaian.co.id` hanya kontak Admin SDM di U2, bukan akun login | Jejak tindakan per orang (PRD 10.3) |
+| 09-10-2026 | **IT Security pusat menolak**: aplikasi dan data tidak boleh keluar dari lingkungan Workspace/Google Pegadaian. Pilihan resmi: lewat vendor, atau dikembangkan di Kanwil memakai Google Apps Script | Surat ke pusat, dijawab IT Security |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
@@ -56,11 +57,10 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Lanjutan Build Plan Tahap 3:
-1. User membuat OAuth Client ID di Google Cloud memakai akun Gmail admin sistem (dipandu agen), isi `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` di `.env`.
-2. ✅ Admin hcs-dev terdaftar: dicky.widyatama@pegadaian.co.id.
-3. User mencoba: `npm run dev`, buka http://localhost:3000, masuk; coba Gmail pribadi (pesan domain); diam 15 menit (layar Sesi berakhir); Keluar.
-4. Bila lolos: centang Tahap 3, push, cek GitHub Actions (job "database" kini juga menjalankan tes login).
+1. User memutuskan: Google Apps Script di Workspace Pegadaian (dibangun Kanwil) atau vendor.
+2. Bila Apps Script: revisi PRD (v2.2, arsitektur dari arsip `PRD_HCS_Workspace_v1.2.md`), Standar Keamanan (v1.3, ganti bagian Supabase/Cloudways), Build Plan (v3.0), lalu uji kecepatan (`docs/arsip/SPEC_UJI_KECEPATAN_HCS.md`) sebelum membangun.
+3. Hentikan login ke hcs-dev dengan akun kantor; hapus test user dan OAuth client di proyek Google Cloud Gmail.
+4. Kode jalur server (Next.js, Express, Supabase) disimpan sebagai arsip; tidak dilanjutkan.
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -74,3 +74,4 @@ Lanjutan Build Plan Tahap 3:
 | 08-10-2026 | 3 | Build Plan Tahap 2 (sebagian): migrasi 0001 (skema hcs, 14 tabel, RLS tolak semua, REVOKE, peran hcs_app) dan 0002 (jenis layanan, tarif SPPD); skema Drizzle; enkripsi AES-256-GCM + 7 tes; seed dummy 30 karyawan + 15 TAD; `cek:rls` + job CI database. Diuji di Postgres lokal: migrasi, seed, cek:rls lolos; 6 kerusakan sengaja tertangkap. Belum dipasang ke hcs-dev |
 | 09-10-2026 | 3 | Build Plan Tahap 2 selesai: `.env` hcs-dev lengkap (DB, SSL, S3); migrasi 0001–0002 terpasang di hcs-dev; seed 30 karyawan + 15 TAD; `cek:rls` 8/8 lolos; hcs_app terverifikasi tidak bisa hapus log dan tidak bisa ubah struktur; 13 rekening tersimpan terenkripsi (0 angka polos); typecheck dan 12 tes lolos |
 | 09-10-2026 | 3 | Build Plan Tahap 3 (kode): migrasi 0003 tabel sesi (terpasang di hcs-dev); login Google lewat backend (tanda tangan, audience, kedaluwarsa, hd, email terverifikasi, state); sesi cookie HttpOnly/Secure/SameSite=Lax, diam 15 menit, maks 12 jam, keluar mencabut sesi; satu pemeriksa peran tolak-bawaan; CSRF; rate limit per IP dan per email; layar U1, U1 error, U2, U3, kerangka navigasi karyawan (K1 kosong, K5 kosong, K6 Profil) dan Admin. 33 tes lolos (14 tes keamanan login), cek:rls lolos, audit 0 celah, build lolos |
+| 09-10-2026 | 3 | Login Google berhasil di hcs-dev (Admin dicky.widyatama), logo dan peringatan hydration diperbaiki. IT Security pusat menolak aplikasi di luar Workspace Pegadaian → pembangunan dihentikan sementara, menunggu keputusan jalur |
