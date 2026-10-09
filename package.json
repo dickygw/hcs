@@ -8,12 +8,13 @@
   },
   "scripts": {
     "build": "node alat/bangun.mjs",
-    "typecheck": "tsc --noEmit -p apps-script && tsc --noEmit -p tampilan",
+    "typecheck": "tsc --noEmit -p apps-script && tsc --noEmit -p apps-script/test && tsc --noEmit -p tampilan",
     "test": "vitest run",
     "cek:keamanan": "node alat/cek-keamanan.mjs",
     "kirim:dev": "npm run build && npm run cek:keamanan && cd apps-script && npx --yes @google/clasp@3.4.1 push --force"
   },
   "dependencies": {
+    "@noble/ciphers": "2.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },

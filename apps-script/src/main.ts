@@ -1,9 +1,12 @@
 /**
  * Titik masuk Apps Script. HANYA fungsi yang diekspor dari file ini yang menjadi fungsi top-level
- * (alat/bangun.mjs). cek:keamanan memastikan ekspor hanya doGet dan api.
+ * (alat/bangun.mjs). cek:keamanan memastikan ekspor hanya doGet, api, dan fungsi pemilik yang diawali hanyaPemilik().
  */
 import { buatApi, GalatPengguna } from "./akses";
 import { RUTE } from "./rute";
+
+// Fungsi khusus pemilik (editor dan trigger); masing-masing diawali hanyaPemilik().
+export { buatKunciRekening, cekBerbagi, isiDataDummy, jalankanMigrasi, pasangTrigger } from "./pemilik";
 
 export function doGet() {
   return HtmlService.createHtmlOutputFromFile("Index")

@@ -3,7 +3,8 @@
  * - appsscript.json melonggarkan deployment atau meminta izin di luar daftar (WS-01, WS-05, WEB-04);
  * - kode memakai pola terlarang: doPost, ContentService, berbagi file, ALLOWALL, scriptlet tanpa escape,
  *   innerHTML, penyimpanan browser, eval (WEB-01..04, WEB-06, FILE-05);
- * - fungsi top-level selain doGet/api (semua panggilan browser wajib lewat pembungkus AKSES-01).
+ * - fungsi top-level selain doGet/api (semua panggilan browser wajib lewat pembungkus AKSES-01),
+ *   kecuali fungsi pemilik di pemilik.ts yang baris pertamanya hanyaPemilik().
  * Jalankan setelah npm run build (memeriksa juga apps-script/dist).
  */
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
@@ -12,7 +13,7 @@ import { pathToFileURL } from "node:url";
 const IZIN_BOLEH = new Set([
   "https://www.googleapis.com/auth/userinfo.email",
   "https://www.googleapis.com/auth/spreadsheets",
-  "https://www.googleapis.com/auth/drive.file",
+  "https://www.googleapis.com/auth/drive", // DriveApp butuh izin penuh; hanya folder milik HCS yang dipakai (WS-03)
   "https://www.googleapis.com/auth/script.send_mail",
   "https://www.googleapis.com/auth/script.scriptapp", // trigger (WS-10)
 ]);
@@ -52,10 +53,19 @@ export function periksaKode(nama, isi) {
   return POLA_TERLARANG.filter(([pola]) => pola.test(isi)).map(([, pesan]) => `${nama}: ${pesan}`);
 }
 
+/** pemilik.ts: setiap fungsi yang diekspor wajib diawali hanyaPemilik(). Mengembalikan nama yang sah dan galat. */
+export function periksaPemilik(isi) {
+  const semua = [...isi.matchAll(/export\s+function\s+([A-Za-z0-9_$]+)\s*\(/g)].map((m) => m[1]);
+  const sah = new Set([...isi.matchAll(/export\s+function\s+([A-Za-z0-9_$]+)\s*\([^)]*\)\s*\{\s*hanyaPemilik\(\);/g)].map((m) => m[1]));
+  return { sah, galat: semua.filter((n) => !sah.has(n)).map((n) => `pemilik.ts: fungsi "${n}" wajib diawali hanyaPemilik()`) };
+}
+
 /** Bundel Code.js: hanya fungsi top-level yang diizinkan. */
-export function periksaTitikMasuk(isiBundel) {
+export function periksaTitikMasuk(isiBundel, fungsiPemilik = new Set()) {
   const nama = [...isiBundel.matchAll(/^function\s+([A-Za-z0-9_$]+)\s*\(/gm)].map((m) => m[1]);
-  return nama.filter((n) => !EKSPOR_BOLEH.has(n)).map((n) => `fungsi top-level "${n}" tidak diizinkan; daftarkan sebagai rute (AKSES-01)`);
+  return nama
+    .filter((n) => !EKSPOR_BOLEH.has(n) && !fungsiPemilik.has(n))
+    .map((n) => `fungsi top-level "${n}" tidak diizinkan; daftarkan sebagai rute (AKSES-01)`);
 }
 
 function daftarBerkas(folder, akhiran) {
@@ -73,10 +83,15 @@ function jalankan() {
   const sumber = [...daftarBerkas(akar + "apps-script/src", [".ts"]), ...daftarBerkas(akar + "tampilan/src", [".ts", ".tsx", ".html"])];
   for (const f of sumber) galat.push(...periksaKode(f.replace(akar, ""), readFileSync(f, "utf8")));
 
+  const pemilik = existsSync(akar + "apps-script/src/pemilik.ts")
+    ? periksaPemilik(readFileSync(akar + "apps-script/src/pemilik.ts", "utf8"))
+    : { sah: new Set(), galat: [] };
+  galat.push(...pemilik.galat);
+
   const bundel = akar + "apps-script/dist/Code.js";
   if (!existsSync(bundel)) galat.push("apps-script/dist/Code.js belum ada; jalankan npm run build dulu");
   else {
-    galat.push(...periksaTitikMasuk(readFileSync(bundel, "utf8")));
+    galat.push(...periksaTitikMasuk(readFileSync(bundel, "utf8"), pemilik.sah));
     galat.push(...periksaManifest(readFileSync(akar + "apps-script/dist/appsscript.json", "utf8")).map((g) => "dist: " + g));
   }
 

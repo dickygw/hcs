@@ -1,7 +1,7 @@
 // Membuktikan cek:keamanan menangkap pelanggaran yang disengaja (Build Plan Tahap 1).
 import { describe, expect, it } from "vitest";
 // @ts-expect-error modul .mjs tanpa deklarasi tipe
-import { periksaKode, periksaManifest, periksaTitikMasuk } from "./cek-keamanan.mjs";
+import { periksaKode, periksaManifest, periksaPemilik, periksaTitikMasuk } from "./cek-keamanan.mjs";
 
 const manifestSah = {
   oauthScopes: ["https://www.googleapis.com/auth/userinfo.email"],
@@ -17,9 +17,9 @@ describe("cek:keamanan — appsscript.json", () => {
     expect(periksaManifest(manifest({ webapp: { executeAs: "USER_ACCESSING", access: "DOMAIN" } }))).toHaveLength(1);
   });
 
-  it("izin membaca Gmail atau Drive penuh ditolak", () => {
-    const g = periksaManifest(manifest({ oauthScopes: ["https://mail.google.com/", "https://www.googleapis.com/auth/drive"] }));
-    expect(g).toHaveLength(2);
+  it("izin membaca Gmail, Kalender, atau Kontak ditolak", () => {
+    const g = periksaManifest(manifest({ oauthScopes: ["https://mail.google.com/", "https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/contacts"] }));
+    expect(g).toHaveLength(3);
   });
 
   it("API executable dan manifest tanpa daftar izin ditolak", () => {
@@ -51,5 +51,28 @@ describe("cek:keamanan — fungsi top-level", () => {
   it("hanya doGet dan api yang boleh", () => {
     expect(periksaTitikMasuk("function doGet(...a) {}\nfunction api(...a) {}")).toEqual([]);
     expect(periksaTitikMasuk("function api(...a) {}\nfunction hapusData(...a) {}")).toHaveLength(1);
+  });
+});
+
+describe("cek:keamanan — fungsi pemilik", () => {
+  const pemilik = `
+function hanyaPemilik() {}
+export function jalankanMigrasi() {
+  hanyaPemilik();
+  lanjut();
+}
+export function bocor(arg) {
+  return bacaRekening(arg);
+}`;
+
+  it("fungsi tanpa hanyaPemilik() di baris pertama ditolak", () => {
+    const h = periksaPemilik(pemilik);
+    expect([...h.sah]).toEqual(["jalankanMigrasi"]);
+    expect(h.galat).toHaveLength(1);
+  });
+
+  it("fungsi pemilik yang sah boleh menjadi fungsi top-level", () => {
+    const bundel = ["function api(...a) {}", "function jalankanMigrasi(...a) {}", "function bocor(...a) {}"].join("\n");
+    expect(periksaTitikMasuk(bundel, periksaPemilik(pemilik).sah)).toEqual([expect.stringContaining("bocor")]);
   });
 });
