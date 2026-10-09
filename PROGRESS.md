@@ -12,7 +12,7 @@
 | `docs/DESIGN_BRIEF.md` | 1.1 | ✅ Disetujui 08-10-2026 |
 | `mockup/HCS Mobile.dc.html`, `mockup/HCS Admin.dc.html` | 07-10-2026 | ✅ **Acuan visual utama** |
 | `docs/STANDAR_KEAMANAN_HCS_v1.3.md` | 1.3 | ✅ Disetujui 09-10-2026 (wajib, jalur Apps Script) |
-| `BUILD_PLAN.md` | 2.0 | 🔁 Tidak berlaku (jalur server); diganti v3.0 |
+| `BUILD_PLAN.md` | 3.0 | 🟡 Draf, menunggu persetujuan (jalur Apps Script) |
 
 Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 
@@ -62,7 +62,8 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 1. ✅ Jalur Apps Script dipilih; PRD v2.2 disetujui 09-10-2026.
 2. ✅ Pengaturan domain Pegadaian di Google Cloud (Gmail), Supabase hcs-dev, dan akses aplikasi di akun kantor sudah dihapus user. Kode jalur server diarsipkan di cabang `arsip/jalur-server`.
 3. ✅ Standar Keamanan v1.3 disetujui 09-10-2026.
-4. Berikutnya: Build Plan v3.0 disetujui user, lalu Tahap 0 (uji kecepatan).
+4. Build Plan v3.0 (draf) disusun; menunggu persetujuan user.
+5. Setelah disetujui: Tahap 0 uji kecepatan (persiapan bagian C: Apps Script API aktif, clasp login akun unit, 3 penguji).
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
