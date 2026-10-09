@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–1 ✅; **Tahap 2** (struktur spreadsheet, enkripsi rekening, data dummy) berjalan
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–2 ✅; berikutnya **Tahap 3** (identitas, peran, kunci layar, kerangka navigasi)
 **Terakhir diperbarui:** 09-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -60,11 +60,9 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Build Plan v3.0 Tahap 1 (kode selesai, menunggu uji user):
-1. User buka alamat HCS-dev dengan akun kantor (sekali sebagai akun unit untuk memberi izin), lalu dengan Gmail pribadi (harus ditolak).
-2. User push ke GitHub dan cek Actions hijau.
-3. Setelah lolos: centang Tahap 1, lanjut Tahap 2 (struktur spreadsheet, enkripsi rekening, data dummy) dengan catatan `docs/HASIL_UJI_KECEPATAN.md` bagian 3.
-Catatan: Index.html 1,15 MB karena huruf Ronnia TTF (±920 KB); WOFF2 dari tim brand atau subset huruf bila buka aplikasi di HP lambat.
+1. User push ke GitHub (`git -C D:/HCS push origin main arsip/jalur-server`) dan cek Actions hijau.
+2. Build Plan v3.0 Tahap 3: identitas dari Session, peran dari tabel pengguna/karyawan, sesi 15 menit di CacheService, layar U2/U3/K6, kerangka navigasi karyawan dan Admin, `tambahAdmin` untuk Admin pertama (dicky.widyatama@pegadaian.co.id).
+Catatan Tahap 0 tetap berlaku: `docs/HASIL_UJI_KECEPATAN.md` bagian 3.
 
 ## Log sesi
 | Tanggal | Tahap | Yang dikerjakan |
@@ -83,3 +81,4 @@ Catatan: Index.html 1,15 MB karena huruf Ronnia TTF (±920 KB); WOFF2 dari tim b
 | 09-10-2026 | 3 | Tahap 0 selesai: 5 versi aplikasi uji; v5 (sheet aktif + arsip per tahun) lulus di laptop, semua aksi baca ±1 dtk, 20 kiriman bersamaan tanpa error. Catatan: antrean tulis dan uji HP 4G dibawa ke Tahap 2 dan 13 |
 | 09-10-2026 | 3 | Tahap 1 (kode): repo dirapikan ke apps-script/ + tampilan/ + alat/; pembungkus pemeriksa AKSES-01 (satu pintu `api`, rute terdaftar, tolak bawaan); build esbuild + Vite → Code.js 3 KB, Index.html 1,15 MB; cek:keamanan + CI; proyek HCS-dev dibuat dan ter-deploy. 23 tes lolos, audit 0 celah (vite-plugin-singlefile dan clasp tidak dipasang karena celah braces) |
 | 09-10-2026 | 3 | Tahap 1 selesai: halaman HCS-dev tampil dengan Ronnia dan "Server terhubung" (diuji user). Temuan: HtmlService merusak pola `<huruf` di dalam skrip → JS tampilan dikirim base64 dan diperiksa saat build |
+| 09-10-2026 | 3 | Tahap 2 selesai: skema 15 tabel (3 spreadsheet), modul data (baca sekaligus, cache tabel kecil, netralisasi rumus), enkripsi AES-256-GCM (@noble/ciphers, berjalan tanpa fitur browser), migrasi bernomor, fungsi pemilik (migrasi, kunci, dummy, cekBerbagi, trigger). User menjalankan kelima fungsi di HCS-dev tanpa error. 48 tes lolos, cek:keamanan lolos, audit 0 celah |
