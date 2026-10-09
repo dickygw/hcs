@@ -44,6 +44,8 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 09-10-2026 | Login memakai alur pengalihan OAuth (authorization code) di backend, bukan tombol bawaan Google | Tombol bisa persis mockup ("Gunakan Email Corporate"); client secret tetap di server |
 | 09-10-2026 | Paket baru: `google-auth-library` (verifikasi token Google resmi), `zod` (validasi input, INPUT-01) | DEP-04 |
 | 09-10-2026 | Sesi tidak dihapus dari database; keluar/kedaluwarsa ditandai `dicabut_pada` | hcs_app tidak boleh DELETE (cek:rls) |
+| 09-10-2026 | Login tetap Google (Pilihan 1); OAuth client dibuat dengan akun Gmail admin sistem karena akun kantor tidak diberi akses Google Cloud. Cadangan bila Pegadaian memblokir aplikasi pihak ketiga: kode sekali pakai lewat email (perlu ubah AUTH-01) | Arahan user |
+| 09-10-2026 | Admin masuk dengan email kantor pribadi (sementara: dicky.widyatama@pegadaian.co.id). `manohc.balikpapan@pegadaian.co.id` hanya kontak Admin SDM di U2, bukan akun login | Jejak tindakan per orang (PRD 10.3) |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
@@ -52,12 +54,11 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 2. Validasi ulang template TAD final (EPS dan INHOUSE).
 3. Pembayaran tahunan Cloudways dan Supabase lewat pengadaan; nama domain; region Singapura Cloudways Velocity; apakah IP keluar Cloudways tetap (SUPA-10).
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
-5. Alamat email kontak Admin SDM di layar U2. Sementara `sdm.kanwil4@pegadaian.co.id` dari mockup (`frontend/src/app/belum-terdaftar/page.tsx`).
 
 ## Langkah berikutnya
 Lanjutan Build Plan Tahap 3:
-1. User membuat OAuth Client ID di Google Cloud (dipandu agen), isi `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` di `.env`.
-2. User mendaftarkan email pegadaian.co.id sendiri sebagai Admin: `npm run db:tambah-pengguna -- nama@pegadaian.co.id admin`.
+1. User membuat OAuth Client ID di Google Cloud memakai akun Gmail admin sistem (dipandu agen), isi `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` di `.env`.
+2. ✅ Admin hcs-dev terdaftar: dicky.widyatama@pegadaian.co.id.
 3. User mencoba: `npm run dev`, buka http://localhost:3000, masuk; coba Gmail pribadi (pesan domain); diam 15 menit (layar Sesi berakhir); Keluar.
 4. Bila lolos: centang Tahap 3, push, cek GitHub Actions (job "database" kini juga menjalankan tes login).
 

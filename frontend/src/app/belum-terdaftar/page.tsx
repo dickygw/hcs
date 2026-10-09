@@ -4,8 +4,8 @@ import styles from "../masuk.module.css";
 
 export const metadata: Metadata = { title: "Akun belum terdaftar · HCS" };
 
-// Sementara memakai alamat dari mockup; konfirmasi alamat resmi Admin SDM (PROGRESS.md, pertanyaan terbuka).
-const KONTAK_ADMIN_SDM = "sdm.kanwil4@pegadaian.co.id";
+// Kotak masuk bersama Admin SDM; hanya sebagai kontak, tidak dipakai untuk masuk sebagai Admin.
+const KONTAK_ADMIN_SDM = "manohc.balikpapan@pegadaian.co.id";
 
 /** U2 Akun belum terdaftar. */
 export default async function BelumTerdaftar({ searchParams }: { searchParams: Promise<{ email?: string }> }) {
