@@ -55,12 +55,20 @@ await vite({
 const berkas = readdirSync(keluarVite + "assets");
 const js = berkas.filter((f) => f.endsWith(".js")).map((f) => readFileSync(keluarVite + "assets/" + f, "utf8")).join("\n");
 const css = berkas.filter((f) => f.endsWith(".css")).map((f) => readFileSync(keluarVite + "assets/" + f, "utf8")).join("\n");
+// HtmlService membaca "<huruf" sebagai tag HTML walaupun berada di dalam <script> (mis. kode ringkas
+// "-1<e.stack" dirusak). Karena itu JS dikirim sebagai base64 (tanpa karakter "<"), lalu dipasang
+// sebagai elemen <script> oleh pemuat kecil di akhir body, setelah elemen #akar ada.
+const b64 = Buffer.from(js, "utf8").toString("base64");
+const pemuat =
+  `(function(){var b=atob("${b64}"),u=new Uint8Array(b.length);for(var i=0;b.length>i;i++)u[i]=b.charCodeAt(i);` +
+  `var s=document.createElement("script");s.textContent=new TextDecoder().decode(u);document.body.appendChild(s);})();`;
 const html = readFileSync(keluarVite + "index.html", "utf8")
   .replace(/<script[^>]*src="[^"]*"[^>]*><\/script>/g, "")
   .replace(/<link[^>]*rel="stylesheet"[^>]*>/g, "")
   .replace("</head>", () => `<style>${css}</style>\n</head>`)
-  // skrip di akhir body (format iife, bukan module) setelah elemen #akar ada
-  .replace("</body>", () => `<script>${js.replace(/<\/script/gi, "<\\/script")}</script>\n</body>`);
+  .replace("</body>", () => `<script>${pemuat}</script>\n</body>`);
+// Pemeriksaan: di luar isi base64 dan CSS, tidak boleh ada "<huruf" di dalam skrip.
+if (/<[A-Za-z!/?]/.test(pemuat.replace(b64, ""))) throw new Error("Pemuat skrip mengandung pola yang dirusak HtmlService.");
 writeFileSync(DIST + "Index.html", html);
 rmSync(keluarVite, { recursive: true, force: true });
 
