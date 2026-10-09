@@ -85,8 +85,14 @@ function baca_(tabel) {
       return { baris: JSON.parse(kunci.map((k) => isi[k]).join('')), cache: 'hit' };
     }
   }
-  const nilai = sheet_(tabel).getDataRange().getValues();
-  const baris = nilai.slice(1);
+  const baris = sheet_(tabel).getDataRange().getValues().slice(1);
+  simpanCache_(tabel, baris);
+  return { baris: baris, cache: 'miss' };
+}
+
+/** Simpan seluruh tabel ke cache, dipecah per 90 KB. */
+function simpanCache_(tabel, baris) {
+  const cache = CacheService.getScriptCache();
   const teks = JSON.stringify(baris);
   const potongan = {};
   let n = 0;
@@ -95,24 +101,38 @@ function baca_(tabel) {
     cache.putAll(potongan, CACHE_DETIK);
     cache.put('n_' + tabel, String(n), CACHE_DETIK);
   } catch (e) {
-    // ponytail: tabel terlalu besar untuk cache → tetap jalan tanpa cache
+    cache.remove('n_' + tabel); // ponytail: tabel terlalu besar untuk cache → tetap jalan tanpa cache
   }
-  return { baris: baris, cache: 'miss' };
 }
 
 function lupakan_(tabel) {
   CacheService.getScriptCache().remove('n_' + tabel);
 }
 
-/** Tambah baris sekaligus. Teks diawali = + - @ dinetralkan (INPUT-02). */
-function tambah_(tabel, baris) {
-  const aman = baris.map((b) => b.map((v) => (typeof v === 'string' && /^[=+\-@]/.test(v) ? "'" + v : v)));
-  const sh = sheet_(tabel);
-  tulisMulai_(sh, sh.getLastRow() + 1, aman);
-  lupakan_(tabel);
+/** Teks diawali = + - @ dinetralkan agar tidak menjadi rumus (INPUT-02). */
+function aman_(baris) {
+  return baris.map((v) => (typeof v === 'string' && /^[=+\-@]/.test(v) ? "'" + v : v));
 }
 
-/** Tulis blok sekaligus; tambah baris sheet bila kurang (setValues tidak menambah baris sendiri). */
+/**
+ * Tambah baris. Satu baris → appendRow (satu panggilan, aman dipakai bersamaan).
+ * Bila isiCache diberikan (hasil baca_ di dalam kunci yang sama), cache diperbarui di tempat,
+ * bukan dibuang; tanpa isiCache, cache tabel dibuang.
+ */
+function tambah_(tabel, baris, isiCache) {
+  const sh = sheet_(tabel);
+  const bersih = baris.map(aman_);
+  if (bersih.length === 1) sh.appendRow(bersih[0]);
+  else tulisMulai_(sh, sh.getLastRow() + 1, bersih);
+  if (isiCache) {
+    bersih.forEach((b) => isiCache.push(b));
+    simpanCache_(tabel, isiCache);
+  } else {
+    lupakan_(tabel);
+  }
+}
+
+/** Untuk isi data dummy: tulis blok besar sekaligus; tambah baris sheet bila kurang. */
 function tulisMulai_(sh, baris, nilai) {
   const perlu = baris + nilai.length - 1 - sh.getMaxRows();
   if (perlu > 0) sh.insertRowsAfter(sh.getMaxRows(), perlu);
@@ -121,7 +141,7 @@ function tulisMulai_(sh, baris, nilai) {
 
 function denganKunci_(fn) {
   const kunci = LockService.getScriptLock();
-  kunci.waitLock(10000);
+  kunci.waitLock(30000);
   try {
     return fn();
   } finally {
@@ -183,16 +203,21 @@ function aksiDataForm_() {
 }
 
 function aksiKirim_(arg, email) {
-  return denganKunci_(() => {
-    const sh = sheet_('Pengajuan');
-    const nomor = 'KP-' + String(sh.getLastRow() + 1).padStart(5, '0');
-    const kini = new Date().toISOString();
-    const f = arg.form || {};
-    tambah_('Pengajuan', [[nomor, 'Klaim Biaya Perdin', arg.nik, f.nama || '', f.noST || '', f.tujuan || '', f.berangkat || '', f.kembali || '', f.menginap ? 'Ya' : 'Tidak', f.jarak || '', f.moda || '', f.dinas ? 'Ya' : 'Tidak', 'C', 'Dikirim', kini, kini, (f.tad || []).length, '']]);
-    tambah_('RiwayatStatus', [[nomor, 'Dikirim', email, kini, '']]);
-    if ((f.tad || []).length) tambah_('PengajuanTAD', f.tad.map((t) => [nomor, t[0], t[1], t[2], t[3]]));
-    return { data: { nomor: nomor } };
-  });
+  return denganKunci_(() => kirimPengajuan_(arg.nik, arg.form || {}, email, 'Dikirim'));
+}
+
+/**
+ * Inti kirim pengajuan (dipakai juga simulasi). Di dalam kunci: nomor dari data cache,
+ * appendRow, lalu cache diperbarui di tempat (tidak dibuang).
+ */
+function kirimPengajuan_(nik, f, email, status) {
+  const p = baca_('Pengajuan');
+  const nomor = 'KP-' + String(p.baris.length + 1).padStart(5, '0');
+  const kini = new Date().toISOString();
+  tambah_('Pengajuan', [[nomor, 'Klaim Biaya Perdin', nik, f.nama || '', f.noST || '', f.tujuan || '', f.berangkat || '', f.kembali || '', f.menginap ? 'Ya' : 'Tidak', f.jarak || '', f.moda || '', f.dinas ? 'Ya' : 'Tidak', 'C', status, kini, kini, (f.tad || []).length, '']], p.baris);
+  tambah_('RiwayatStatus', [[nomor, status, email, kini, '']], baca_('RiwayatStatus').baris);
+  if ((f.tad || []).length) tambah_('PengajuanTAD', f.tad.map((t) => [nomor, t[0], t[1], t[2], t[3]]));
+  return { data: { nomor: nomor }, cache: p.cache };
 }
 
 /** Unggah: jenis file diperiksa dari isi (magic bytes), maks 5 MB, nama acak, folder privat. */
@@ -228,19 +253,17 @@ function aksiTugasku_(arg) {
 
 function aksiUbahStatus_(arg, email) {
   return denganKunci_(() => {
-    const sh = sheet_('Pengajuan');
-    const nomor = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues(); // satu kali baca kolom nomor
-    const i = nomor.findIndex((r) => r[0] === arg.nomor);
+    const p = baca_('Pengajuan'); // posisi baris diketahui dari cache, tanpa membaca sheet
+    const i = p.baris.findIndex((r) => r[P.nomor] === arg.nomor);
     if (i < 0) throw new Error('Pengajuan tidak ditemukan.');
     const kini = new Date().toISOString();
-    const rentang = sh.getRange(i + 2, 1, 1, P.nominal + 1);
-    const baris = rentang.getValues()[0]; // satu kali baca baris, ubah di memori, satu kali tulis
+    const baris = p.baris[i];
     baris[P.status] = arg.status;
     baris[P.diperbarui] = kini;
-    rentang.setValues([baris]);
-    lupakan_('Pengajuan');
-    tambah_('RiwayatStatus', [[arg.nomor, arg.status, email, kini, arg.catatan || '']]);
-    return { data: { status: arg.status } };
+    sheet_('Pengajuan').getRange(i + 2, 1, 1, baris.length).setValues([aman_(baris)]); // satu kali tulis
+    simpanCache_('Pengajuan', p.baris);
+    tambah_('RiwayatStatus', [[arg.nomor, arg.status, email, kini, arg.catatan || '']], baca_('RiwayatStatus').baris);
+    return { data: { status: arg.status }, cache: p.cache };
   });
 }
 
@@ -295,19 +318,19 @@ function aksiCatatKinerja_(arg, email) {
 }
 
 /** Satu permintaan simulasi: baca Pengajuan + tulis satu baris log (di dalam kunci). */
+/** Satu permintaan simulasi = satu kiriman pengajuan sungguhan (status "Simulasi", tidak masuk Tugasku). */
 function aksiSimulasi_(arg, email) {
   const t0 = Date.now();
-  const b = baca_('Pengajuan');
-  const t1 = Date.now();
   const kunci = LockService.getScriptLock();
   kunci.waitLock(30000);
-  const t2 = Date.now();
+  const t1 = Date.now();
+  let h;
   try {
-    tambah_('LogKinerja', [[new Date().toISOString(), 'simulasi-tulis', 0, 0, arg.perangkat || '', email, 'Ya', '']]);
+    h = kirimPengajuan_('SIMULASI', { noST: 'SIM' }, email, 'Simulasi');
   } finally {
     kunci.releaseLock();
   }
-  return { data: { bacaMs: t1 - t0, tungguMs: t2 - t1, tulisMs: Date.now() - t2, cache: b.cache } };
+  return { data: { tungguMs: t1 - t0, dalamKunciMs: Date.now() - t1, cache: h.cache } };
 }
 
 function aksiHasil_() {

@@ -323,7 +323,7 @@ async function jalankanSimulasi(wadah) {
   catat('simulasi_20', performance.now() - t0, 0, gagal === 0, gagal + ' gagal');
   wadah.replaceChildren(
     pesan('20 permintaan: ' + ok.length + ' berhasil, ' + gagal + ' gagal. Total ' + ((performance.now() - t0) / 1000).toFixed(1) + ' dtk.', gagal > 0),
-    ok.length ? pesan('Berhasil — terlama ' + maks('totalMs') + ' dtk. Rata-rata: baca ' + rata('bacaMs') + ' dtk, tunggu antrean tulis ' + rata('tungguMs') + ' dtk (terlama ' + maks('tungguMs') + '), tulis ' + rata('tulisMs') + ' dtk. Cache: ' + ok.filter((o) => o.cache === 'hit').length + '/' + ok.length + ' hit.') : null,
+    ok.length ? pesan('Berhasil — terlama ' + maks('totalMs') + ' dtk. Rata-rata: tunggu antrean ' + rata('tungguMs') + ' dtk (terlama ' + maks('tungguMs') + '), kerja di dalam kunci (baca + tulis + perbarui cache) ' + rata('dalamKunciMs') + ' dtk (terlama ' + maks('dalamKunciMs') + '). Cache: ' + ok.filter((o) => o.cache === 'hit').length + '/' + ok.length + ' hit.') : null,
     Object.keys(galat).map((m) => pesan(galat[m] + '× ' + m, true)),
   );
 }
