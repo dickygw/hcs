@@ -69,7 +69,7 @@ Tidak ada biaya.
 | 3 | Identitas, peran, kunci layar, kerangka navigasi | U2, U3, K6 | ✅ | `5926a53`; uji manual U3 15 menit dan Keluar ditunda ke Tahap 13 (sudah dicakup tes otomatis) |
 | 4 | Data master: sinkronisasi HCMS dan unggah TAD | A5, A6 | ✅ | `bfef398`; diuji user di HCS-dev 13-10-2026 |
 | 5 | Klaim Biaya Perdin, termasuk bagian TAD | K1–K4 | ✅ | `5a8841b`; diuji user di HCS-dev 13-10-2026 |
-| 6 | Klaim Biaya Perdin Diklat | K3 (varian Diklat) | 🟡 | |
+| 6 | Klaim Biaya Perdin Diklat | K3 (varian Diklat) | ✅ | `33a5145`; diuji user di HCS-dev 13-10-2026 |
 | 7 | Permohonan SPPD dan Tugasku | K3 (varian SPPD), A2 | ⬜ | |
 | 8 | Pemesanan Tiket Pesawat | K3 (varian Tiket) | ⬜ | |
 | 9 | Perhitungan SPPD, penguncian data, nominal setelah Selesai | A3, K4 Selesai | ⬜ | |

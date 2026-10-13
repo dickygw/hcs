@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–5 ✅; **Tahap 6** (Klaim Biaya Perdin Diklat) kode selesai, menunggu uji user di HCS-dev
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–6 ✅; **Tahap 7** berikutnya
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–5 dari 15 ✅; Tahap 6 🟡 |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–6 dari 15 ✅; Tahap 7 berikutnya |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -67,10 +67,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Uji Tahap 6 di HCS-dev (user):
-1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
-2. Dari HP dengan akun manohc.balikpapan: + Ajukan → Klaim Perdin Diklat → isi 6 langkah → Kirim → nomor KD-0001; label "Surat Pemanggilan" di form, tinjau, layar sukses, dan detail.
-3. Bila lolos: centang Tahap 6, lalu Tahap 7.
+1. Tahap 7 sesuai BUILD_PLAN.md.
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -106,3 +103,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 5 (kode): K1 daftar + filter, K2, K3 enam langkah (validasi saat kolom ditinggalkan, draf di server, unggah dengan cek isi file, foto diperkecil di perangkat, bagian TAD dengan saran tanpa rekening dan TAD belum terdaftar), K3 sukses, K4 detail (revisi, ditolak, diproses, nominal setelah Selesai), dialog batalkan, edit dan kirim ulang. 102 tes lolos (21 tes baru: kepemilikan A vs B, rekening tidak bocor, file palsu, > 5 MB, TAD sekali per Surat Tugas); simulasi alur karyawan lolos |
 | 13-10-2026 | 3 | Tahap 5 selesai: user menguji di HCS-dev tanpa error (pengajuan dengan TAD terkirim dari HP, file > 5 MB ditolak, unduh dokumen, batalkan, cekBerbagi aman) |
 | 13-10-2026 | 3 | Tahap 6 (kode): Klaim Perdin Diklat aktif di K2, nomor KD-xxxx, label Surat Pemanggilan di semua layar dan pesan server. 107 tes lolos (5 tes baru: nomor KD, label, kepemilikan dan unggah diulang); simulasi alur Diklat lolos |
+| 13-10-2026 | 3 | Tahap 6 selesai: user menguji Klaim Perdin Diklat di HCS-dev tanpa error (nomor KD-0001, label Surat Pemanggilan) |
