@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–7 ✅; **Tahap 8** (Pemesanan Tiket Pesawat) kode selesai, menunggu uji user di HCS-dev
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–8 ✅; **Tahap 9** (perhitungan SPPD) berikutnya
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–7 dari 15 ✅; Tahap 8 🟡 |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–8 dari 15 ✅; Tahap 9 berikutnya |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -70,12 +70,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Uji Tahap 8 di HCS-dev (user):
-1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
-2. **Wajib sebelum mencoba:** di editor Apps Script (akun manohc) jalankan `jalankanMigrasi` → log "0002: Menambah 5 kolom ...".
-3. HP manohc: + Ajukan → Pemesanan Tiket Pesawat → 5 langkah (Surat Tugas, Penerbangan, Hotel dan catatan, TAD, Tinjau) → Kirim → TP-0001.
-4. Laptop dicky: Tugasku → TP-0001 → rute, jadwal, dan hotel tampil.
-5. Bila lolos: centang Tahap 8, lalu Tahap 9 (perhitungan SPPD; siapkan 3 contoh perjalanan yang sudah dibayar beserta hitungan manualnya).
+1. Tahap 9: perhitungan SPPD, A3 lengkap, Selesai. Butuh dari user: 3 contoh perjalanan yang sudah dibayar beserta hitungan manual Admin SDM (angka dan aturan saja, tanpa nama atau rekening asli).
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -115,3 +110,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 7 (kode): Permohonan SPPD (SP-xxxx, 5 langkah), A2 Tugasku (tab Karyawan/TAD dengan penghitung, cari, filter status/layanan/tanggal, per halaman, penanda TAD belum terdaftar dan rekening kosong, tampilan HP berupa kartu), A3 dasar (isian, dokumen, pemohon dengan data terkunci, TAD rekening tersamar, riwayat) dengan aksi Proses, Minta revisi, Tolak. 118 tes lolos (11 tes baru); simulasi karyawan → Admin → karyawan lolos |
 | 13-10-2026 | 3 | Tahap 7 selesai: user menguji di HCS-dev tanpa error (SPPD 5 langkah, Tugasku, Proses, Minta revisi, kirim ulang). Riwayat status di detail Admin diubah menjadi tabel atas permintaan user |
 | 13-10-2026 | 3 | Tahap 8 (kode): Pemesanan Tiket Pesawat (TP-xxxx, 5 langkah: Surat Tugas, Penerbangan, Hotel dan catatan, TAD, Tinjau), migrasi 0002 (5 kolom baru di sheet pengajuan), ringkasan isian bersama untuk Tinjau/K4/A3. 125 tes lolos (7 tes baru); simulasi tiket karyawan → Admin lolos |
+| 13-10-2026 | 3 | Tahap 8 selesai: user menguji Pemesanan Tiket Pesawat di HCS-dev tanpa error (migrasi 0002 terpasang; jam penerbangan berupa isian jam atas permintaan user) |

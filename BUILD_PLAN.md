@@ -71,7 +71,7 @@ Tidak ada biaya.
 | 5 | Klaim Biaya Perdin, termasuk bagian TAD | K1–K4 | ✅ | `5a8841b`; diuji user di HCS-dev 13-10-2026 |
 | 6 | Klaim Biaya Perdin Diklat | K3 (varian Diklat) | ✅ | `33a5145`; diuji user di HCS-dev 13-10-2026 |
 | 7 | Permohonan SPPD dan Tugasku | K3 (varian SPPD), A2 | ✅ | `b30aab7`, `c7a899d`; diuji user di HCS-dev 13-10-2026 |
-| 8 | Pemesanan Tiket Pesawat | K3 (varian Tiket) | 🟡 | |
+| 8 | Pemesanan Tiket Pesawat | K3 (varian Tiket) | ✅ | `24c280b`, `7e6435c`; diuji user di HCS-dev 13-10-2026 |
 | 9 | Perhitungan SPPD, penguncian data, nominal setelah Selesai | A3, K4 Selesai | ⬜ | |
 | 10 | Deteksi duplikasi | A2, A3 (penanda) | ⬜ | |
 | 11 | Halaman Admin lainnya | A1, A4, A7, A8, A9 | ⬜ | |
