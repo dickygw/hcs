@@ -378,16 +378,31 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
 
           <section className={s.kartu}>
             <div className={s.kepalaKartu}>Riwayat status</div>
-            <div className={s.isiKartu}>
-              {[...d.riwayat].reverse().map((r, i) => (
-                <div key={i}>
-                  <b>{r.catatan === "Dikirim ulang" ? "Dikirim ulang" : <Lencana status={r.status} />}</b>{" "}
-                  <span className={s.redup}>
-                    {waktuLengkap(r.pada)} · {r.oleh}
-                  </span>
-                  {r.catatan && r.catatan !== "Dikirim ulang" && <div>{r.catatan}</div>}
-                </div>
-              ))}
+            <div className={s.gulir}>
+              <table className={s.tabel}>
+                <thead>
+                  <tr>
+                    <th>Waktu</th>
+                    <th>Status</th>
+                    <th>Oleh</th>
+                    <th>Catatan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...d.riwayat].reverse().map((r, i) => (
+                    <tr key={i}>
+                      <td className={s.redup} style={{ whiteSpace: "nowrap" }}>
+                        {waktuLengkap(r.pada)}
+                      </td>
+                      <td>
+                        <Lencana status={r.status} />
+                      </td>
+                      <td>{r.oleh}</td>
+                      <td>{r.catatan || <span className={s.redup}>-</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </section>
         </>
