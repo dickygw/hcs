@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–3 ✅; **Tahap 4** (data master: sinkronisasi HCMS dan unggah TAD) kode selesai, menunggu uji user di HCS-dev
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–4 ✅; **Tahap 5** berikutnya
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–3 dari 15 ✅; Tahap 4 🟡 |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–4 dari 15 ✅; Tahap 5 berikutnya |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -63,13 +63,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Uji Tahap 4 di HCS-dev (user):
-1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
-2. Di editor Apps Script, jalankan `isiDataDummy` sekali lagi (NIK TAD dummy kini 16 digit).
-3. Data karyawan → Sinkronisasi HCMS → unggah `contoh-dummy/HCMS_dummy_kolom_salah.xlsx` → daftar kolom bermasalah. Lalu unggah `HCMS_dummy_benar.xlsx` → ringkasan (870 baru, 3 tidak ada lagi, 5 berubah JG, 4 pindah unit) → Terapkan. Catat lama prosesnya.
-4. Koreksi JG salah satu karyawan (alasan wajib).
-5. Data TAD → Unduh template kosong (buka di Excel) → Unggah template `contoh-dummy/TAD_dummy.xlsx` → 4 baris bermasalah → Lanjut → Terapkan. Rekening tampil ••••1234.
-6. Bila lolos: centang Tahap 4, lalu Tahap 5.
+1. Tahap 5 sesuai BUILD_PLAN.md.
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -101,3 +95,4 @@ Info lingkungan HCS-dev:
 | 09-10-2026 | 3 | Uji Tahap 3: U2 tampil untuk manohc (tidak terdaftar); setelah tambahAdmin, dicky masuk ke kerangka Admin. Sisa uji: kunci layar 15 menit dan Keluar. Sesi dihentikan atas arahan user |
 | 13-10-2026 | 3 | Tahap 3 ditutup atas arahan user (tidak ada waktu uji 15 menit). Uji manual U3 dan Keluar ditunda ke Tahap 13; perilakunya sudah dicakup tes otomatis |
 | 13-10-2026 | 3 | Tahap 4 (kode): pembaca/penulis .xlsx tanpa pustaka (browser), wizard 4 langkah Sinkronisasi HCMS dan Unggah TAD, A5 dan A6 per halaman 20 baris, koreksi JG beralasan + log, indikator umur data, riwayat unggahan, template TAD kosong, file dummy di `contoh-dummy/` (`npm run buat:dummy`). 81 tes lolos (21 tes baru), simulasi tampilan lolos |
+| 13-10-2026 | 3 | Tahap 4 selesai: user menguji di HCS-dev tanpa error (kolom salah terdeteksi, sinkronisasi 897 baris diterapkan, koreksi JG, unggah TAD dengan 4 baris bermasalah, rekening tersamar, isian `=1+1` tersimpan sebagai teks) |
