@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–6 ✅; **Tahap 7** (Permohonan SPPD dan Tugasku) kode selesai, menunggu uji user di HCS-dev
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–7 ✅; **Tahap 8** (Pemesanan Tiket Pesawat) berikutnya
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–6 dari 15 ✅; Tahap 7 🟡 |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–7 dari 15 ✅; Tahap 8 berikutnya |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -69,12 +69,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Uji Tahap 7 di HCS-dev (user):
-1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
-2. HP, akun manohc.balikpapan: + Ajukan → Permohonan SPPD → 5 langkah (tanpa Bukti) → Kirim → SP-0001.
-3. Laptop, akun dicky: Tugasku → SP-0001 di tab Karyawan → buka → Proses → Minta revisi (coba tanpa catatan: ditolak) → isi catatan.
-4. HP manohc: K1 kartu oranye → detail → catatan Admin → Edit dan kirim ulang (nomor tetap).
-5. Bila lolos: centang Tahap 7, lalu Tahap 8 (butuh daftar kolom Pemesanan Tiket Pesawat dari user).
+1. Tahap 8: Pemesanan Tiket Pesawat. Butuh daftar kolom isian dari user (pertanyaan terbuka 1); bila belum ada, pakai usulan Build Plan: rute, tanggal dan waktu berangkat, tanggal dan waktu kembali, catatan.
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -112,3 +107,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 6 (kode): Klaim Perdin Diklat aktif di K2, nomor KD-xxxx, label Surat Pemanggilan di semua layar dan pesan server. 107 tes lolos (5 tes baru: nomor KD, label, kepemilikan dan unggah diulang); simulasi alur Diklat lolos |
 | 13-10-2026 | 3 | Tahap 6 selesai: user menguji Klaim Perdin Diklat di HCS-dev tanpa error (nomor KD-0001, label Surat Pemanggilan) |
 | 13-10-2026 | 3 | Tahap 7 (kode): Permohonan SPPD (SP-xxxx, 5 langkah), A2 Tugasku (tab Karyawan/TAD dengan penghitung, cari, filter status/layanan/tanggal, per halaman, penanda TAD belum terdaftar dan rekening kosong, tampilan HP berupa kartu), A3 dasar (isian, dokumen, pemohon dengan data terkunci, TAD rekening tersamar, riwayat) dengan aksi Proses, Minta revisi, Tolak. 118 tes lolos (11 tes baru); simulasi karyawan → Admin → karyawan lolos |
+| 13-10-2026 | 3 | Tahap 7 selesai: user menguji di HCS-dev tanpa error (SPPD 5 langkah, Tugasku, Proses, Minta revisi, kirim ulang). Riwayat status di detail Admin diubah menjadi tabel atas permintaan user |
