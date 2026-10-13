@@ -45,7 +45,11 @@ const ISIAN = {
 let u: ReturnType<typeof gudangUji>;
 beforeEach(() => {
   u = gudangUji();
-  u.g.tambah("jenis_layanan", [{ kode: "klaim_perdin", nama: "Klaim Biaya Perdin", awalan_nomor: "KP", aktif: "ya" }]);
+  u.g.tambah("jenis_layanan", [
+    { kode: "klaim_perdin", nama: "Klaim Biaya Perdin", awalan_nomor: "KP", aktif: "ya" },
+    { kode: "klaim_perdin_diklat", nama: "Klaim Biaya Perdin Diklat", awalan_nomor: "KD", aktif: "ya" },
+    { kode: "permohonan_sppd", nama: "Permohonan SPPD", awalan_nomor: "SP", aktif: "ya" },
+  ]);
   u.g.tambah("karyawan", [
     { nik_pendek: "P1", nama: "Rina A", prim_email: A.email, kode_job_grade: "12", position_name: "Analis", nama_unit_kerja: "Kanwil", aktif: "ya" },
     { nik_pendek: "P2", nama: "Budi B", prim_email: B.email, kode_job_grade: "8", aktif: "ya" },
@@ -57,8 +61,8 @@ beforeEach(() => {
 });
 
 /** Draf lengkap dengan dokumen wajib, siap dikirim. */
-function drafLengkap(p: Pemanggil, tad: unknown[] = []) {
-  const { nomor } = P.simpanDraf(u.g, p, { jenis: "klaim_perdin", isian: ISIAN, tad });
+function drafLengkap(p: Pemanggil, tad: unknown[] = [], jenis = "klaim_perdin") {
+  const { nomor } = P.simpanDraf(u.g, p, { jenis, isian: ISIAN, tad });
   for (const jenis of ["surat_tugas", "kuitansi_hotel", "kuitansi_transportasi", "formulir"]) P.unggahDokumen(u.g, p, { nomor, jenis, nama: jenis + ".pdf", data: b64(PDF) }, dariB64);
   return nomor;
 }
@@ -250,5 +254,55 @@ describe("Pembantu", () => {
 
   it("galat pengguna aman ditampilkan", () => {
     expect(() => P.bukaPengajuan(u.g, A, { nomor: "KP-9999" })).toThrow(GalatPengguna);
+  });
+});
+
+describe("Klaim Perdin Diklat (Tahap 6): mesin form yang sama, Surat Pemanggilan", () => {
+  const DIKLAT = "klaim_perdin_diklat";
+
+  it("nomor KD-xxxx dengan penghitung sendiri; label Surat Pemanggilan di pesan", () => {
+    drafLengkap(A); // KP-0001
+    const { nomor } = P.simpanDraf(u.g, A, { jenis: DIKLAT, isian: { ...ISIAN, no_surat_tugas: "" } });
+    expect(nomor).toBe("KD-0001");
+    expect(() => P.kirimPengajuan(u.g, A, { nomor })).toThrow("Isi nomor Surat Pemanggilan.");
+    P.simpanDraf(u.g, A, { nomor, isian: { ...ISIAN, no_surat_tugas: "SPW/087/DIKLAT/2026" } });
+    expect(() => P.kirimPengajuan(u.g, A, { nomor })).toThrow(/Unggah dokumen: Surat Pemanggilan, Formulir pengajuan/);
+    expect(P.namaDokumen(DIKLAT, "surat_tugas")).toBe("Surat Pemanggilan");
+    expect(P.namaDokumen("klaim_perdin", "surat_tugas")).toBe("Surat Tugas");
+  });
+
+  it("dapat dikirim dengan TAD; pernyataan menyebut Surat Pemanggilan", () => {
+    const nomor = drafLengkap(A, [{ id: "t1" }], DIKLAT);
+    expect(() => P.kirimPengajuan(u.g, A, { nomor })).toThrow("Centang pernyataan bahwa data TAD sesuai dengan Surat Pemanggilan.");
+    P.kirimPengajuan(u.g, A, { nomor, pernyataanTad: true });
+    expect(P.bukaPengajuan(u.g, A, { nomor })).toMatchObject({ jenis: DIKLAT, namaLayanan: "Klaim Biaya Perdin Diklat", status: "dikirim" });
+  });
+
+  it("kepemilikan diulang: Karyawan B tidak dapat menyentuh pengajuan Diklat milik A", () => {
+    const nomor = drafLengkap(A, [], DIKLAT);
+    const idDok = u.db.dokumen[0]!.id;
+    for (const fn of [
+      () => P.bukaPengajuan(u.g, B, { nomor }),
+      () => P.simpanDraf(u.g, B, { nomor, isian: ISIAN }),
+      () => P.unggahDokumen(u.g, B, { nomor, jenis: "formulir", data: b64(PDF) }, dariB64),
+      () => P.kirimPengajuan(u.g, B, { nomor }),
+      () => P.batalkanPengajuan(u.g, B, { nomor }),
+      () => P.unduhDokumen(u.g, B, { id: idDok }),
+      () => P.hapusDokumen(u.g, B, { id: idDok }),
+    ]) expect(fn).toThrow(/tidak ditemukan/);
+  });
+
+  it("unggah diulang: .pdf palsu dan > 5 MB ditolak", () => {
+    const { nomor } = P.simpanDraf(u.g, A, { jenis: DIKLAT, isian: {} });
+    expect(() => P.unggahDokumen(u.g, A, { nomor, jenis: "surat_tugas", nama: "x.pdf", data: b64(new TextEncoder().encode("bukan pdf")) }, dariB64)).toThrow("Unggah file PDF, JPG, atau PNG.");
+    const besar = new Uint8Array(P.MAKS_FILE + 1);
+    besar.set(PDF);
+    expect(() => P.unggahDokumen(u.g, A, { nomor, jenis: "surat_tugas", data: b64(besar) }, dariB64)).toThrow("melebihi 5 MB");
+    expect(u.file.size).toBe(0);
+  });
+
+  it("layanan yang belum dibangun tetap ditolak walau aktif di data master", () => {
+    expect(() => P.simpanDraf(u.g, A, { jenis: "permohonan_sppd", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
+    expect(P.LAYANAN_AKTIF).toEqual(["klaim_perdin", "klaim_perdin_diklat"]);
   });
 });

@@ -2,6 +2,10 @@
 import type { Isian } from "../../apps-script/src/pengajuan";
 
 export type { Isian };
+export { konfig, namaDokumen } from "../../apps-script/src/pengajuan";
+
+/** "Surat Tugas" → "Surat tugas" untuk judul (huruf kapital hanya di awal). */
+export const kalimat = (t: string) => t.charAt(0) + t.slice(1).toLowerCase();
 export type Status = "draf" | "dikirim" | "diproses" | "perlu_revisi" | "selesai" | "ditolak" | "dibatalkan";
 
 export interface Ringkas {
@@ -58,17 +62,11 @@ export const LABEL_STATUS: Record<Status, string> = {
 
 export const LAYANAN = [
   { kode: "klaim_perdin", awalan: "KP", nama: "Klaim Biaya Perdin", info: "Klaim uang harian dan biaya perjalanan setelah dinas selesai.", aktif: true },
-  { kode: "klaim_perdin_diklat", awalan: "KD", nama: "Klaim Perdin Diklat", info: "Klaim perjalanan untuk workshop atau diklat dengan Surat Pemanggilan.", aktif: false },
+  { kode: "klaim_perdin_diklat", awalan: "KD", nama: "Klaim Perdin Diklat", info: "Klaim perjalanan untuk workshop atau diklat dengan Surat Pemanggilan.", aktif: true },
   { kode: "permohonan_sppd", awalan: "SP", nama: "Permohonan SPPD", info: "Ajukan SPPD sebelum berangkat berdasarkan Surat Tugas.", aktif: false },
   { kode: "pemesanan_tiket", awalan: "TP", nama: "Pemesanan Tiket Pesawat", info: "Minta Admin SDM memesankan tiket sesuai rute dan tanggal tugas.", aktif: false },
 ];
 
-export const NAMA_DOKUMEN: Record<string, string> = {
-  surat_tugas: "Surat Tugas",
-  kuitansi_hotel: "Kuitansi hotel",
-  kuitansi_transportasi: "Kuitansi transportasi",
-  formulir: "Formulir pengajuan",
-};
 export const LABEL_MODA: Record<string, string> = { pesawat: "Pesawat", kapal: "Kapal", kereta: "Kereta", darat: "Darat" };
 
 const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];

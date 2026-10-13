@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import s from "../komponen/pengajuan.module.css";
 import ui from "../komponen/ui.module.css";
-import { dariBase64, LABEL_MODA, LABEL_STATUS, NAMA_DOKUMEN, rentang, rupiah, tanggal, ukuran, waktuLengkap, waktuPendek, type Detail, type Status } from "../pengajuan";
+import { dariBase64, konfig, LABEL_MODA, LABEL_STATUS, namaDokumen, rentang, rupiah, tanggal, ukuran, waktuLengkap, waktuPendek, type Detail, type Status } from "../pengajuan";
 import { panggil } from "../server";
 import { unduh } from "../unggah";
 
@@ -27,7 +27,7 @@ function Kembali({ onKlik, judul }: { onKlik: () => void; judul: string }) {
 }
 
 /** K3 sukses kirim. */
-export function Terkirim(p: { nomor: string; namaLayanan: string; noSuratTugas: string; onLihat: () => void; onBeranda: () => void }) {
+export function Terkirim(p: { nomor: string; jenis: string; namaLayanan: string; noSuratTugas: string; onLihat: () => void; onBeranda: () => void }) {
   return (
     <div className={s.layar}>
       <div className={s.sukses}>
@@ -42,7 +42,7 @@ export function Terkirim(p: { nomor: string; namaLayanan: string; noSuratTugas: 
           <dl className={s.ringkas}>
             <dt>Jenis</dt>
             <dd>{p.namaLayanan}</dd>
-            <dt>No. ST</dt>
+            <dt>{konfig(p.jenis).singkat}</dt>
             <dd>{p.noSuratTugas}</dd>
             <dt>Status</dt>
             <dd>
@@ -198,7 +198,7 @@ export default function DetailPengajuan(p: { nomor: string; onKembali: (berubah:
 
             {d.tad.length > 0 && (
               <section className={s.blok}>
-                <div className={s.kepalaBlok}>TAD dalam Surat Tugas ini ({d.tad.length})</div>
+                <div className={s.kepalaBlok}>TAD dalam {konfig(d.jenis).surat} ini ({d.tad.length})</div>
                 {d.tad.map((t) => (
                   <div key={t.id} className={s.teksKecil}>
                     <b>{t.nama}</b> · {[t.nik, t.vendor].filter(Boolean).join(" · ") || "data belum lengkap"}
@@ -213,7 +213,7 @@ export default function DetailPengajuan(p: { nomor: string; onKembali: (berubah:
                 {d.dokumen.map((f) => (
                   <div key={f.id} className={s.barisNominal}>
                     <span>
-                      {NAMA_DOKUMEN[f.jenis]} · {ukuran(f.ukuran)}
+                      {namaDokumen(d.jenis, f.jenis)} · {ukuran(f.ukuran)}
                     </span>
                     <button type="button" className={s.tautan} onClick={() => void unduhDok(f.id)}>
                       Unduh

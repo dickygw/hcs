@@ -41,8 +41,21 @@ const PILIHAN: Partial<Record<keyof Isian, readonly string[]>> = {
   moda_transportasi: ["pesawat", "kapal", "kereta", "darat"],
   kendaraan_dinas: ["ya", "tidak"],
 };
-/** Layanan yang sudah dibangun. Tahap berikutnya menambah layanan lain ke daftar ini. */
-export const LAYANAN_AKTIF: readonly string[] = ["klaim_perdin"];
+/**
+ * Konfigurasi per jenis layanan (PRD 5.1): satu mesin form, beda label surat dasar.
+ * Klaim Perdin Diklat memakai Nomor Surat Pemanggilan Workshop/Diklat, disimpan di kolom no_surat_tugas.
+ * Layanan yang belum dibangun tidak ada di sini sehingga ditolak server.
+ */
+export const KONFIG_LAYANAN: Readonly<Record<string, { surat: string; singkat: string }>> = {
+  klaim_perdin: { surat: "Surat Tugas", singkat: "No. ST" },
+  klaim_perdin_diklat: { surat: "Surat Pemanggilan", singkat: "No. Surat Pemanggilan" },
+};
+export const LAYANAN_AKTIF: readonly string[] = Object.keys(KONFIG_LAYANAN);
+export const konfig = (jenis: string) => KONFIG_LAYANAN[jenis] ?? KONFIG_LAYANAN.klaim_perdin!;
+
+const NAMA_DOKUMEN: Record<string, string> = { kuitansi_hotel: "Kuitansi hotel", kuitansi_transportasi: "Kuitansi transportasi", formulir: "Formulir pengajuan" };
+/** Nama dokumen untuk layar; dokumen surat dasar mengikuti jenis layanan. */
+export const namaDokumen = (jenis: string, kode: string) => (kode === "surat_tugas" ? konfig(jenis).surat : (NAMA_DOKUMEN[kode] ?? kode));
 export const MAKS_TAD = 20;
 export const MAKS_FILE = 5 * 1024 * 1024;
 
@@ -71,10 +84,11 @@ function tanggalSah(t: string) {
 }
 
 /** Galat per kolom; kosong = lengkap. Pesan mengikuti Design Brief 8. */
-export function periksaIsian(o: Isian): Partial<Record<keyof Isian, string>> {
+export function periksaIsian(o: Isian, jenis = "klaim_perdin"): Partial<Record<keyof Isian, string>> {
   const g: Partial<Record<keyof Isian, string>> = {};
-  if (!o.no_surat_tugas) g.no_surat_tugas = "Isi nomor Surat Tugas.";
-  else if (o.no_surat_tugas.length < 3 || !/^[A-Za-z0-9./\-_ ]+$/.test(o.no_surat_tugas)) g.no_surat_tugas = "Nomor Surat Tugas hanya berisi huruf, angka, titik, garis miring, dan tanda hubung.";
+  const surat = konfig(jenis).surat;
+  if (!o.no_surat_tugas) g.no_surat_tugas = `Isi nomor ${surat}.`;
+  else if (o.no_surat_tugas.length < 3 || !/^[A-Za-z0-9./\-_ ]+$/.test(o.no_surat_tugas)) g.no_surat_tugas = `Nomor ${surat} hanya berisi huruf, angka, titik, garis miring, dan tanda hubung.`;
   if (o.kota_tujuan.length < 2) g.kota_tujuan = "Isi kota atau unit tujuan.";
   if (!o.tgl_berangkat) g.tgl_berangkat = "Isi tanggal berangkat.";
   if (!o.tgl_kembali) g.tgl_kembali = "Isi tanggal kembali.";
@@ -266,16 +280,16 @@ export function kirimPengajuan(g: Gudang, p: Pemanggil, arg: unknown) {
     const { i, x } = cariMilik(g, a.nomor, p);
     if (!BISA_DIEDIT.includes(x.status)) throw salah("Pengajuan ini sudah dikirim.");
     const isian = bersihkanIsian(x);
-    const galat = periksaIsian(isian);
+    const galat = periksaIsian(isian, x.jenis_layanan);
     if (Object.keys(galat).length) throw salah("Lengkapi isian: " + Object.values(galat).join(" "));
     const ada = new Set(g.baca("dokumen").filter((d) => d.nomor_pengajuan === x.nomor).map((d) => d.jenis));
     const kurang = dokumenWajib(isian).filter((j) => !ada.has(j));
-    if (kurang.length) throw salah("Unggah dokumen: " + kurang.map((j) => NAMA_DOKUMEN[j]).join(", ") + ".");
+    if (kurang.length) throw salah("Unggah dokumen: " + kurang.map((j) => namaDokumen(x.jenis_layanan, j)).join(", ") + ".");
 
     const kini = g.kini();
     const semuaTad = g.baca("pengajuan_tad");
     const milik = semuaTad.filter((t) => t.nomor_pengajuan === x.nomor && t.aktif === "ya");
-    if (milik.length && a.pernyataanTad !== true) throw salah("Centang pernyataan bahwa data TAD sesuai dengan Surat Tugas.");
+    if (milik.length && a.pernyataanTad !== true) throw salah(`Centang pernyataan bahwa data TAD sesuai dengan ${konfig(x.jenis_layanan).surat}.`);
     // PRD 5.4: satu TAD hanya sekali per Nomor Surat Tugas; diperiksa ulang di dalam kunci (INPUT-05).
     const terpakai = tadTerpakai(g, isian.no_surat_tugas, x.nomor);
     const master = new Map(g.baca("tad").map((t) => [t.id, t]));
@@ -318,7 +332,6 @@ export function batalkanPengajuan(g: Gudang, p: Pemanggil, arg: unknown) {
 // ---------------------------------------------------------------------------
 // Baca: daftar (K1) dan detail (K4) — satu panggilan per layar (PRD 9.1 #3)
 // ---------------------------------------------------------------------------
-const NAMA_DOKUMEN: Record<string, string> = { surat_tugas: "Surat Tugas", kuitansi_hotel: "Kuitansi hotel", kuitansi_transportasi: "Kuitansi transportasi", formulir: "Formulir pengajuan" };
 
 function catatanTerakhir(riwayat: Baris<"riwayat_status">[], nomor: string) {
   return riwayat.filter((r) => r.nomor_pengajuan === nomor).sort((a, b) => a.pada.localeCompare(b.pada));

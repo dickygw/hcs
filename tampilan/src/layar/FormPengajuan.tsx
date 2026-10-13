@@ -3,11 +3,11 @@ import { dokumenWajib, periksaIsian } from "../../../apps-script/src/pengajuan";
 import s from "../komponen/pengajuan.module.css";
 import ui from "../komponen/ui.module.css";
 import { inisial } from "../jenis";
-import { jam, LABEL_MODA, LAYANAN, NAMA_DOKUMEN, rentang, siapkanFile, ukuran, type Detail, type Dokumen, type Isian, type Tad } from "../pengajuan";
+import { jam, kalimat, konfig, LABEL_MODA, LAYANAN, namaDokumen, rentang, siapkanFile, ukuran, type Detail, type Dokumen, type Isian, type Tad } from "../pengajuan";
 import { panggil } from "../server";
 
 const KOSONG: Isian = { no_surat_tugas: "", kota_tujuan: "", tgl_berangkat: "", tgl_kembali: "", menginap: "", jarak: "", moda_transportasi: "", kendaraan_dinas: "" };
-const LANGKAH = ["Surat tugas", "Perjalanan", "Transportasi", "TAD", "Bukti", "Tinjau dan kirim"];
+const LANGKAH = ["Surat dasar", "Perjalanan", "Transportasi", "TAD", "Bukti", "Tinjau dan kirim"];
 /** Isian yang diperiksa per langkah saat Lanjut ditekan. */
 const ISIAN_LANGKAH: (keyof Isian)[][] = [["no_surat_tugas"], ["kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak"], ["moda_transportasi", "kendaraan_dinas"], [], [], []];
 
@@ -63,6 +63,7 @@ export function PilihLayanan(p: { onPilih: (kode: string) => void; onTutup: () =
  */
 export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup: (perluMuatUlang: boolean) => void; onTerkirim: (nomor: string, noSuratTugas: string) => void }) {
   const layanan = LAYANAN.find((l) => l.kode === p.jenis)!;
+  const { surat, singkat } = konfig(p.jenis); // Surat Tugas atau Surat Pemanggilan (PRD 5.1)
   const [langkah, setLangkah] = useState(0);
   const [isian, setIsian] = useState<Isian>(p.awal?.isian ?? KOSONG);
   const [disentuh, setDisentuh] = useState<Set<string>>(new Set());
@@ -77,7 +78,7 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
   const antrean = useRef<Promise<unknown>>(Promise.resolve());
   const atas = useRef<HTMLDivElement>(null);
 
-  const galatIsian = periksaIsian(isian);
+  const galatIsian = periksaIsian(isian, p.jenis);
   const ubah = (k: keyof Isian, v: string) => setIsian((x) => ({ ...x, [k]: v, ...(k === "menginap" && v === "ya" ? { jarak: "" } : {}) }));
   const tinggalkan = (k: string) => setDisentuh((d) => new Set(d).add(k));
   const pesan = (k: keyof Isian) => (disentuh.has(k) ? galatIsian[k] : undefined);
@@ -117,10 +118,10 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
       document.getElementById("isian-" + salah[0])?.focus();
       return;
     }
-    if (langkah === 0 && !dokumen.some((d) => d.jenis === "surat_tugas")) return setGalat("Unggah dokumen Surat Tugas.");
+    if (langkah === 0 && !dokumen.some((d) => d.jenis === "surat_tugas")) return setGalat(`Unggah dokumen ${surat}.`);
     if (langkah === 4) {
       const kurang = dokumenWajib(isian).filter((j) => !dokumen.some((d) => d.jenis === j));
-      if (kurang.length) return setGalat("Unggah " + kurang.map((j) => NAMA_DOKUMEN[j]!.toLowerCase()).join(", ") + ".");
+      if (kurang.length) return setGalat("Unggah " + kurang.map((j) => namaDokumen(p.jenis, j).toLowerCase()).join(", ") + ".");
     }
     // Tampilan optimistis (PRD 9.1 #6): pindah langkah dulu, draf disimpan di latar belakang.
     ke(langkah + 1);
@@ -128,7 +129,7 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
   }
 
   async function kirim() {
-    if (tad.length && !pernyataan) return setGalat("Centang pernyataan bahwa data TAD sesuai dengan Surat Tugas.");
+    if (tad.length && !pernyataan) return setGalat(`Centang pernyataan bahwa data TAD sesuai dengan ${surat}.`);
     setMengirim(true);
     setGalat("");
     try {
@@ -172,12 +173,12 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
 
         {langkah === 0 && (
           <>
-            <h2 className={s.judulLangkah}>Surat tugas</h2>
-            <Kolom id="no_surat_tugas" label="Nomor Surat Tugas" bantuan="Tertera di kanan atas Surat Tugas." galat={pesan("no_surat_tugas")}>
+            <h2 className={s.judulLangkah}>{kalimat(surat)}</h2>
+            <Kolom id="no_surat_tugas" label={`Nomor ${surat}`} bantuan={`Tertera di kanan atas ${surat}.`} galat={pesan("no_surat_tugas")}>
               <input id="isian-no_surat_tugas" className={s.isian} value={isian.no_surat_tugas} maxLength={60} autoComplete="off" aria-invalid={!!pesan("no_surat_tugas")}
                 onChange={(e) => ubah("no_surat_tugas", e.target.value)} onBlur={() => tinggalkan("no_surat_tugas")} />
             </Kolom>
-            <Unggah jenis="surat_tugas" label="Dokumen Surat Tugas" dokumen={dokumen} setDokumen={setDokumen} nomor={pastikanNomor} />
+            <Unggah jenis="surat_tugas" label={`Dokumen ${surat}`} dokumen={dokumen} setDokumen={setDokumen} nomor={pastikanNomor} />
           </>
         )}
 
@@ -214,7 +215,7 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
           </>
         )}
 
-        {langkah === 3 && <BagianTad tad={tad} setTad={setTad} terpakai={terpakai} />}
+        {langkah === 3 && <BagianTad surat={surat} tad={tad} setTad={setTad} terpakai={terpakai} />}
 
         {langkah === 4 && (
           <>
@@ -228,9 +229,9 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
         {langkah === 5 && (
           <>
             <h2 className={s.judulLangkah}>Tinjau dan kirim</h2>
-            <Blok judul="Surat tugas dan perjalanan" onUbah={() => ke(0)}>
+            <Blok judul={`${kalimat(surat)} dan perjalanan`} onUbah={() => ke(0)}>
               <dl className={s.ringkas}>
-                <dt>No. ST</dt>
+                <dt>{singkat}</dt>
                 <dd>{isian.no_surat_tugas}</dd>
                 <dt>Tujuan</dt>
                 <dd>{isian.kota_tujuan}</dd>
@@ -245,14 +246,14 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
               </dl>
             </Blok>
             <Blok judul={`Dokumen (${dokumen.length})`} onUbah={() => ke(4)}>
-              <span className={s.teksKecil}>{dokumen.map((d) => NAMA_DOKUMEN[d.jenis]).join(", ")}</span>
+              <span className={s.teksKecil}>{dokumen.map((d) => namaDokumen(p.jenis, d.jenis)).join(", ")}</span>
             </Blok>
-            <Blok judul={`TAD dalam Surat Tugas ini (${tad.length})`} onUbah={() => ke(3)}>
+            <Blok judul={`TAD dalam ${surat} ini (${tad.length})`} onUbah={() => ke(3)}>
               <span className={s.teksKecil}>{tad.length ? tad.map((t) => [t.nama, t.vendor].filter(Boolean).join(" · ")).join("; ") : "Tidak ada TAD."}</span>
               {tad.length > 0 && (
                 <label className={s.centang}>
                   <input type="checkbox" checked={pernyataan} onChange={(e) => setPernyataan(e.target.checked)} />
-                  Data TAD yang saya tambahkan sesuai dengan Surat Tugas.
+                  Data TAD yang saya tambahkan sesuai dengan {surat}.
                 </label>
               )}
             </Blok>
@@ -432,7 +433,7 @@ function Unggah(p: { jenis: string; label: string; dokumen: Dokumen[]; setDokume
 }
 
 /** Langkah 4: TAD dalam Surat Tugas ini (PRD 5.7). Saran dicari di perangkat; tanpa rekening. */
-function BagianTad(p: { tad: TadDraf[]; setTad: (f: (t: TadDraf[]) => TadDraf[]) => void; terpakai: Record<string, string> }) {
+function BagianTad(p: { surat: string; tad: TadDraf[]; setTad: (f: (t: TadDraf[]) => TadDraf[]) => void; terpakai: Record<string, string> }) {
   const [semua, setSemua] = useState<Tad[] | null>(null);
   const [galatMuat, setGalatMuat] = useState("");
   const [cari, setCari] = useState("");
@@ -464,8 +465,8 @@ function BagianTad(p: { tad: TadDraf[]; setTad: (f: (t: TadDraf[]) => TadDraf[])
     <>
       <div className={s.kolom}>
         <span className={s.labelTad}>Bagian TAD</span>
-        <h2 className={s.judulLangkah}>TAD dalam Surat Tugas ini</h2>
-        <span className={s.teksKecil}>Tambahkan hanya TAD yang namanya tercantum di Surat Tugas. Lewati langkah ini bila tidak ada TAD.</span>
+        <h2 className={s.judulLangkah}>TAD dalam {p.surat} ini</h2>
+        <span className={s.teksKecil}>Tambahkan hanya TAD yang namanya tercantum di {p.surat}. Lewati langkah ini bila tidak ada TAD.</span>
       </div>
       <div className={s.kotakTad}>
         {!baru ? (

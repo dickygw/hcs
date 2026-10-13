@@ -89,6 +89,7 @@ export default function Karyawan(p: { pengguna: Pengguna; onKeluar: () => void }
       ) : layar.id === "terkirim" ? (
         <Terkirim
           nomor={layar.nomor}
+          jenis={layar.jenis}
           namaLayanan={LAYANAN.find((l) => l.kode === layar.jenis)?.nama ?? ""}
           noSuratTugas={layar.noSuratTugas}
           onLihat={() => setLayar({ id: "detail", nomor: layar.nomor })}
