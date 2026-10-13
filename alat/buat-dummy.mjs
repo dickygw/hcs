@@ -45,6 +45,12 @@ for (let i = 31; i <= 900; i++) {
     position_name: jg >= 14 ? "Kepala Bagian" : jg >= 11 ? "Manajer" : "Staf", kode_unit_kerja: kode, nama_unit_kerja: unit, branch_name: branch, dep_name: dep,
   });
 }
+// Akun unit sebagai karyawan agar tampilan karyawan dapat diuji di HCS-dev (hanya file dummy).
+karyawan.push({
+  nik_pendek: "P90999", nama: "Akun Uji Unit", prim_email: "manohc.balikpapan@pegadaian.co.id", emp_type_name: "Pegawai Tetap", kode_job_grade: "12",
+  job_grade_def: "12", position_type_name: "Struktural", position_name: "Manajer", kode_unit_kerja: "KW04", nama_unit_kerja: "Kantor Wilayah IV Balikpapan",
+  branch_name: "Kanwil IV Balikpapan", dep_name: "Bagian SDM",
+});
 const barisHcms = karyawan.map((k) => [...Object.values(KOLOM_HCMS).map((f) => k[f] ?? ""), ...LAIN.map(isiLain)]);
 simpan("HCMS_dummy_benar.xlsx", "Export HCMS", [JUDUL_HCMS, ...barisHcms]);
 

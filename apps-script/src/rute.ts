@@ -1,7 +1,8 @@
 import { GalatPengguna, type Rute } from "./akses";
-import { baca, denganKunci, gantiSemua, idBaru, sekarang, tambah, ubahBaris } from "./data";
+import { baca, denganKunci, gantiSemua, gudang, idBaru, sekarang, tambah, ubahBaris } from "./data";
 import { dekripsi, enkripsi, kunciTersimpan, nonceBaru, samarkan } from "./enkripsi";
 import { daftarKaryawan, daftarTad, isianKoreksiJg, sinkronHcms, sinkronTad, umurData } from "./master";
+import * as P from "./pengajuan";
 import { profilDari } from "./peran";
 import { sesiSkrip } from "./sesi";
 
@@ -128,4 +129,20 @@ export const RUTE: Readonly<Record<string, Rute>> = {
         return { ...jumlah, dilewati: r.masalah.length };
       }),
   },
+
+  // --- Karyawan: pengajuan (K1–K4). Kepemilikan diperiksa di pengajuan.ts (AKSES-02).
+  pengajuanSaya: { peran: ["karyawan"], jalankan: (_a, p) => P.pengajuanSaya(gudang(), p) },
+  bukaPengajuan: { peran: ["karyawan"], jalankan: (a, p) => P.bukaPengajuan(gudang(), p, a) },
+  /** Daftar saran TAD tanpa rekening, dikirim sekali lalu dicari di perangkat (PRD 5.7, 9.1 #5). */
+  saranTad: { peran: ["karyawan"], jalankan: () => P.saranTad(gudang()) },
+  simpanDraf: { peran: ["karyawan"], jalankan: (a, p) => P.simpanDraf(gudang(), p, a) },
+  unggahDokumen: {
+    peran: ["karyawan"],
+    // ponytail: base64 → byte di JavaScript (±1 dtk untuk 5 MB); pakai Blob langsung bila terasa lambat.
+    jalankan: (a, p) => P.unggahDokumen(gudang(), p, a, (s) => Uint8Array.from(Utilities.base64Decode(s), (b) => (b + 256) % 256)),
+  },
+  hapusDokumen: { peran: ["karyawan"], jalankan: (a, p) => P.hapusDokumen(gudang(), p, a) },
+  unduhDokumen: { peran: ["karyawan"], jalankan: (a, p) => P.unduhDokumen(gudang(), p, a) },
+  kirimPengajuan: { peran: ["karyawan"], jalankan: (a, p) => P.kirimPengajuan(gudang(), p, a) },
+  batalkanPengajuan: { peran: ["karyawan"], jalankan: (a, p) => P.batalkanPengajuan(gudang(), p, a) },
 };

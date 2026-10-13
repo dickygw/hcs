@@ -5,6 +5,7 @@
  * - teks diawali = + - @ dinetralkan sebelum ditulis (INPUT-02);
  * - ID spreadsheet dibaca dari Script Properties, tidak pernah dari browser (WS-06).
  */
+import type { Gudang } from "./pengajuan";
 import { TABEL, type Baris, type NamaTabel, type Spreadsheet } from "./skema";
 
 // ---------------------------------------------------------------------------
@@ -41,6 +42,7 @@ const POTONGAN = 90_000;
 const CACHE_DETIK = 21_600; // 6 jam; setiap penulisan lewat modul ini membuang cache tabelnya
 
 export const KUNCI_ID: Record<Spreadsheet, string> = { Master: "ID_SS_MASTER", Data: "ID_SS_DATA", Log: "ID_SS_LOG" };
+export const KUNCI_FOLDER = { data: "ID_FOLDER_DATA", dokumen: "ID_FOLDER_DOKUMEN", backup: "ID_FOLDER_BACKUP" } as const;
 
 function sheet_(tabel: NamaTabel) {
   const id = PropertiesService.getScriptProperties().getProperty(KUNCI_ID[TABEL[tabel].spreadsheet]);
@@ -126,3 +128,35 @@ export function denganKunci<T>(fn: () => T): T {
 
 export const sekarang = () => new Date().toISOString();
 export const idBaru = () => Utilities.getUuid();
+
+// ---------------------------------------------------------------------------
+// Dokumen di Drive (FILE-03, FILE-05): folder privat Dokumen/[tahun]/[nomor]/, nama acak, tanpa berbagi.
+// ---------------------------------------------------------------------------
+function subfolder_(induk: GoogleAppsScript.Drive.Folder, nama: string) {
+  const ada = induk.getFoldersByName(nama);
+  return ada.hasNext() ? ada.next() : induk.createFolder(nama);
+}
+
+const fileDokumen: Gudang["file"] = {
+  simpan(nomor, namaAcak, tipe, isi) {
+    const id = PropertiesService.getScriptProperties().getProperty(KUNCI_FOLDER.dokumen);
+    if (!id) throw new Error("Folder dokumen belum dibuat. Jalankan jalankanMigrasi.");
+    const folder = subfolder_(subfolder_(DriveApp.getFolderById(id), String(new Date().getFullYear())), nomor);
+    return folder.createFile(Utilities.newBlob(Array.from(isi, (b) => (b > 127 ? b - 256 : b)), tipe, namaAcak)).getId();
+  },
+  hapus: (idFile) => DriveApp.getFileById(idFile).setTrashed(true),
+  ambil: (idFile) => Utilities.base64Encode(DriveApp.getFileById(idFile).getBlob().getBytes()),
+};
+
+/** Gudang Apps Script untuk pengajuan.ts. */
+export function gudang(): Gudang {
+  return {
+    baca, tambah, ubah: ubahBaris, gantiSemua, kunci: denganKunci, kini: sekarang, id: idBaru, file: fileDokumen,
+    nomorBerikut(awalan) {
+      const props = PropertiesService.getScriptProperties();
+      const n = Number(props.getProperty("NOMOR_" + awalan) || 0) + 1;
+      props.setProperty("NOMOR_" + awalan, String(n));
+      return n;
+    },
+  };
+}

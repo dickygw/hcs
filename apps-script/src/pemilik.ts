@@ -4,11 +4,11 @@
  * wajib diawali hanyaPemilik() (diperiksa cek:keamanan).
  */
 import { DOMAIN } from "./akses";
-import { baca, denganKunci, gantiSemua, idBaru, sekarang } from "./data";
+import { baca, denganKunci, gantiSemua, idBaru, KUNCI_FOLDER, sekarang } from "./data";
 import { buatDataDummy } from "./dummy";
 import { enkripsi, KUNCI_PROPERTI, kunciAcakBaru, kunciTersimpan, nonceBaru } from "./enkripsi";
 import { lingkungan } from "./lingkungan";
-import { jalankanSemua, KUNCI_FOLDER } from "./migrasi";
+import { jalankanSemua } from "./migrasi";
 
 function hanyaPemilik() {
   const aktif = Session.getActiveUser().getEmail();

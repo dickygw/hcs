@@ -2,11 +2,9 @@
  * Perubahan struktur data hanya lewat migrasi bernomor (WS-13). Migrasi yang sudah terpasang dicatat
  * di Script Properties sehingga aman dijalankan berulang. Ringkasan bahasa sederhana untuk AI-05.
  */
-import { KUNCI_ID } from "./data";
+import { KUNCI_FOLDER, KUNCI_ID } from "./data";
 import { lingkungan } from "./lingkungan";
 import { TABEL, type Spreadsheet } from "./skema";
-
-export const KUNCI_FOLDER = { data: "ID_FOLDER_DATA", dokumen: "ID_FOLDER_DOKUMEN", backup: "ID_FOLDER_BACKUP" } as const;
 
 interface Migrasi {
   nomor: string;

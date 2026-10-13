@@ -44,9 +44,9 @@ export async function bacaFile(file: File, kolom: Record<string, string>): Promi
   }
 }
 
-/** Unduh file buatan browser (template kosong). */
-export function unduh(namaFile: string, isi: Uint8Array) {
-  const url = URL.createObjectURL(new Blob([isi as BlobPart], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+/** Unduh file dari memori (template kosong, dokumen pengajuan). */
+export function unduh(namaFile: string, isi: Uint8Array, tipe = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+  const url = URL.createObjectURL(new Blob([isi as BlobPart], { type: tipe }));
   const a = document.createElement("a");
   a.href = url;
   a.download = namaFile;

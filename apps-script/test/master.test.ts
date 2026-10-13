@@ -198,11 +198,11 @@ describe("Akses A5/A6 (AKSES-01)", () => {
     }
   });
 
-  it("setiap rute selain mulai/keluar mewajibkan sesi dan hanya untuk Admin", () => {
+  it("setiap rute selain mulai/keluar mewajibkan sesi dan hanya untuk satu peran", () => {
     for (const [nama, r] of Object.entries(RUTE)) {
       if (nama === "mulai" || nama === "keluar") continue;
       expect(r.tanpaSesi, nama).toBeFalsy();
-      expect(r.peran, nama).toEqual(["admin"]);
+      expect([["admin"], ["karyawan"]], nama).toContainEqual(r.peran);
     }
   });
 });
