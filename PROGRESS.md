@@ -3,7 +3,7 @@
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
 **Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–8 ✅; **Tahap 9** (perhitungan SPPD) kode selesai, menunggu uji user di HCS-dev
-**Terakhir diperbarui:** 13-10-2026
+**Terakhir diperbarui:** 13-10-2026 (sesi dijeda, lanjut 14-10-2026 dengan revisi dari user)
 
 ## Dokumen acuan yang berlaku
 | Dokumen | Versi | Status |
@@ -75,6 +75,8 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
+**Sesi berikutnya (dimulai 14-10-2026):** user membawa **revisi tampilan, database, dan workflow pengajuan**. Kumpulkan dan rinci revisi dulu, putuskan dampaknya (migrasi bernomor bila struktur sheet berubah, WS-13), baru lanjut uji Tahap 9 di bawah dan Tahap 10. Kode Tahap 9 sudah di commit `a5008b3` tetapi **belum diuji user** di HCS-dev (migrasi 0003 belum dijalankan).
+
 Uji Tahap 9 di HCS-dev (user):
 1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
 2. **Wajib:** editor Apps Script (akun manohc) → `jalankanMigrasi` → log "0003: Menambah 3 kolom ...".
@@ -125,3 +127,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 8 selesai: user menguji Pemesanan Tiket Pesawat di HCS-dev tanpa error (migrasi 0002 terpasang; jam penerbangan berupa isian jam atas permintaan user) |
 | 13-10-2026 | 3 | Tahap 9 (kode): mesin hitung SPPD (cocok dengan contoh daftar pembayaran user: 1.230.000, 900.000, 630.000, 820.000, 420.000, 125.000, 2.230.000), panel perhitungan A3 dengan pratinjau langsung, at cost, alasan wajib, lengkapi rekening TAD, Selesai nonaktif bila rekening kosong, hitung ulang di server, rincian K4 setelah Selesai tanpa tarif, ekspor Daftar Pembayaran SPPD (xlsx), migrasi 0003 (kegiatan, rincian_hitung, disetujui_pada). 151 tes lolos (26 tes baru); simulasi Admin → karyawan lolos. Gambar daftar pembayaran asli dari user tidak disimpan (hanya struktur dan aturan) |
 | 13-10-2026 | 3 | Tahap 9: konfirmasi Admin SDM (sewa rumah dan kali jalan sesuai); tambah Cetak PDF daftar pembayaran untuk persetujuan atasan tanpa rekening. 152 tes lolos; tata letak cetak diperiksa dengan Chrome |
+| 13-10-2026 | 3 | Sesi dijeda atas arahan user. Berikutnya: revisi tampilan, database, dan workflow pengajuan dari user, lalu uji Tahap 9 |
