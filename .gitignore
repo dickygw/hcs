@@ -25,3 +25,4 @@ Thumbs.db
 
 # Token login clasp (DATA-03)
 .clasprc.json
+!apps-script/test/contoh/*.xlsx

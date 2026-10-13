@@ -1,0 +1,339 @@
+/* A5 Data karyawan, A6 Data TAD, dan wizard unggah (mockup A5). */
+
+.halaman {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.alat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.alat form {
+  flex: 1;
+  min-width: 220px;
+  max-width: 420px;
+}
+.cari {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-control);
+  background: #fff;
+  font: 400 14px var(--font-core);
+  color: var(--neutral-900);
+}
+.cari:focus,
+.isian:focus {
+  outline: 3px solid var(--green-300);
+  outline-offset: 1px;
+}
+.kanan {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Indikator umur data (PRD 6.2). */
+.umur {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--green-200);
+  background: var(--green-50);
+  font: 400 14px/1.4 var(--font-core);
+  color: var(--neutral-700);
+}
+.umur::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--pgd-green);
+}
+.umur b {
+  color: var(--green-700);
+}
+.kuning {
+  background: var(--gold-50);
+  border-color: var(--gold-200);
+}
+.kuning::before {
+  background: var(--pgd-gold);
+}
+.kuning b {
+  color: var(--pgd-forest);
+}
+.merah {
+  background: var(--status-danger-soft);
+  border-color: #f3c7c2;
+}
+.merah::before {
+  background: #c62828;
+}
+.merah b {
+  color: #c62828;
+}
+
+.kartu {
+  background: #fff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.kepalaKartu {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 600 15px var(--font-core);
+  color: var(--pgd-forest);
+}
+.gulir {
+  overflow-x: auto;
+}
+
+.tabel {
+  width: 100%;
+  border-collapse: collapse;
+  font: 400 14px var(--font-core);
+  font-variant-numeric: tabular-nums;
+  color: var(--neutral-900);
+}
+.tabel th {
+  height: 40px;
+  padding: 0 12px;
+  background: var(--neutral-50);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--neutral-700);
+  text-align: left;
+  white-space: nowrap;
+}
+.tabel td {
+  height: 44px;
+  padding: 6px 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+.tabel th:first-child,
+.tabel td:first-child {
+  padding-left: 20px;
+}
+.redup {
+  color: var(--neutral-600);
+}
+.baris_nonaktif td {
+  color: var(--neutral-500);
+}
+
+.lencana {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font: 600 12px/1.5 var(--font-core);
+  white-space: nowrap;
+  background: var(--green-50);
+  color: var(--green-700);
+}
+.lencanaAbu {
+  background: var(--neutral-100);
+  color: var(--neutral-600);
+}
+.lencanaEmas {
+  background: var(--gold-50);
+  color: var(--pgd-forest);
+}
+
+.tautan {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: 600 14px var(--font-core);
+  color: var(--green-700);
+}
+.tautan:hover {
+  text-decoration: underline;
+}
+
+.bawahTabel {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font: 400 13px var(--font-core);
+  color: var(--neutral-600);
+}
+
+.galat {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--status-danger-soft);
+  border: 1px solid #f3c7c2;
+  color: #c62828;
+  font: 400 14px/1.5 var(--font-core);
+}
+.info {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--border-subtle);
+  font: 400 14px/1.5 var(--font-core);
+  color: var(--neutral-700);
+}
+.info b {
+  color: var(--neutral-900);
+}
+
+/* --- Wizard (mockup A5 langkah 3) */
+.jejak {
+  font: 400 13px var(--font-core);
+  color: var(--neutral-600);
+}
+.langkah {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.langkah div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font: 400 13px var(--font-core);
+  color: var(--neutral-600);
+}
+.langkah div::before {
+  content: "";
+  height: 4px;
+  border-radius: 2px;
+  background: var(--neutral-200);
+}
+.langkah .selesai::before {
+  background: var(--pgd-green);
+}
+.langkah .kini {
+  font-weight: 600;
+  color: var(--pgd-forest);
+}
+
+.ringkasan {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (min-width: 1024px) {
+  .ringkasan {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+.angka {
+  background: #fff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.angka strong {
+  font: 700 30px/1 var(--font-core);
+  color: var(--pgd-forest);
+}
+.angka span {
+  font: 600 14px var(--font-core);
+  color: var(--neutral-900);
+}
+.angka small {
+  font: 400 13px var(--font-core);
+  color: var(--neutral-600);
+}
+.angkaAktif {
+  border: 2px solid var(--pgd-green);
+  padding: 15px 17px;
+}
+
+.pilihFile {
+  border: 2px dashed var(--neutral-300);
+  border-radius: 12px;
+  background: #fff;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  font: 400 14px/1.5 var(--font-core);
+  color: var(--neutral-700);
+}
+.pilihFile input {
+  display: none;
+}
+
+.daftarGalat {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+.tombolBawah {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Dialog koreksi JG */
+.dialog {
+  border: 0;
+  border-radius: 16px;
+  padding: 24px;
+  width: min(440px, calc(100vw - 32px));
+  box-shadow: var(--shadow-lg);
+}
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+.dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.dialog h2 {
+  margin: 0;
+  font: 700 20px var(--font-core);
+  color: var(--pgd-forest);
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font: 600 14px var(--font-core);
+  color: var(--neutral-900);
+}
+.label small {
+  font-weight: 400;
+  color: var(--neutral-600);
+}
+.isian {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-control);
+  font: 400 14px var(--font-core);
+  color: var(--neutral-900);
+  resize: vertical;
+}

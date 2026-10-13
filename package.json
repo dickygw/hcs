@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit -p apps-script && tsc --noEmit -p apps-script/test && tsc --noEmit -p tampilan",
     "test": "vitest run",
     "cek:keamanan": "node alat/cek-keamanan.mjs",
-    "kirim:dev": "npm run build && npm run cek:keamanan && cd apps-script && npx --yes @google/clasp@3.4.1 push --force"
+    "kirim:dev": "npm run build && npm run cek:keamanan && cd apps-script && npx --yes @google/clasp@3.4.1 push --force",
+    "buat:dummy": "esbuild alat/buat-dummy.mjs --bundle --platform=node --format=esm --log-level=warning | node --input-type=module"
   },
   "dependencies": {
     "@noble/ciphers": "2.4.0",

@@ -1,5 +1,5 @@
 {
   "extends": "../tsconfig.json",
-  "compilerOptions": { "types": ["google-apps-script", "node"] },
+  "compilerOptions": { "types": ["google-apps-script", "node"], "lib": ["ES2022", "DOM"] },
   "include": [".", "../src"]
 }

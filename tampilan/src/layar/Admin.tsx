@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, type ComponentType } from "react";
 import logo from "../aset/pegadaian-mark.png";
 import styles from "../komponen/admin.module.css";
 import ui from "../komponen/ui.module.css";
 import { inisial, type Pengguna } from "../jenis";
+import DataKaryawan from "./DataKaryawan";
+import DataTad from "./DataTad";
 
 // Menu sesuai mockup A1. Halaman yang belum dibangun tampil nonaktif sampai tahapnya.
 const MENU: { label: string; aktif?: boolean }[] = [
   { label: "Dasbor", aktif: true },
   { label: "Tugasku" },
   { label: "Semua pengajuan" },
-  { label: "Data karyawan" },
-  { label: "Data TAD" },
+  { label: "Data karyawan", aktif: true },
+  { label: "Data TAD", aktif: true },
   { label: "Tarif SPPD" },
   { label: "Log audit" },
   { label: "Pengaturan" },
@@ -22,9 +24,21 @@ const NAV_HP: { label: string; glyph: string; aktif?: boolean }[] = [
   { label: "Lainnya", glyph: "⋯" },
 ];
 
+const HALAMAN: Record<string, ComponentType> = {
+  "Data karyawan": DataKaryawan,
+  "Data TAD": DataTad,
+};
+
 /** Kerangka Admin: menu samping di laptop, navigasi bawah di HP (mockup A1). */
 export default function Admin(p: { pengguna: Pengguna; onKeluar: () => void }) {
   const [menu, setMenu] = useState("Dasbor");
+  // Halaman yang sudah dibuka tetap terpasang (tersembunyi) agar kembali ke menu itu tidak memanggil server lagi
+  // (PRD 9.1 #5). Semuanya hilang saat keluar atau layar terkunci karena kerangka ini dilepas (WEB-06).
+  const [dibuka, setDibuka] = useState<string[]>([]);
+  const buka = (m: string) => {
+    setMenu(m);
+    if (HALAMAN[m] && !dibuka.includes(m)) setDibuka([...dibuka, m]);
+  };
   return (
     <div className={styles.kerangka}>
       <aside className={styles.samping}>
@@ -43,7 +57,7 @@ export default function Admin(p: { pengguna: Pengguna; onKeluar: () => void }) {
                 type="button"
                 className={menu === m.label ? `${styles.menu} ${styles.aktif}` : styles.menu}
                 aria-current={menu === m.label ? "page" : undefined}
-                onClick={() => setMenu(m.label)}
+                onClick={() => buka(m.label)}
               >
                 {m.label}
               </button>
@@ -77,7 +91,15 @@ export default function Admin(p: { pengguna: Pengguna; onKeluar: () => void }) {
         </header>
         <main className={styles.isi}>
           {/* A1 Dasbor dibangun pada Tahap 11. */}
-          <p className={styles.kosong}>Tidak ada yang perlu ditindaklanjuti.</p>
+          {menu === "Dasbor" && <p className={styles.kosong}>Tidak ada yang perlu ditindaklanjuti.</p>}
+          {dibuka.map((m) => {
+            const Halaman = HALAMAN[m]!;
+            return (
+              <div key={m} hidden={m !== menu}>
+                <Halaman />
+              </div>
+            );
+          })}
         </main>
       </div>
 

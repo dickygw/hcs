@@ -106,6 +106,13 @@ export function gantiSemua<T extends NamaTabel>(tabel: T, daftar: Partial<Baris<
   tambah(tabel, daftar);
 }
 
+/** Ubah satu baris (indeks dari hasil baca, 0 = baris data pertama). Panggil di dalam denganKunci. */
+export function ubahBaris<T extends NamaTabel>(tabel: T, indeks: number, objek: Partial<Baris<T>>) {
+  const baris = keBaris(tabel, objek);
+  sheet_(tabel).getRange(indeks + 2, 1, 1, baris.length).setValues([baris]);
+  lupakanCache(tabel);
+}
+
 /** Jalankan fn di dalam kunci skrip. Kunci hanya untuk penghitung nomor dan pemeriksaan unik (Tahap 0). */
 export function denganKunci<T>(fn: () => T): T {
   const kunci = LockService.getScriptLock();

@@ -1,5 +1,7 @@
-import type { Rute } from "./akses";
-import { baca } from "./data";
+import { GalatPengguna, type Rute } from "./akses";
+import { baca, denganKunci, gantiSemua, idBaru, sekarang, tambah, ubahBaris } from "./data";
+import { dekripsi, enkripsi, kunciTersimpan, nonceBaru, samarkan } from "./enkripsi";
+import { daftarKaryawan, daftarTad, isianKoreksiJg, sinkronHcms, sinkronTad, umurData } from "./master";
 import { profilDari } from "./peran";
 import { sesiSkrip } from "./sesi";
 
@@ -7,6 +9,25 @@ import { sesiSkrip } from "./sesi";
 export const KONTAK_ADMIN_SDM = "manohc.balikpapan@pegadaian.co.id";
 
 const urlAplikasi = () => ScriptApp.getService().getUrl();
+
+/** Riwayat unggahan terbaru dan umur data (PRD 6.2). */
+function riwayat_(jenis: "hcms" | "tad") {
+  const daftar = baca("riwayat_sinkronisasi").filter((r) => r.jenis === jenis).reverse().slice(0, 5);
+  return {
+    umur: umurData(daftar[0]?.pada ?? "", new Date()),
+    riwayat: daftar.map((r) => ({
+      pada: r.pada, oleh: r.pengguna_email, namaFile: r.nama_file, baru: +r.jumlah_baru, berubah: +r.jumlah_berubah, nonaktif: +r.jumlah_nonaktif,
+    })),
+  };
+}
+
+function sinkronTad_(arg: unknown) {
+  const kunci = kunciTersimpan();
+  // ponytail: dekripsi semua rekening untuk membandingkan (±1.300 TAD); simpan sidik rekening bila terlalu lambat.
+  return sinkronTad(arg, baca("tad"), {
+    kini: sekarang(), idBaru, buka: (s) => dekripsi(s, kunci), kunci: (t) => enkripsi(t, kunci, nonceBaru()),
+  });
+}
 
 /**
  * Daftar SEMUA fungsi server yang boleh dipanggil browser, beserta peran yang diizinkan (AKSES-01).
@@ -31,5 +52,80 @@ export const RUTE: Readonly<Record<string, Rute>> = {
       sesiSkrip().akhiri(p.email);
       return { urlAplikasi: urlAplikasi() };
     },
+  },
+
+  // --- A5 Data karyawan (Admin)
+  dataKaryawan: {
+    peran: ["admin"],
+    jalankan: (arg) => ({ ...daftarKaryawan(baca("karyawan"), arg), ...riwayat_("hcms") }),
+  },
+  /** Langkah 2–3 wizard: pemeriksaan dan ringkasan perubahan, belum menyimpan apa pun. */
+  pratinjauHcms: {
+    peran: ["admin"],
+    jalankan: (arg) => sinkronHcms(arg, baca("karyawan"), sekarang()).ringkasan,
+  },
+  terapkanHcms: {
+    peran: ["admin"],
+    jalankan: (arg, p) =>
+      denganKunci(() => {
+        const kini = sekarang();
+        const { ringkasan: r, hasil } = sinkronHcms(arg, baca("karyawan"), kini);
+        if (r.masalah.length) throw new GalatPengguna("File masih memiliki baris bermasalah. Perbaiki lalu unggah ulang.");
+        gantiSemua("karyawan", hasil);
+        const jumlah = { baru: r.baru.length, berubah: r.berubahJg.length + r.pindahUnit.length, nonaktif: r.nonaktif.length };
+        tambah("riwayat_sinkronisasi", [{
+          id: idBaru(), jenis: "hcms", pengguna_email: p.email, nama_file: r.namaFile,
+          jumlah_baru: String(jumlah.baru), jumlah_berubah: String(jumlah.berubah), jumlah_nonaktif: String(jumlah.nonaktif), pada: kini,
+        }]);
+        return jumlah;
+      }),
+  },
+  /** Koreksi JG untuk Perdin: beralasan, tercatat, tidak tertimpa sinkronisasi (PRD 5.5). */
+  koreksiJg: {
+    peran: ["admin"],
+    jalankan: (arg, p) => {
+      const { nik, jg, alasan } = isianKoreksiJg(arg);
+      return denganKunci(() => {
+        const semua = baca("karyawan");
+        const i = semua.findIndex((k) => k.nik_pendek === nik);
+        if (i < 0) throw new GalatPengguna("Karyawan tidak ditemukan.");
+        const lama = semua[i]!;
+        const kini = sekarang();
+        ubahBaris("karyawan", i, { ...lama, jg_perdin_override: jg, diperbarui_pada: kini });
+        tambah("log_perubahan", [{
+          id: idBaru(), pengguna_email: p.email, tabel: "karyawan", kunci_baris: nik, jenis_perubahan: "koreksi_jg",
+          nilai_lama: lama.jg_perdin_override, nilai_baru: jg, alasan, pada: kini,
+        }]);
+        return { ok: true };
+      });
+    },
+  },
+
+  // --- A6 Data TAD (Admin). Rekening hanya keluar tersamar.
+  dataTad: {
+    peran: ["admin"],
+    jalankan: (arg) => {
+      const kunci = kunciTersimpan();
+      return { ...daftarTad(baca("tad"), arg, (s) => samarkan(dekripsi(s, kunci))), ...riwayat_("tad") };
+    },
+  },
+  pratinjauTad: {
+    peran: ["admin"],
+    jalankan: (arg) => sinkronTad_(arg).ringkasan,
+  },
+  terapkanTad: {
+    peran: ["admin"],
+    jalankan: (arg, p) =>
+      denganKunci(() => {
+        const { ringkasan: r, hasil } = sinkronTad_(arg);
+        if (!r.baru.length && !r.berubah.length && !r.nonaktif.length) throw new GalatPengguna("Tidak ada perubahan untuk diterapkan.");
+        gantiSemua("tad", hasil);
+        const jumlah = { baru: r.baru.length, berubah: r.berubah.length, nonaktif: r.nonaktif.length };
+        tambah("riwayat_sinkronisasi", [{
+          id: idBaru(), jenis: "tad", pengguna_email: p.email, nama_file: r.namaFile,
+          jumlah_baru: String(jumlah.baru), jumlah_berubah: String(jumlah.berubah), jumlah_nonaktif: String(jumlah.nonaktif), pada: sekarang(),
+        }]);
+        return { ...jumlah, dilewati: r.masalah.length };
+      }),
   },
 };

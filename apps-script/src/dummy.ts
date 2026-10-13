@@ -61,7 +61,7 @@ export function buatDataDummy(opsi: { kini: string; acak: () => number; idBaru: 
     const rekening = i < 13 ? "0" + Array.from({ length: 14 }, () => Math.floor(acak() * 10)).join("") : "";
     return {
       id: idBaru(),
-      nik: "64" + String(7100000000000 + i * 7919),
+      nik: "64" + String(71000000000000 + i * 7919), // 16 digit seperti NIK KTP
       nama: `TAD Dummy ${String(i + 1).padStart(2, "0")}`,
       nama_bank: rekening ? "BRI" : "",
       rekening_terenkripsi: rekening ? enkripsi(rekening) : "",

@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–3 ✅; **Tahap 4** (data master: sinkronisasi HCMS dan unggah TAD) berikutnya
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–3 ✅; **Tahap 4** (data master: sinkronisasi HCMS dan unggah TAD) kode selesai, menunggu uji user di HCS-dev
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -50,18 +50,28 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 09-10-2026 | Uji kecepatan lulus dengan catatan: rancangan **sheet aktif kecil + arsip per tahun**, cache hanya sheet aktif dan master, kunci hanya untuk penghitung nomor dan cek unik, detail dimuat bersama daftar (batas bawah ±0,9 dtk per panggilan Google). HP 4G belum diuji → Tahap 13/pilot | `docs/HASIL_UJI_KECEPATAN.md`; arahan user untuk lanjut |
 | 09-10-2026 | Standar Keamanan v1.3 disetujui: lima lapis kunci Workspace (WS-01 s.d. WS-14), cache browser hanya di memori (WEB-06); teknik kecepatan Apps Script dirinci di PRD 9.1 | Arahan user |
 | 09-10-2026 | PRD v2.2 disetujui: jalur Google Apps Script, target kecepatan dilonggarkan (buka ≤ 4 dtk, filter ≤ 3 dtk, 20 pengguna bersamaan), pemegang akun unit: dicky.widyatama | Arahan user |
+| 13-10-2026 | File HCMS dan TAD dibaca **di browser Admin**; hanya kolom yang dipakai dikirim ke server, server memvalidasi ulang dan hanya menyimpan 12 kolom | Kolom sensitif (NIK KTP, NPWP, rekening karyawan) tidak pernah keluar dari laptop; lebih ketat dari DATA-05, tanpa pustaka Excel tambahan |
+| 13-10-2026 | Unggahan HCMS dengan baris bermasalah ditolak seluruhnya; unggahan TAD melewati baris bermasalah (TAD yang NIK-nya ada di baris bermasalah dan TAD input manual tidak dinonaktifkan). NIK TAD wajib 16 digit | Mencegah karyawan nonaktif karena salah ketik; TAD tetap bisa diimpor sebagian |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
 0. Tanggal berlaku tarif SE 145 Tahun 2026: sementara 01-01-2026 (`database/migrations/0002_data_acuan.sql`). Konfirmasi sebelum migrasi dipasang.
 1. Kolom isian rinci Pemesanan Tiket Pesawat (dibutuhkan saat tahap 8).
-2. Validasi ulang template TAD final (EPS dan INHOUSE).
+2. Validasi ulang template TAD final (EPS dan INHOUSE). Kolom sementara: NIK, NAMA, NAMA BANK, NOMOR REKENING, VENDOR, UNIT KERJA, TANGGAL AKHIR KONTRAK; NIK TAD dianggap NIK KTP 16 digit.
+5. Judul kolom ekspor HCMS asli: dummy memakai 12 judul PRD + 81 kolom rekaan. Pastikan 12 judul sama persis dengan file asli (dicocokkan tanpa beda huruf besar/kecil dan garis bawah).
 3. Pembayaran tahunan Cloudways dan Supabase lewat pengadaan; nama domain; region Singapura Cloudways Velocity; apakah IP keluar Cloudways tetap (SUPA-10).
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. Tahap 4: data master (sinkronisasi HCMS dan unggah TAD). Tampilan karyawan dengan akun asli diuji setelah sinkronisasi HCMS.
-2. Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
+Uji Tahap 4 di HCS-dev (user):
+1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
+2. Di editor Apps Script, jalankan `isiDataDummy` sekali lagi (NIK TAD dummy kini 16 digit).
+3. Data karyawan → Sinkronisasi HCMS → unggah `contoh-dummy/HCMS_dummy_kolom_salah.xlsx` → daftar kolom bermasalah. Lalu unggah `HCMS_dummy_benar.xlsx` → ringkasan (870 baru, 3 tidak ada lagi, 5 berubah JG, 4 pindah unit) → Terapkan. Catat lama prosesnya.
+4. Koreksi JG salah satu karyawan (alasan wajib).
+5. Data TAD → Unduh template kosong (buka di Excel) → Unggah template `contoh-dummy/TAD_dummy.xlsx` → 4 baris bermasalah → Lanjut → Terapkan. Rekening tampil ••••1234.
+6. Bila lolos: centang Tahap 4, lalu Tahap 5.
+
+Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
 Info lingkungan HCS-dev:
 - Editor: https://script.google.com/d/1DvFXJzHuJPjCRTSOaRK6hEsBHcuXG-uog_rzqpu4XTAgrMRB1TQeyLIJ/edit (akun unit manohc.balikpapan)
@@ -90,3 +100,4 @@ Info lingkungan HCS-dev:
 | 09-10-2026 | 3 | Tahap 3 (kode): sesi HCS di CacheService (15 menit diam, maks 12 jam, keluar menghapus sesi), pembatas 120 panggilan/menit per email, peran dari tabel pengguna + data master karyawan, rute mulai/keluar, layar U2, U3, sudah keluar, kerangka karyawan (K1 kosong, K5 kosong, K6) dan Admin, fungsi tambahAdmin. Gambar halftone diperkecil 584 → 18 KB. 60 tes lolos |
 | 09-10-2026 | 3 | Uji Tahap 3: U2 tampil untuk manohc (tidak terdaftar); setelah tambahAdmin, dicky masuk ke kerangka Admin. Sisa uji: kunci layar 15 menit dan Keluar. Sesi dihentikan atas arahan user |
 | 13-10-2026 | 3 | Tahap 3 ditutup atas arahan user (tidak ada waktu uji 15 menit). Uji manual U3 dan Keluar ditunda ke Tahap 13; perilakunya sudah dicakup tes otomatis |
+| 13-10-2026 | 3 | Tahap 4 (kode): pembaca/penulis .xlsx tanpa pustaka (browser), wizard 4 langkah Sinkronisasi HCMS dan Unggah TAD, A5 dan A6 per halaman 20 baris, koreksi JG beralasan + log, indikator umur data, riwayat unggahan, template TAD kosong, file dummy di `contoh-dummy/` (`npm run buat:dummy`). 81 tes lolos (21 tes baru), simulasi tampilan lolos |
