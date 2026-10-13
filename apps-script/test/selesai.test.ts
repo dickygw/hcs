@@ -153,6 +153,18 @@ describe("Ekspor Daftar Pembayaran SPPD Lumpsum (CMS)", () => {
     expect(() => T.eksporPembayaran(u.g, ADMIN, { dari: "2026-10-10", sampai: "2026-10-01" }, buka)).toThrow("rentang tanggal");
   });
 
+  it("PDF persetujuan atasan: tanpa bank dan rekening, rekening tidak dibuka, tidak masuk log akses rekening", () => {
+    const nomor = klaimDiproses();
+    T.selesaikan(u.g, ADMIN, { nomor, dari: "diproses" });
+    let dibuka = 0;
+    const e = T.eksporPembayaran(u.g, ADMIN, { dari: "2020-01-01", sampai: "2100-01-01", format: "pdf" }, (s) => (dibuka++, buka(s)));
+    expect(e.kolom).not.toContain("Nomor Rekening");
+    expect(e.kolom).not.toContain("Nama Bank");
+    expect(e.baris[1]).toHaveLength(e.kolom.length);
+    expect(JSON.stringify(e)).not.toContain(REK);
+    expect([dibuka, u.db.log_akses_rekening.length, e.total]).toEqual([0, 0, 2_230_000 + 1_330_000]);
+  });
+
   it("format tanggal daftar", () => {
     expect([T.tanggalDaftar("2026-09-24", "2026-09-26"), T.tanggalDaftar("2026-08-05", "2026-08-05"), T.tanggalDaftar("2026-09-30", "2026-10-02")]).toEqual([
       "24-26 September 2026", "05 Agustus 2026", "30 September-02 Oktober 2026",

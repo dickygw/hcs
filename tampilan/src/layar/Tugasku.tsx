@@ -5,6 +5,7 @@ import { dariBase64, LAYANAN, namaDokumen, ukuran, waktuLengkap, waktuPendek, ty
 import { panggil } from "../server";
 import { unduh } from "../unggah";
 import { buatXlsx } from "../xlsx";
+import LembarCetak from "./LembarCetak";
 import PanelHitung, { type DataHitung } from "./PanelHitung";
 import ButirIsian from "./ButirIsian";
 import { Lencana } from "./DetailPengajuan";
@@ -36,6 +37,7 @@ export default function Tugasku() {
   const [galat, setGalat] = useState("");
   const [buka, setBuka] = useState<string | null>(null);
   const [ekspor, setEkspor] = useState(false);
+  const [cetak, setCetak] = useState<Cetakan | null>(null);
 
   const muat = useCallback(async (f: typeof AWAL, halaman: number) => {
     setMemuat(true);
@@ -107,7 +109,8 @@ export default function Tugasku() {
           </button>
         </div>
       </div>
-      {ekspor && <DialogEkspor onTutup={() => setEkspor(false)} />}
+      {ekspor && <DialogEkspor onTutup={() => setEkspor(false)} onCetak={setCetak} />}
+      {cetak && <LembarCetak {...cetak} onSelesai={() => setCetak(null)} />}
 
       {galat && (
         <div className={s.galat} role="alert">
@@ -563,12 +566,21 @@ function DialogRekening(p: { nomor: string; tad: { id: string; nama: string }; o
 }
 
 /** Ekspor Daftar Pembayaran SPPD Lumpsum untuk CMS. Memuat rekening TAD lengkap → konfirmasi dan tercatat (Design Brief 6). */
-function DialogEkspor(p: { onTutup: () => void }) {
+interface Cetakan {
+  kolom: string[];
+  baris: string[][];
+  total: number;
+  dari: string;
+  sampai: string;
+}
+
+function DialogEkspor(p: { onTutup: () => void; onCetak: (c: Cetakan) => void }) {
   const ref = useRef<HTMLDialogElement>(null);
   const hariIni = new Date(Date.now() + 8 * 3_600_000).toISOString().slice(0, 10);
   const [dari, setDari] = useState(hariIni.slice(0, 8) + "01");
   const [sampai, setSampai] = useState(hariIni);
   const [memuat, setMemuat] = useState(false);
+  const format = useRef<"excel" | "pdf">("excel");
   const [galat, setGalat] = useState("");
   useEffect(() => ref.current?.showModal(), []);
   return (
@@ -576,11 +588,13 @@ function DialogEkspor(p: { onTutup: () => void }) {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          const pdf = format.current === "pdf";
           setMemuat(true);
           setGalat("");
           try {
-            const h = await panggil<{ kolom: string[]; baris: string[][] }>("eksporPembayaran", { dari, sampai });
-            unduh(`Daftar_Pembayaran_SPPD_${dari}_${sampai}.xlsx`, buatXlsx("Daftar Pembayaran SPPD", [h.kolom, ...h.baris]));
+            const h = await panggil<{ kolom: string[]; baris: string[][]; total: number }>("eksporPembayaran", { dari, sampai, format: pdf ? "pdf" : "excel" });
+            if (pdf) p.onCetak({ ...h, dari, sampai });
+            else unduh(`Daftar_Pembayaran_SPPD_${dari}_${sampai}.xlsx`, buatXlsx("Daftar Pembayaran SPPD", [h.kolom, ...h.baris]));
             ref.current?.close();
           } catch (er) {
             setGalat((er as Error).message);
@@ -601,7 +615,10 @@ function DialogEkspor(p: { onTutup: () => void }) {
             <input type="date" className={s.isian} value={sampai} required onChange={(e) => setSampai(e.target.value)} />
           </label>
         </div>
-        <div className={s.peringatan}>Ekspor ini memuat nomor rekening dan akan tercatat di log.</div>
+        <div className={s.peringatan}>
+          <b>Excel untuk CMS</b> memuat nomor rekening TAD dan akan tercatat di log. <b>PDF untuk persetujuan atasan</b> tanpa nomor rekening; pilih
+          "Simpan sebagai PDF" di jendela cetak.
+        </div>
         {galat && (
           <div className={s.galat} role="alert">
             {galat}
@@ -611,8 +628,11 @@ function DialogEkspor(p: { onTutup: () => void }) {
           <button type="button" className={`${ui.tombol} ${ui.sekunder}`} disabled={memuat} onClick={() => ref.current?.close()}>
             Batal
           </button>
-          <button type="submit" className={`${ui.tombol} ${ui.utama}`} disabled={memuat}>
-            {memuat ? <span className={ui.putar} aria-hidden /> : "Ekspor"}
+          <button type="submit" className={`${ui.tombol} ${ui.sekunder}`} disabled={memuat} onClick={() => (format.current = "pdf")}>
+            Cetak PDF untuk persetujuan
+          </button>
+          <button type="submit" className={`${ui.tombol} ${ui.utama}`} disabled={memuat} onClick={() => (format.current = "excel")}>
+            {memuat ? <span className={ui.putar} aria-hidden /> : "Unduh Excel untuk CMS"}
           </button>
         </div>
       </form>

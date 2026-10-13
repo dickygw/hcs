@@ -287,8 +287,13 @@ export function tanggalDaftar(a: string, b: string) {
   return `${dd(d1)} ${BULAN_PANJANG[m1 - 1]}${y1 === y2 ? "" : " " + y1}-${dd(d2)} ${BULAN_PANJANG[m2 - 1]} ${y2}`;
 }
 
+/**
+ * format "excel" (CMS): rekening TAD lengkap, tercatat di log_akses_rekening.
+ * format "pdf" (lampiran persetujuan atasan): tanpa kolom bank dan rekening, tidak membuka rekening sama sekali.
+ */
 export function eksporPembayaran(g: Gudang, p: Pemanggil, arg: unknown, buka: (terenkripsi: string) => string) {
   const a = (arg ?? {}) as Record<string, unknown>;
+  const pdf = a.format === "pdf";
   const dari = String(a.dari ?? "");
   const sampai = String(a.sampai ?? "");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dari) || !/^\d{4}-\d{2}-\d{2}$/.test(sampai) || sampai < dari) throw salah("Pilih rentang tanggal disetujui yang benar.");
@@ -312,18 +317,27 @@ export function eksporPembayaran(g: Gudang, p: Pemanggil, arg: unknown, buka: (t
     baris.push([x.nik_pendek, k?.nama ?? x.pemilik_email, x.jg_terkunci, ...umum, ...angka(hasil.karyawan), "", "", x.nomor]);
     for (const t of tadPj.filter((t) => t.nomor_pengajuan === x.nomor)) {
       const m = master.get(t.tad_id);
-      const rek = t.rekening_terkunci ? buka(t.rekening_terkunci) : "";
+      const rek = !pdf && t.rekening_terkunci ? buka(t.rekening_terkunci) : "";
       if (rek) jumlahRekening++;
       baris.push([m?.nik ?? "", m?.nama ?? "TAD", "TAD", ...umum, ...angka(hasil[t.tad_id]), t.nama_bank_terkunci, rek, `${x.nomor} (TAD)`]);
     }
   }
   if (!baris.length) throw salah("Tidak ada pengajuan Selesai pada rentang tanggal itu.");
+  const total = baris.reduce((n, b) => n + (Number(b[KOLOM_EKSPOR.indexOf("JUMLAH") - 1]) || 0), 0);
+  if (pdf) {
+    const buang = [KOLOM_EKSPOR.indexOf("Nama Bank"), KOLOM_EKSPOR.indexOf("Nomor Rekening")];
+    return {
+      kolom: KOLOM_EKSPOR.filter((_, i) => !buang.includes(i)),
+      baris: baris.map((b, i) => [String(i + 1), ...b].filter((_, j) => !buang.includes(j))),
+      total,
+    };
+  }
   g.tambah("log_akses_rekening", [{
     id: g.id(), pengguna_email: p.email, jenis: "ekspor_pembayaran", nomor_pengajuan: pj.map((x) => x.nomor).join(",").slice(0, 1000),
     jumlah_rekening: String(jumlahRekening), pada: g.kini(),
   }]);
   // INPUT-04: isian berawalan = + - @ dinetralkan agar tidak menjadi rumus di Excel.
-  return { kolom: KOLOM_EKSPOR, baris: baris.map((b, i) => [String(i + 1), ...b].map(netralkan)) };
+  return { kolom: KOLOM_EKSPOR, baris: baris.map((b, i) => [String(i + 1), ...b].map(netralkan)), total };
 }
 
 /** FILE-04: Admin boleh membuka semua dokumen pengajuan yang sudah dikirim. */
