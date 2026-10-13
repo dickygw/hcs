@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import s from "../komponen/pengajuan.module.css";
 import ui from "../komponen/ui.module.css";
-import { dariBase64, konfig, LABEL_MODA, LABEL_STATUS, namaDokumen, rentang, rupiah, tanggal, ukuran, waktuLengkap, waktuPendek, type Detail, type Status } from "../pengajuan";
+import { dariBase64, konfig, LABEL_STATUS, namaDokumen, rupiah, tanggal, ukuran, waktuLengkap, waktuPendek, type Detail, type Status } from "../pengajuan";
 import { panggil } from "../server";
+import ButirIsian from "./ButirIsian";
 import { unduh } from "../unggah";
 
 export function Lencana({ status }: { status: Status }) {
@@ -182,17 +183,7 @@ export default function DetailPengajuan(p: { nomor: string; onKembali: (berubah:
             <section className={s.blok}>
               <div className={s.kepalaBlok}>Ringkasan</div>
               <dl className={s.ringkas}>
-                <dt>Tujuan</dt>
-                <dd>{d.isian.kota_tujuan || "-"}</dd>
-                <dt>Tanggal</dt>
-                <dd>{rentang(d.isian.tgl_berangkat, d.isian.tgl_kembali) || "-"}</dd>
-                <dt>Menginap</dt>
-                <dd>{d.isian.menginap === "ya" ? "Ya" : d.isian.menginap === "tidak" ? `Tidak, ${d.isian.jarak === "60" ? ">60 km" : ">30–60 km"}` : "-"}</dd>
-                <dt>Transportasi</dt>
-                <dd>
-                  {LABEL_MODA[d.isian.moda_transportasi] ?? "-"}
-                  {d.isian.kendaraan_dinas === "ya" && " · kendaraan dinas"}
-                </dd>
+                <ButirIsian jenis={d.jenis} isian={d.isian} />
               </dl>
             </section>
 

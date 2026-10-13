@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import s from "../komponen/data.module.css";
 import ui from "../komponen/ui.module.css";
-import { dariBase64, LABEL_MODA, LAYANAN, namaDokumen, rentang, ukuran, waktuLengkap, waktuPendek, type Isian, type Status } from "../pengajuan";
+import { dariBase64, LAYANAN, namaDokumen, ukuran, waktuLengkap, waktuPendek, type Isian, type Status } from "../pengajuan";
 import { panggil } from "../server";
 import { unduh } from "../unggah";
+import ButirIsian from "./ButirIsian";
 import { Lencana } from "./DetailPengajuan";
 
 interface Baris {
@@ -308,16 +309,7 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
                   <dl className={s.ringkas}>
                     <dt>{d.labelSurat}</dt>
                     <dd>{d.isian.no_surat_tugas}</dd>
-                    <dt>Tujuan</dt>
-                    <dd>{d.isian.kota_tujuan}</dd>
-                    <dt>Tanggal</dt>
-                    <dd>{rentang(d.isian.tgl_berangkat, d.isian.tgl_kembali)}</dd>
-                    <dt>Menginap</dt>
-                    <dd>{d.isian.menginap === "ya" ? "Ya" : `Tidak, ${d.isian.jarak === "60" ? ">60 km" : ">30–60 km"}`}</dd>
-                    <dt>Transportasi</dt>
-                    <dd>
-                      {LABEL_MODA[d.isian.moda_transportasi]} · {d.isian.kendaraan_dinas === "ya" ? "kendaraan dinas" : "tanpa kendaraan dinas"}
-                    </dd>
+                    <ButirIsian jenis={d.jenis} isian={d.isian} />
                   </dl>
                 </div>
               </section>

@@ -17,6 +17,7 @@ beforeEach(() => {
     { kode: "klaim_perdin_diklat", nama: "Klaim Biaya Perdin Diklat", awalan_nomor: "KD", aktif: "ya" },
     { kode: "permohonan_sppd", nama: "Permohonan SPPD", awalan_nomor: "SP", aktif: "ya" },
     { kode: "pemesanan_tiket", nama: "Pemesanan Tiket Pesawat", awalan_nomor: "TP", aktif: "ya" },
+    { kode: "pulse_check", nama: "Pulse Check (Fase 2)", awalan_nomor: "PC", aktif: "ya" },
   ]);
   u.g.tambah("karyawan", [
     { nik_pendek: "P1", nama: "Rina A", prim_email: A.email, kode_job_grade: "12", position_name: "Analis", nama_unit_kerja: "Kanwil", aktif: "ya" },
@@ -68,7 +69,7 @@ describe("Draf, nomor, kirim", () => {
   });
 
   it("layanan yang belum dibangun ditolak", () => {
-    expect(() => P.simpanDraf(u.g, A, { jenis: "pemesanan_tiket", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
+    expect(() => P.simpanDraf(u.g, A, { jenis: "pulse_check", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
   });
 
   it("edit dan kirim ulang saat Perlu revisi, nomor tetap", () => {
@@ -270,7 +271,7 @@ describe("Klaim Perdin Diklat (Tahap 6): mesin form yang sama, Surat Pemanggilan
   });
 
   it("layanan yang belum dibangun tetap ditolak walau aktif di data master", () => {
-    expect(() => P.simpanDraf(u.g, A, { jenis: "pemesanan_tiket", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
-    expect(P.LAYANAN_AKTIF).toEqual(["klaim_perdin", "klaim_perdin_diklat", "permohonan_sppd"]);
+    expect(() => P.simpanDraf(u.g, A, { jenis: "pulse_check", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
+    expect(P.LAYANAN_AKTIF).toEqual(["klaim_perdin", "klaim_perdin_diklat", "permohonan_sppd", "pemesanan_tiket"]);
   });
 });

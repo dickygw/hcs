@@ -32,7 +32,11 @@ const STATUS_AKTIF: readonly string[] = ["dikirim", "diproses", "perlu_revisi", 
 const BISA_DIEDIT: readonly string[] = ["draf", "perlu_revisi"];
 const BISA_DIBATALKAN: readonly string[] = ["draf", "dikirim"];
 
-export const ISIAN = ["no_surat_tugas", "kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak", "moda_transportasi", "kendaraan_dinas"] as const;
+export const ISIAN = [
+  "no_surat_tugas", "kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak", "moda_transportasi", "kendaraan_dinas",
+  "kota_asal", "waktu_berangkat", "waktu_kembali", "nama_hotel", "catatan",
+] as const;
+const PANJANG: Partial<Record<(typeof ISIAN)[number], number>> = { kota_tujuan: 100, kota_asal: 100, nama_hotel: 100, catatan: 300 };
 export type Isian = Record<(typeof ISIAN)[number], string>;
 export const JENIS_DOKUMEN = ["surat_tugas", "kuitansi_hotel", "kuitansi_transportasi", "formulir"] as const;
 const PILIHAN: Partial<Record<keyof Isian, readonly string[]>> = {
@@ -40,17 +44,21 @@ const PILIHAN: Partial<Record<keyof Isian, readonly string[]>> = {
   jarak: ["30_60", "60"],
   moda_transportasi: ["pesawat", "kapal", "kereta", "darat"],
   kendaraan_dinas: ["ya", "tidak"],
+  waktu_berangkat: ["pagi", "siang", "sore"],
+  waktu_kembali: ["pagi", "siang", "sore"],
 };
 /**
  * Konfigurasi per jenis layanan (PRD 5.1): satu mesin form, beda label surat dasar.
  * Klaim Perdin Diklat memakai Nomor Surat Pemanggilan Workshop/Diklat, disimpan di kolom no_surat_tugas.
  * Layanan yang belum dibangun tidak ada di sini sehingga ditolak server.
  */
-export const KONFIG_LAYANAN: Readonly<Record<string, { surat: string; singkat: string; bukti: boolean }>> = {
-  klaim_perdin: { surat: "Surat Tugas", singkat: "No. ST", bukti: true },
-  klaim_perdin_diklat: { surat: "Surat Pemanggilan", singkat: "No. Surat Pemanggilan", bukti: true },
+export const KONFIG_LAYANAN: Readonly<Record<string, { surat: string; singkat: string; bukti: boolean; form: "perjalanan" | "tiket" }>> = {
+  klaim_perdin: { surat: "Surat Tugas", singkat: "No. ST", bukti: true, form: "perjalanan" },
+  klaim_perdin_diklat: { surat: "Surat Pemanggilan", singkat: "No. Surat Pemanggilan", bukti: true, form: "perjalanan" },
   // Permohonan SPPD diajukan sebelum berangkat: tanpa langkah Bukti (Design Brief 5.1).
-  permohonan_sppd: { surat: "Surat Tugas", singkat: "No. ST", bukti: false },
+  permohonan_sppd: { surat: "Surat Tugas", singkat: "No. ST", bukti: false, form: "perjalanan" },
+  // Pemesanan Tiket Pesawat: rute dan jadwal penerbangan, hotel opsional (keputusan user 13-10-2026).
+  pemesanan_tiket: { surat: "Surat Tugas", singkat: "No. ST", bukti: false, form: "tiket" },
 };
 export const LAYANAN_AKTIF: readonly string[] = Object.keys(KONFIG_LAYANAN);
 export const konfig = (jenis: string) => KONFIG_LAYANAN[jenis] ?? KONFIG_LAYANAN.klaim_perdin!;
@@ -72,10 +80,11 @@ export const samarNik = (nik: string) => (nik.length > 8 ? nik.slice(0, 4) + "xx
 export function bersihkanIsian(arg: unknown): Isian {
   const a = (arg ?? {}) as Record<string, unknown>;
   const o = {} as Isian;
-  for (const k of ISIAN) o[k] = teks(a[k], k === "kota_tujuan" ? 100 : 60);
+  for (const k of ISIAN) o[k] = teks(a[k], PANJANG[k] ?? 60);
   for (const [k, boleh] of Object.entries(PILIHAN) as [keyof Isian, readonly string[]][]) if (o[k] && !boleh.includes(o[k])) o[k] = "";
   for (const k of ["tgl_berangkat", "tgl_kembali"] as const) if (o[k] && !tanggalSah(o[k])) o[k] = "";
   if (o.menginap === "ya") o.jarak = "";
+  if (!o.tgl_kembali) o.waktu_kembali = "";
   return o;
 }
 
@@ -91,6 +100,16 @@ export function periksaIsian(o: Isian, jenis = "klaim_perdin"): Partial<Record<k
   const surat = konfig(jenis).surat;
   if (!o.no_surat_tugas) g.no_surat_tugas = `Isi nomor ${surat}.`;
   else if (o.no_surat_tugas.length < 3 || !/^[A-Za-z0-9./\-_ ]+$/.test(o.no_surat_tugas)) g.no_surat_tugas = `Nomor ${surat} hanya berisi huruf, angka, titik, garis miring, dan tanda hubung.`;
+  if (konfig(jenis).form === "tiket") {
+    // Tiket: rute dan jadwal; kembali boleh kosong (sekali jalan); hotel dan catatan opsional.
+    if (o.kota_asal.length < 2) g.kota_asal = "Isi kota asal.";
+    if (o.kota_tujuan.length < 2) g.kota_tujuan = "Isi kota tujuan.";
+    if (!o.tgl_berangkat) g.tgl_berangkat = "Isi tanggal berangkat.";
+    if (!o.waktu_berangkat) g.waktu_berangkat = "Pilih waktu berangkat.";
+    if (o.tgl_kembali && o.tgl_berangkat && o.tgl_kembali < o.tgl_berangkat) g.tgl_kembali = "Tanggal kembali sebelum tanggal berangkat.";
+    if (o.tgl_kembali && !o.waktu_kembali) g.waktu_kembali = "Pilih waktu kembali.";
+    return g;
+  }
   if (o.kota_tujuan.length < 2) g.kota_tujuan = "Isi kota atau unit tujuan.";
   if (!o.tgl_berangkat) g.tgl_berangkat = "Isi tanggal berangkat.";
   if (!o.tgl_kembali) g.tgl_kembali = "Isi tanggal kembali.";

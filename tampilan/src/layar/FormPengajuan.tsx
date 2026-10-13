@@ -3,12 +3,20 @@ import { dokumenWajib, periksaIsian } from "../../../apps-script/src/pengajuan";
 import s from "../komponen/pengajuan.module.css";
 import ui from "../komponen/ui.module.css";
 import { inisial } from "../jenis";
-import { jam, kalimat, konfig, LABEL_MODA, LAYANAN, namaDokumen, rentang, siapkanFile, ukuran, type Detail, type Dokumen, type Isian, type Tad } from "../pengajuan";
+import ButirIsian from "./ButirIsian";
+import { jam, kalimat, konfig, LABEL_MODA, LABEL_WAKTU, LAYANAN, namaDokumen, siapkanFile, ukuran, type Detail, type Dokumen, type Isian, type Tad } from "../pengajuan";
 import { panggil } from "../server";
 
-const KOSONG: Isian = { no_surat_tugas: "", kota_tujuan: "", tgl_berangkat: "", tgl_kembali: "", menginap: "", jarak: "", moda_transportasi: "", kendaraan_dinas: "" };
+const KOSONG: Isian = {
+  no_surat_tugas: "", kota_tujuan: "", tgl_berangkat: "", tgl_kembali: "", menginap: "", jarak: "", moda_transportasi: "", kendaraan_dinas: "",
+  kota_asal: "", waktu_berangkat: "", waktu_kembali: "", nama_hotel: "", catatan: "",
+};
 /** Isian yang diperiksa per langkah saat Lanjut ditekan. */
-const ISIAN_LANGKAH: (keyof Isian)[][] = [["no_surat_tugas"], ["kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak"], ["moda_transportasi", "kendaraan_dinas"], [], [], []];
+// Nomor langkah: 0 surat, 1 perjalanan, 2 transportasi, 3 TAD, 4 bukti, 5 tinjau, 6 penerbangan (tiket), 7 hotel dan catatan (tiket).
+const ISIAN_LANGKAH: (keyof Isian)[][] = [
+  ["no_surat_tugas"], ["kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak"], ["moda_transportasi", "kendaraan_dinas"], [], [], [],
+  ["kota_asal", "kota_tujuan", "tgl_berangkat", "waktu_berangkat", "tgl_kembali", "waktu_kembali"], ["nama_hotel", "catatan"],
+];
 
 type TadDraf = Tad & { baru?: { nama: string; nik: string; vendor: string } };
 interface HasilDraf {
@@ -62,8 +70,9 @@ export function PilihLayanan(p: { onPilih: (kode: string) => void; onTutup: () =
  */
 export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup: (perluMuatUlang: boolean) => void; onTerkirim: (nomor: string, noSuratTugas: string) => void }) {
   const layanan = LAYANAN.find((l) => l.kode === p.jenis)!;
-  const { surat, singkat, bukti } = konfig(p.jenis); // Surat Tugas atau Surat Pemanggilan (PRD 5.1)
-  const urutan = bukti ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 5]; // langkah Bukti dilewati bila tidak relevan
+  const { surat, singkat, bukti, form } = konfig(p.jenis); // Surat Tugas atau Surat Pemanggilan (PRD 5.1)
+  // Langkah yang tidak relevan dilewati otomatis sesuai jenis layanan (Design Brief 5.1).
+  const urutan = form === "tiket" ? [0, 6, 7, 3, 5] : bukti ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 5];
   const [langkah, setLangkah] = useState(0);
   const [isian, setIsian] = useState<Isian>(p.awal?.isian ?? KOSONG);
   const [disentuh, setDisentuh] = useState<Set<string>>(new Set());
@@ -216,6 +225,46 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
           </>
         )}
 
+        {langkah === 6 && (
+          <>
+            <h2 className={s.judulLangkah}>Penerbangan</h2>
+            <div className={s.duaKolom}>
+              <Kolom id="kota_asal" label="Kota asal" galat={pesan("kota_asal")}>
+                <input id="isian-kota_asal" className={s.isian} value={isian.kota_asal} maxLength={100} aria-invalid={!!pesan("kota_asal")}
+                  onChange={(e) => ubah("kota_asal", e.target.value)} onBlur={() => tinggalkan("kota_asal")} />
+              </Kolom>
+              <Kolom id="kota_tujuan" label="Kota tujuan" galat={pesan("kota_tujuan")}>
+                <input id="isian-kota_tujuan" className={s.isian} value={isian.kota_tujuan} maxLength={100} aria-invalid={!!pesan("kota_tujuan")}
+                  onChange={(e) => ubah("kota_tujuan", e.target.value)} onBlur={() => tinggalkan("kota_tujuan")} />
+              </Kolom>
+            </div>
+            <Kolom id="tgl_berangkat" label="Tanggal berangkat" galat={pesan("tgl_berangkat")}>
+              <input id="isian-tgl_berangkat" type="date" className={s.isian} value={isian.tgl_berangkat} aria-invalid={!!pesan("tgl_berangkat")}
+                onChange={(e) => ubah("tgl_berangkat", e.target.value)} onBlur={() => tinggalkan("tgl_berangkat")} />
+            </Kolom>
+            <Pilihan id="waktu_berangkat" label="Waktu berangkat" galat={pesan("waktu_berangkat")} nilai={isian.waktu_berangkat} kolom={3}
+              opsi={Object.entries(LABEL_WAKTU)} onPilih={(v) => (ubah("waktu_berangkat", v), tinggalkan("waktu_berangkat"))} />
+            <Kolom id="tgl_kembali" label="Tanggal kembali (opsional)" bantuan="Kosongkan bila hanya sekali jalan." galat={pesan("tgl_kembali")}>
+              <input id="isian-tgl_kembali" type="date" className={s.isian} value={isian.tgl_kembali} min={isian.tgl_berangkat || undefined} aria-invalid={!!pesan("tgl_kembali")}
+                onChange={(e) => ubah("tgl_kembali", e.target.value)} onBlur={() => tinggalkan("tgl_kembali")} />
+            </Kolom>
+            <Pilihan id="waktu_kembali" label="Waktu kembali" galat={pesan("waktu_kembali")} nilai={isian.waktu_kembali} kolom={3} nonaktif={!isian.tgl_kembali}
+              opsi={Object.entries(LABEL_WAKTU)} onPilih={(v) => (ubah("waktu_kembali", v), tinggalkan("waktu_kembali"))} />
+          </>
+        )}
+
+        {langkah === 7 && (
+          <>
+            <h2 className={s.judulLangkah}>Hotel dan catatan</h2>
+            <Kolom id="nama_hotel" label="Nama hotel (opsional)" bantuan="Isi bila Admin SDM juga perlu memesankan hotel.">
+              <input id="isian-nama_hotel" className={s.isian} value={isian.nama_hotel} maxLength={100} onChange={(e) => ubah("nama_hotel", e.target.value)} />
+            </Kolom>
+            <Kolom id="catatan" label="Catatan (opsional)" bantuan="Mis. maskapai yang diinginkan atau kebutuhan khusus.">
+              <textarea id="isian-catatan" className={s.isian} style={{ height: 96, paddingTop: 12 }} value={isian.catatan} maxLength={300} onChange={(e) => ubah("catatan", e.target.value)} />
+            </Kolom>
+          </>
+        )}
+
         {langkah === 3 && <BagianTad surat={surat} tad={tad} setTad={setTad} terpakai={terpakai} />}
 
         {langkah === 4 && (
@@ -230,20 +279,11 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
         {langkah === 5 && (
           <>
             <h2 className={s.judulLangkah}>Tinjau dan kirim</h2>
-            <Blok judul={`${kalimat(surat)} dan perjalanan`} onUbah={() => ke(0)}>
+            <Blok judul={`${kalimat(surat)} dan ${form === "tiket" ? "penerbangan" : "perjalanan"}`} onUbah={() => ke(urutan[1]!)}>
               <dl className={s.ringkas}>
                 <dt>{singkat}</dt>
                 <dd>{isian.no_surat_tugas}</dd>
-                <dt>Tujuan</dt>
-                <dd>{isian.kota_tujuan}</dd>
-                <dt>Tanggal</dt>
-                <dd>
-                  {rentang(isian.tgl_berangkat, isian.tgl_kembali)} · {isian.menginap === "ya" ? "menginap" : `tidak menginap, ${isian.jarak === "60" ? ">60 km" : ">30–60 km"}`}
-                </dd>
-                <dt>Transportasi</dt>
-                <dd>
-                  {LABEL_MODA[isian.moda_transportasi]} · {isian.kendaraan_dinas === "ya" ? "kendaraan dinas" : "tanpa kendaraan dinas"}
-                </dd>
+                <ButirIsian jenis={p.jenis} isian={isian} />
               </dl>
             </Blok>
             <Blok judul={`Dokumen (${dokumen.length})`} onUbah={() => ke(bukti ? 4 : 0)}>
@@ -306,13 +346,13 @@ function Kolom(p: { id: string; label: string; bantuan?: string; galat?: string;
   );
 }
 
-function Pilihan(p: { id: string; label: string; nilai: string; opsi: [string, string][]; onPilih: (v: string) => void; galat?: string; nonaktif?: boolean }) {
+function Pilihan(p: { id: string; label: string; nilai: string; opsi: [string, string][]; onPilih: (v: string) => void; galat?: string; nonaktif?: boolean; kolom?: number }) {
   return (
     <div className={s.kolom} role="group" aria-labelledby={"label-" + p.id}>
       <span className={s.label} id={"label-" + p.id}>
         {p.label}
       </span>
-      <div className={s.pilihan}>
+      <div className={s.pilihan} style={p.kolom ? { gridTemplateColumns: `repeat(${p.kolom}, 1fr)` } : undefined}>
         {p.opsi.map(([v, l], i) => (
           <button key={v} id={i === 0 ? "isian-" + p.id : undefined} type="button" aria-pressed={p.nilai === v} disabled={p.nonaktif} onClick={() => p.onPilih(v)}>
             {l}

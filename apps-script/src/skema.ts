@@ -63,6 +63,8 @@ export const TABEL = {
       "kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak", "moda_transportasi", "kendaraan_dinas",
       "jg_terkunci", "golongan_terkunci", "jabatan_terkunci", "unit_kerja_terkunci",
       "pernyataan_tad", "nominal_disetujui", "dikirim_pada", "dibuat_pada", "diperbarui_pada",
+      // Migrasi 0002 (Pemesanan Tiket Pesawat): ditambahkan di akhir agar data lama tidak bergeser.
+      "kota_asal", "waktu_berangkat", "waktu_kembali", "nama_hotel", "catatan",
     ],
   },
   pengajuan_tad: {

@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–7 ✅; **Tahap 8** (Pemesanan Tiket Pesawat) berikutnya
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–7 ✅; **Tahap 8** (Pemesanan Tiket Pesawat) kode selesai, menunggu uji user di HCS-dev
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–7 dari 15 ✅; Tahap 8 berikutnya |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–7 dari 15 ✅; Tahap 8 🟡 |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -58,18 +58,24 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 13-10-2026 | Klaim Perdin Diklat memakai mesin form yang sama lewat konfigurasi per jenis layanan (`KONFIG_LAYANAN`); Nomor Surat Pemanggilan disimpan di kolom `no_surat_tugas`, dokumen di jenis `surat_tugas` dengan label Surat Pemanggilan | Tanpa duplikasi kode dan tanpa ubah struktur sheet |
 | 13-10-2026 | Tugasku = pengajuan berstatus Dikirim dan Diproses; tab TAD satu baris per TAD. Filter tanggal bawaan "Semua tanggal" (mockup: 7 hari) agar antrean lama tidak tersembunyi. Ubah status dicek terhadap status yang dilihat Admin di dalam kunci | Antrean kerja tidak boleh ada yang terlewat; dua Admin tidak saling menimpa |
 | 13-10-2026 | Permohonan SPPD tanpa langkah Bukti; dokumen wajib hanya Surat Tugas | Design Brief 5.1 |
+| 13-10-2026 | Isian Pemesanan Tiket Pesawat: Nomor Surat Tugas + dokumen, kota asal, kota tujuan, tanggal dan waktu berangkat (pagi/siang/sore), tanggal dan waktu kembali (opsional, sekali jalan), nama hotel (opsional), catatan (opsional), TAD. Kolom baru lewat migrasi 0002 di akhir sheet pengajuan | Arahan user (nama hotel karena kadang ada pemesanan hotel) |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
 0. Tanggal berlaku tarif SE 145 Tahun 2026: sementara 01-01-2026 (`database/migrations/0002_data_acuan.sql`). Konfirmasi sebelum migrasi dipasang.
-1. Kolom isian rinci Pemesanan Tiket Pesawat (dibutuhkan saat tahap 8).
+1. ~~Kolom isian Pemesanan Tiket Pesawat~~ Terjawab 13-10-2026: usulan Build Plan + nama hotel (opsional).
 2. Validasi ulang template TAD final (EPS dan INHOUSE). Kolom sementara: NIK, NAMA, NAMA BANK, NOMOR REKENING, VENDOR, UNIT KERJA, TANGGAL AKHIR KONTRAK; NIK TAD dianggap NIK KTP 16 digit.
 5. Judul kolom ekspor HCMS asli: dummy memakai 12 judul PRD + 81 kolom rekaan. Pastikan 12 judul sama persis dengan file asli (dicocokkan tanpa beda huruf besar/kecil dan garis bawah).
 3. Pembayaran tahunan Cloudways dan Supabase lewat pengadaan; nama domain; region Singapura Cloudways Velocity; apakah IP keluar Cloudways tetap (SUPA-10).
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. Tahap 8: Pemesanan Tiket Pesawat. Butuh daftar kolom isian dari user (pertanyaan terbuka 1); bila belum ada, pakai usulan Build Plan: rute, tanggal dan waktu berangkat, tanggal dan waktu kembali, catatan.
+Uji Tahap 8 di HCS-dev (user):
+1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
+2. **Wajib sebelum mencoba:** di editor Apps Script (akun manohc) jalankan `jalankanMigrasi` → log "0002: Menambah 5 kolom ...".
+3. HP manohc: + Ajukan → Pemesanan Tiket Pesawat → 5 langkah (Surat Tugas, Penerbangan, Hotel dan catatan, TAD, Tinjau) → Kirim → TP-0001.
+4. Laptop dicky: Tugasku → TP-0001 → rute, jadwal, dan hotel tampil.
+5. Bila lolos: centang Tahap 8, lalu Tahap 9 (perhitungan SPPD; siapkan 3 contoh perjalanan yang sudah dibayar beserta hitungan manualnya).
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -108,3 +114,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 6 selesai: user menguji Klaim Perdin Diklat di HCS-dev tanpa error (nomor KD-0001, label Surat Pemanggilan) |
 | 13-10-2026 | 3 | Tahap 7 (kode): Permohonan SPPD (SP-xxxx, 5 langkah), A2 Tugasku (tab Karyawan/TAD dengan penghitung, cari, filter status/layanan/tanggal, per halaman, penanda TAD belum terdaftar dan rekening kosong, tampilan HP berupa kartu), A3 dasar (isian, dokumen, pemohon dengan data terkunci, TAD rekening tersamar, riwayat) dengan aksi Proses, Minta revisi, Tolak. 118 tes lolos (11 tes baru); simulasi karyawan → Admin → karyawan lolos |
 | 13-10-2026 | 3 | Tahap 7 selesai: user menguji di HCS-dev tanpa error (SPPD 5 langkah, Tugasku, Proses, Minta revisi, kirim ulang). Riwayat status di detail Admin diubah menjadi tabel atas permintaan user |
+| 13-10-2026 | 3 | Tahap 8 (kode): Pemesanan Tiket Pesawat (TP-xxxx, 5 langkah: Surat Tugas, Penerbangan, Hotel dan catatan, TAD, Tinjau), migrasi 0002 (5 kolom baru di sheet pengajuan), ringkasan isian bersama untuk Tinjau/K4/A3. 125 tes lolos (7 tes baru); simulasi tiket karyawan → Admin lolos |

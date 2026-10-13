@@ -47,6 +47,29 @@ export const MIGRASI: Migrasi[] = [
   },
 ];
 
+/** Kolom yang ditambahkan migrasi 0002 di akhir sheet pengajuan (sama dengan skema.ts). */
+export const KOLOM_0002 = ["kota_asal", "waktu_berangkat", "waktu_kembali", "nama_hotel", "catatan"];
+
+MIGRASI.push({
+  nomor: "0002",
+  ringkasan:
+    "Menambah 5 kolom di akhir sheet pengajuan untuk Pemesanan Tiket Pesawat: kota_asal, waktu_berangkat, " +
+    "waktu_kembali, nama_hotel, catatan. Data yang sudah ada tidak berubah; kolom baru berformat teks.",
+  jalankan: () => {
+    const id = PropertiesService.getScriptProperties().getProperty(KUNCI_ID.Data);
+    if (!id) throw new Error("Spreadsheet HCS_Data belum ada. Migrasi 0001 harus terpasang dulu.");
+    const sh = SpreadsheetApp.openById(id).getSheetByName("pengajuan");
+    if (!sh) throw new Error("Sheet pengajuan tidak ditemukan.");
+    const judul = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0]!.map(String);
+    const kurang = KOLOM_0002.filter((k) => !judul.includes(k));
+    if (!kurang.length) return;
+    const mulai = sh.getLastColumn() + 1;
+    if (sh.getMaxColumns() < mulai + kurang.length - 1) sh.insertColumnsAfter(sh.getMaxColumns(), mulai + kurang.length - 1 - sh.getMaxColumns());
+    sh.getRange(1, mulai, sh.getMaxRows(), kurang.length).setNumberFormat("@"); // teks (INPUT-02)
+    sh.getRange(1, mulai, 1, kurang.length).setValues([kurang]).setFontWeight("bold");
+  },
+});
+
 export function migrasiTertunda(terpasang: readonly string[]): Migrasi[] {
   return MIGRASI.filter((m) => !terpasang.includes(m.nomor));
 }

@@ -64,10 +64,11 @@ export const LAYANAN = [
   { kode: "klaim_perdin", awalan: "KP", nama: "Klaim Biaya Perdin", info: "Klaim uang harian dan biaya perjalanan setelah dinas selesai.", aktif: true },
   { kode: "klaim_perdin_diklat", awalan: "KD", nama: "Klaim Perdin Diklat", info: "Klaim perjalanan untuk workshop atau diklat dengan Surat Pemanggilan.", aktif: true },
   { kode: "permohonan_sppd", awalan: "SP", nama: "Permohonan SPPD", info: "Ajukan SPPD sebelum berangkat berdasarkan Surat Tugas.", aktif: true },
-  { kode: "pemesanan_tiket", awalan: "TP", nama: "Pemesanan Tiket Pesawat", info: "Minta Admin SDM memesankan tiket sesuai rute dan tanggal tugas.", aktif: false },
+  { kode: "pemesanan_tiket", awalan: "TP", nama: "Pemesanan Tiket Pesawat", info: "Minta Admin SDM memesankan tiket sesuai rute dan tanggal tugas.", aktif: true },
 ];
 
 export const LABEL_MODA: Record<string, string> = { pesawat: "Pesawat", kapal: "Kapal", kereta: "Kereta", darat: "Darat" };
+export const LABEL_WAKTU: Record<string, string> = { pagi: "Pagi", siang: "Siang", sore: "Sore" };
 
 const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 const bagian = (t: string) => t.split("-").map(Number) as [number, number, number];
