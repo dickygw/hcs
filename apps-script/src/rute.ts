@@ -5,6 +5,7 @@ import { daftarKaryawan, daftarTad, isianKoreksiJg, sinkronHcms, sinkronTad, umu
 import * as P from "./pengajuan";
 import { profilDari } from "./peran";
 import { sesiSkrip } from "./sesi";
+import * as T from "./tugas";
 
 /** Kontak di layar U2. Kotak masuk bersama; hanya kontak, bukan akun login Admin (keputusan 09-10-2026). */
 export const KONTAK_ADMIN_SDM = "manohc.balikpapan@pegadaian.co.id";
@@ -20,6 +21,12 @@ function riwayat_(jenis: "hcms" | "tad") {
       pada: r.pada, oleh: r.pengguna_email, namaFile: r.nama_file, baru: +r.jumlah_baru, berubah: +r.jumlah_berubah, nonaktif: +r.jumlah_nonaktif,
     })),
   };
+}
+
+/** Rekening terenkripsi → ••••1234 (PRD 6.4). */
+function samar_() {
+  const kunci = kunciTersimpan();
+  return (s: string) => samarkan(dekripsi(s, kunci));
 }
 
 function sinkronTad_(arg: unknown) {
@@ -106,8 +113,7 @@ export const RUTE: Readonly<Record<string, Rute>> = {
   dataTad: {
     peran: ["admin"],
     jalankan: (arg) => {
-      const kunci = kunciTersimpan();
-      return { ...daftarTad(baca("tad"), arg, (s) => samarkan(dekripsi(s, kunci))), ...riwayat_("tad") };
+      return { ...daftarTad(baca("tad"), arg, samar_()), ...riwayat_("tad") };
     },
   },
   pratinjauTad: {
@@ -145,4 +151,10 @@ export const RUTE: Readonly<Record<string, Rute>> = {
   unduhDokumen: { peran: ["karyawan"], jalankan: (a, p) => P.unduhDokumen(gudang(), p, a) },
   kirimPengajuan: { peran: ["karyawan"], jalankan: (a, p) => P.kirimPengajuan(gudang(), p, a) },
   batalkanPengajuan: { peran: ["karyawan"], jalankan: (a, p) => P.batalkanPengajuan(gudang(), p, a) },
+
+  // --- Admin: A2 Tugasku dan perubahan status (Tahap 7)
+  tugasku: { peran: ["admin"], jalankan: (a) => T.tugasku(gudang(), a) },
+  bukaPengajuanAdmin: { peran: ["admin"], jalankan: (a) => T.bukaPengajuanAdmin(gudang(), a, samar_()) },
+  unduhDokumenAdmin: { peran: ["admin"], jalankan: (a) => T.unduhDokumenAdmin(gudang(), a) },
+  ubahStatus: { peran: ["admin"], jalankan: (a, p) => T.ubahStatus(gudang(), p, a) },
 };

@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–6 ✅; **Tahap 7** berikutnya
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–6 ✅; **Tahap 7** (Permohonan SPPD dan Tugasku) kode selesai, menunggu uji user di HCS-dev
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–6 dari 15 ✅; Tahap 7 berikutnya |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–6 dari 15 ✅; Tahap 7 🟡 |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -56,6 +56,8 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 13-10-2026 | TAD belum terdaftar langsung masuk data master sebagai "input manual, belum terverifikasi" saat draf disimpan; NIK yang sudah ada dipakai ulang. NIK TAD di layar karyawan tersamar (6472xxxx0912) | PRD 5.7; mockup K3 langkah 4 |
 | 13-10-2026 | Dokumen wajib: Surat Tugas dan formulir; kuitansi hotel bila menginap; kuitansi transportasi bila tanpa kendaraan dinas | PRD 5.3 diterjemahkan ke isian form |
 | 13-10-2026 | Klaim Perdin Diklat memakai mesin form yang sama lewat konfigurasi per jenis layanan (`KONFIG_LAYANAN`); Nomor Surat Pemanggilan disimpan di kolom `no_surat_tugas`, dokumen di jenis `surat_tugas` dengan label Surat Pemanggilan | Tanpa duplikasi kode dan tanpa ubah struktur sheet |
+| 13-10-2026 | Tugasku = pengajuan berstatus Dikirim dan Diproses; tab TAD satu baris per TAD. Filter tanggal bawaan "Semua tanggal" (mockup: 7 hari) agar antrean lama tidak tersembunyi. Ubah status dicek terhadap status yang dilihat Admin di dalam kunci | Antrean kerja tidak boleh ada yang terlewat; dua Admin tidak saling menimpa |
+| 13-10-2026 | Permohonan SPPD tanpa langkah Bukti; dokumen wajib hanya Surat Tugas | Design Brief 5.1 |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
@@ -67,7 +69,12 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. Tahap 7 sesuai BUILD_PLAN.md.
+Uji Tahap 7 di HCS-dev (user):
+1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
+2. HP, akun manohc.balikpapan: + Ajukan → Permohonan SPPD → 5 langkah (tanpa Bukti) → Kirim → SP-0001.
+3. Laptop, akun dicky: Tugasku → SP-0001 di tab Karyawan → buka → Proses → Minta revisi (coba tanpa catatan: ditolak) → isi catatan.
+4. HP manohc: K1 kartu oranye → detail → catatan Admin → Edit dan kirim ulang (nomor tetap).
+5. Bila lolos: centang Tahap 7, lalu Tahap 8 (butuh daftar kolom Pemesanan Tiket Pesawat dari user).
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -104,3 +111,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 5 selesai: user menguji di HCS-dev tanpa error (pengajuan dengan TAD terkirim dari HP, file > 5 MB ditolak, unduh dokumen, batalkan, cekBerbagi aman) |
 | 13-10-2026 | 3 | Tahap 6 (kode): Klaim Perdin Diklat aktif di K2, nomor KD-xxxx, label Surat Pemanggilan di semua layar dan pesan server. 107 tes lolos (5 tes baru: nomor KD, label, kepemilikan dan unggah diulang); simulasi alur Diklat lolos |
 | 13-10-2026 | 3 | Tahap 6 selesai: user menguji Klaim Perdin Diklat di HCS-dev tanpa error (nomor KD-0001, label Surat Pemanggilan) |
+| 13-10-2026 | 3 | Tahap 7 (kode): Permohonan SPPD (SP-xxxx, 5 langkah), A2 Tugasku (tab Karyawan/TAD dengan penghitung, cari, filter status/layanan/tanggal, per halaman, penanda TAD belum terdaftar dan rekening kosong, tampilan HP berupa kartu), A3 dasar (isian, dokumen, pemohon dengan data terkunci, TAD rekening tersamar, riwayat) dengan aksi Proses, Minta revisi, Tolak. 118 tes lolos (11 tes baru); simulasi karyawan → Admin → karyawan lolos |

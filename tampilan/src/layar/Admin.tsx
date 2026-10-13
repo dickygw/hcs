@@ -5,11 +5,12 @@ import ui from "../komponen/ui.module.css";
 import { inisial, type Pengguna } from "../jenis";
 import DataKaryawan from "./DataKaryawan";
 import DataTad from "./DataTad";
+import Tugasku from "./Tugasku";
 
 // Menu sesuai mockup A1. Halaman yang belum dibangun tampil nonaktif sampai tahapnya.
 const MENU: { label: string; aktif?: boolean }[] = [
   { label: "Dasbor", aktif: true },
-  { label: "Tugasku" },
+  { label: "Tugasku", aktif: true },
   { label: "Semua pengajuan" },
   { label: "Data karyawan", aktif: true },
   { label: "Data TAD", aktif: true },
@@ -19,12 +20,13 @@ const MENU: { label: string; aktif?: boolean }[] = [
 ];
 const NAV_HP: { label: string; glyph: string; aktif?: boolean }[] = [
   { label: "Dasbor", glyph: "D", aktif: true },
-  { label: "Tugasku", glyph: "T" },
+  { label: "Tugasku", glyph: "T", aktif: true },
   { label: "Semua", glyph: "S" },
   { label: "Lainnya", glyph: "⋯" },
 ];
 
 const HALAMAN: Record<string, ComponentType> = {
+  Tugasku,
   "Data karyawan": DataKaryawan,
   "Data TAD": DataTad,
 };
@@ -104,14 +106,29 @@ export default function Admin(p: { pengguna: Pengguna; onKeluar: () => void }) {
       </div>
 
       <nav aria-label="Menu Admin di HP" className={styles.navHp}>
-        {NAV_HP.map((n) => (
-          <span key={n.label} className={n.aktif ? `${styles.menuHp} ${styles.aktifHp}` : `${styles.menuHp} ${styles.nonaktif}`} aria-disabled={!n.aktif || undefined}>
-            <span className={styles.glyph} aria-hidden>
-              {n.glyph}
+        {NAV_HP.map((n) =>
+          n.aktif ? (
+            <button
+              key={n.label}
+              type="button"
+              className={menu === n.label ? `${styles.menuHp} ${styles.aktifHp}` : styles.menuHp}
+              aria-current={menu === n.label ? "page" : undefined}
+              onClick={() => buka(n.label)}
+            >
+              <span className={styles.glyph} aria-hidden>
+                {n.glyph}
+              </span>
+              <span>{n.label}</span>
+            </button>
+          ) : (
+            <span key={n.label} className={`${styles.menuHp} ${styles.nonaktif}`} aria-disabled="true">
+              <span className={styles.glyph} aria-hidden>
+                {n.glyph}
+              </span>
+              <span>{n.label}</span>
             </span>
-            <span>{n.label}</span>
-          </span>
-        ))}
+          ),
+        )}
       </nav>
     </div>
   );

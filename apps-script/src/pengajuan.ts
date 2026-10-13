@@ -46,9 +46,11 @@ const PILIHAN: Partial<Record<keyof Isian, readonly string[]>> = {
  * Klaim Perdin Diklat memakai Nomor Surat Pemanggilan Workshop/Diklat, disimpan di kolom no_surat_tugas.
  * Layanan yang belum dibangun tidak ada di sini sehingga ditolak server.
  */
-export const KONFIG_LAYANAN: Readonly<Record<string, { surat: string; singkat: string }>> = {
-  klaim_perdin: { surat: "Surat Tugas", singkat: "No. ST" },
-  klaim_perdin_diklat: { surat: "Surat Pemanggilan", singkat: "No. Surat Pemanggilan" },
+export const KONFIG_LAYANAN: Readonly<Record<string, { surat: string; singkat: string; bukti: boolean }>> = {
+  klaim_perdin: { surat: "Surat Tugas", singkat: "No. ST", bukti: true },
+  klaim_perdin_diklat: { surat: "Surat Pemanggilan", singkat: "No. Surat Pemanggilan", bukti: true },
+  // Permohonan SPPD diajukan sebelum berangkat: tanpa langkah Bukti (Design Brief 5.1).
+  permohonan_sppd: { surat: "Surat Tugas", singkat: "No. ST", bukti: false },
 };
 export const LAYANAN_AKTIF: readonly string[] = Object.keys(KONFIG_LAYANAN);
 export const konfig = (jenis: string) => KONFIG_LAYANAN[jenis] ?? KONFIG_LAYANAN.klaim_perdin!;
@@ -100,8 +102,12 @@ export function periksaIsian(o: Isian, jenis = "klaim_perdin"): Partial<Record<k
   return g;
 }
 
-/** Dokumen wajib (PRD 5.3): Surat Tugas, formulir, kuitansi hotel bila menginap, kuitansi transportasi bila tanpa kendaraan dinas. */
-export function dokumenWajib(o: Isian): string[] {
+/**
+ * Dokumen wajib (PRD 5.3): Surat Tugas, formulir, kuitansi hotel bila menginap, kuitansi transportasi bila tanpa
+ * kendaraan dinas. Layanan tanpa langkah Bukti (Permohonan SPPD) hanya mewajibkan Surat Tugas.
+ */
+export function dokumenWajib(o: Isian, jenis = "klaim_perdin"): string[] {
+  if (!konfig(jenis).bukti) return ["surat_tugas"];
   const w = ["surat_tugas", "formulir"];
   if (o.menginap === "ya") w.push("kuitansi_hotel");
   if (o.kendaraan_dinas !== "ya") w.push("kuitansi_transportasi");
@@ -283,7 +289,7 @@ export function kirimPengajuan(g: Gudang, p: Pemanggil, arg: unknown) {
     const galat = periksaIsian(isian, x.jenis_layanan);
     if (Object.keys(galat).length) throw salah("Lengkapi isian: " + Object.values(galat).join(" "));
     const ada = new Set(g.baca("dokumen").filter((d) => d.nomor_pengajuan === x.nomor).map((d) => d.jenis));
-    const kurang = dokumenWajib(isian).filter((j) => !ada.has(j));
+    const kurang = dokumenWajib(isian, x.jenis_layanan).filter((j) => !ada.has(j));
     if (kurang.length) throw salah("Unggah dokumen: " + kurang.map((j) => namaDokumen(x.jenis_layanan, j)).join(", ") + ".");
 
     const kini = g.kini();

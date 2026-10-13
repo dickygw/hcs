@@ -7,7 +7,6 @@ import { jam, kalimat, konfig, LABEL_MODA, LAYANAN, namaDokumen, rentang, siapka
 import { panggil } from "../server";
 
 const KOSONG: Isian = { no_surat_tugas: "", kota_tujuan: "", tgl_berangkat: "", tgl_kembali: "", menginap: "", jarak: "", moda_transportasi: "", kendaraan_dinas: "" };
-const LANGKAH = ["Surat dasar", "Perjalanan", "Transportasi", "TAD", "Bukti", "Tinjau dan kirim"];
 /** Isian yang diperiksa per langkah saat Lanjut ditekan. */
 const ISIAN_LANGKAH: (keyof Isian)[][] = [["no_surat_tugas"], ["kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak"], ["moda_transportasi", "kendaraan_dinas"], [], [], []];
 
@@ -58,12 +57,13 @@ export function PilihLayanan(p: { onPilih: (kode: string) => void; onTutup: () =
 }
 
 /**
- * K3 Form pengajuan 6 langkah (Design Brief 5.1). Draf disimpan di server setiap pindah langkah
+ * K3 Form pengajuan 6 langkah, 5 bila tanpa Bukti (Design Brief 5.1). Draf disimpan di server setiap pindah langkah
  * (tidak di browser, WEB-06). Karyawan hanya mengisi fakta; tidak ada tarif atau hitungan (PRD 5.8).
  */
 export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup: (perluMuatUlang: boolean) => void; onTerkirim: (nomor: string, noSuratTugas: string) => void }) {
   const layanan = LAYANAN.find((l) => l.kode === p.jenis)!;
-  const { surat, singkat } = konfig(p.jenis); // Surat Tugas atau Surat Pemanggilan (PRD 5.1)
+  const { surat, singkat, bukti } = konfig(p.jenis); // Surat Tugas atau Surat Pemanggilan (PRD 5.1)
+  const urutan = bukti ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 5]; // langkah Bukti dilewati bila tidak relevan
   const [langkah, setLangkah] = useState(0);
   const [isian, setIsian] = useState<Isian>(p.awal?.isian ?? KOSONG);
   const [disentuh, setDisentuh] = useState<Set<string>>(new Set());
@@ -120,11 +120,11 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
     }
     if (langkah === 0 && !dokumen.some((d) => d.jenis === "surat_tugas")) return setGalat(`Unggah dokumen ${surat}.`);
     if (langkah === 4) {
-      const kurang = dokumenWajib(isian).filter((j) => !dokumen.some((d) => d.jenis === j));
+      const kurang = dokumenWajib(isian, p.jenis).filter((j) => !dokumen.some((d) => d.jenis === j));
       if (kurang.length) return setGalat("Unggah " + kurang.map((j) => namaDokumen(p.jenis, j).toLowerCase()).join(", ") + ".");
     }
     // Tampilan optimistis (PRD 9.1 #6): pindah langkah dulu, draf disimpan di latar belakang.
-    ke(langkah + 1);
+    ke(urutan[urutan.indexOf(langkah) + 1]!);
     simpan(langkah === 3).catch((e: Error) => setGalat(e.message + " Isian Anda tetap di layar; coba lanjut lagi."));
   }
 
@@ -142,7 +142,8 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
     }
   }
 
-  const terakhir = langkah === LANGKAH.length - 1;
+  const terakhir = langkah === 5;
+  const ke_ = urutan.indexOf(langkah);
   return (
     <div className={s.layar}>
       <header className={s.atas} ref={atas}>
@@ -154,12 +155,12 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
             <h1 className={s.judulLayar}>{layanan.nama}</h1>
           </div>
           <span className={s.keLangkah}>
-            {langkah + 1} dari {LANGKAH.length}
+            {ke_ + 1} dari {urutan.length}
           </span>
         </div>
         <div className={s.progres} aria-hidden>
-          {LANGKAH.map((l, i) => (
-            <span key={l} className={i <= langkah ? s.penuh : undefined} />
+          {urutan.map((l, i) => (
+            <span key={l} className={i <= ke_ ? s.penuh : undefined} />
           ))}
         </div>
       </header>
@@ -245,7 +246,7 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
                 </dd>
               </dl>
             </Blok>
-            <Blok judul={`Dokumen (${dokumen.length})`} onUbah={() => ke(4)}>
+            <Blok judul={`Dokumen (${dokumen.length})`} onUbah={() => ke(bukti ? 4 : 0)}>
               <span className={s.teksKecil}>{dokumen.map((d) => namaDokumen(p.jenis, d.jenis)).join(", ")}</span>
             </Blok>
             <Blok judul={`TAD dalam ${surat} ini (${tad.length})`} onUbah={() => ke(3)}>
@@ -266,7 +267,7 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
           {tersimpan ? `Draf tersimpan otomatis · ${jam(tersimpan)}` : "Draf tersimpan otomatis saat Anda lanjut"}
         </div>
         <div className={s.duaTombol}>
-          <button type="button" className={`${ui.tombol} ${ui.sekunder}`} disabled={mengirim} onClick={() => (langkah ? ke(langkah - 1) : p.onTutup(!!nomor.current))}>
+          <button type="button" className={`${ui.tombol} ${ui.sekunder}`} disabled={mengirim} onClick={() => (ke_ ? ke(urutan[ke_ - 1]!) : p.onTutup(!!nomor.current))}>
             Kembali
           </button>
           <button type="button" className={`${ui.tombol} ${ui.utama}`} disabled={mengirim} onClick={() => void (terakhir ? kirim() : lanjut())}>

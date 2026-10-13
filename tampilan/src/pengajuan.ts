@@ -63,7 +63,7 @@ export const LABEL_STATUS: Record<Status, string> = {
 export const LAYANAN = [
   { kode: "klaim_perdin", awalan: "KP", nama: "Klaim Biaya Perdin", info: "Klaim uang harian dan biaya perjalanan setelah dinas selesai.", aktif: true },
   { kode: "klaim_perdin_diklat", awalan: "KD", nama: "Klaim Perdin Diklat", info: "Klaim perjalanan untuk workshop atau diklat dengan Surat Pemanggilan.", aktif: true },
-  { kode: "permohonan_sppd", awalan: "SP", nama: "Permohonan SPPD", info: "Ajukan SPPD sebelum berangkat berdasarkan Surat Tugas.", aktif: false },
+  { kode: "permohonan_sppd", awalan: "SP", nama: "Permohonan SPPD", info: "Ajukan SPPD sebelum berangkat berdasarkan Surat Tugas.", aktif: true },
   { kode: "pemesanan_tiket", awalan: "TP", nama: "Pemesanan Tiket Pesawat", info: "Minta Admin SDM memesankan tiket sesuai rute dan tanggal tugas.", aktif: false },
 ];
 

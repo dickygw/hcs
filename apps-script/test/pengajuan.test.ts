@@ -2,45 +2,12 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { buatApi, GalatPengguna, type Pemanggil } from "../src/akses";
 import * as P from "../src/pengajuan";
 import { RUTE } from "../src/rute";
-import { TABEL, type Baris, type NamaTabel } from "../src/skema";
-
-/** Gudang di memori: tabel = array objek, file = Map. */
-function gudangUji() {
-  const db = Object.fromEntries(Object.keys(TABEL).map((t) => [t, [] as Record<string, string>[]])) as Record<NamaTabel, Record<string, string>[]>;
-  const lengkap = <T extends NamaTabel>(t: T, o: Partial<Baris<T>>) => Object.fromEntries(TABEL[t].kolom.map((k) => [k, String((o as Record<string, unknown>)[k] ?? "")]));
-  const file = new Map<string, Uint8Array>();
-  const nomor: Record<string, number> = {};
-  let n = 0;
-  let detik = 0;
-  const g: P.Gudang = {
-    baca: (t) => db[t].map((x) => ({ ...x })) as never,
-    tambah: (t, d) => db[t].push(...d.map((o) => lengkap(t, o))),
-    ubah: (t, i, o) => (db[t][i] = lengkap(t, o)),
-    gantiSemua: (t, d) => (db[t] = d.map((o) => lengkap(t, o))),
-    kunci: (fn) => fn(),
-    kini: () => new Date(Date.UTC(2026, 9, 13, 0, 0, detik++)).toISOString(),
-    id: () => "id" + n++,
-    nomorBerikut: (a) => (nomor[a] = (nomor[a] ?? 0) + 1),
-    file: {
-      simpan: (_n, nama, _t, isi) => (file.set("drive-" + nama, isi), "drive-" + nama),
-      hapus: (id) => void file.delete(id),
-      ambil: (id) => Buffer.from(file.get(id)!).toString("base64"),
-    },
-  };
-  return { g, db, file };
-}
+import { b64, dariB64, gudangUji, ISIAN, PDF } from "./gudang-uji";
 
 const A: Pemanggil = { email: "a@pegadaian.co.id", peran: "karyawan" };
 const B: Pemanggil = { email: "b@pegadaian.co.id", peran: "karyawan" };
 const REKENING = "012345678901234";
-const PDF = Uint8Array.from([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34]);
 const PNG = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0]);
-const b64 = (b: Uint8Array) => Buffer.from(b).toString("base64");
-const dariB64 = (s: string) => new Uint8Array(Buffer.from(s, "base64"));
-const ISIAN = {
-  no_surat_tugas: "ST/0412/KW-IV/2026", kota_tujuan: "Samarinda", tgl_berangkat: "2026-10-06", tgl_kembali: "2026-10-08",
-  menginap: "ya", jarak: "", moda_transportasi: "pesawat", kendaraan_dinas: "tidak",
-};
 
 let u: ReturnType<typeof gudangUji>;
 beforeEach(() => {
@@ -49,6 +16,7 @@ beforeEach(() => {
     { kode: "klaim_perdin", nama: "Klaim Biaya Perdin", awalan_nomor: "KP", aktif: "ya" },
     { kode: "klaim_perdin_diklat", nama: "Klaim Biaya Perdin Diklat", awalan_nomor: "KD", aktif: "ya" },
     { kode: "permohonan_sppd", nama: "Permohonan SPPD", awalan_nomor: "SP", aktif: "ya" },
+    { kode: "pemesanan_tiket", nama: "Pemesanan Tiket Pesawat", awalan_nomor: "TP", aktif: "ya" },
   ]);
   u.g.tambah("karyawan", [
     { nik_pendek: "P1", nama: "Rina A", prim_email: A.email, kode_job_grade: "12", position_name: "Analis", nama_unit_kerja: "Kanwil", aktif: "ya" },
@@ -100,7 +68,7 @@ describe("Draf, nomor, kirim", () => {
   });
 
   it("layanan yang belum dibangun ditolak", () => {
-    expect(() => P.simpanDraf(u.g, A, { jenis: "permohonan_sppd", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
+    expect(() => P.simpanDraf(u.g, A, { jenis: "pemesanan_tiket", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
   });
 
   it("edit dan kirim ulang saat Perlu revisi, nomor tetap", () => {
@@ -302,7 +270,7 @@ describe("Klaim Perdin Diklat (Tahap 6): mesin form yang sama, Surat Pemanggilan
   });
 
   it("layanan yang belum dibangun tetap ditolak walau aktif di data master", () => {
-    expect(() => P.simpanDraf(u.g, A, { jenis: "permohonan_sppd", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
-    expect(P.LAYANAN_AKTIF).toEqual(["klaim_perdin", "klaim_perdin_diklat"]);
+    expect(() => P.simpanDraf(u.g, A, { jenis: "pemesanan_tiket", isian: {} })).toThrow("Jenis layanan tidak tersedia.");
+    expect(P.LAYANAN_AKTIF).toEqual(["klaim_perdin", "klaim_perdin_diklat", "permohonan_sppd"]);
   });
 });
