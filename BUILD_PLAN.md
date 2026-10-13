@@ -66,8 +66,8 @@ Tidak ada biaya.
 | 0 | Uji kecepatan (POC) | — | ✅ | lulus dengan catatan, `docs/HASIL_UJI_KECEPATAN.md` |
 | 1 | Persiapan proyek Apps Script dan pemeriksaan otomatis | — | ✅ | `118409e` |
 | 2 | Struktur spreadsheet, enkripsi rekening, data dummy | — | ✅ | `bb13f60` |
-| 3 | Identitas, peran, kunci layar, kerangka navigasi | U2, U3, K6 | 🟡 | |
-| 4 | Data master: sinkronisasi HCMS dan unggah TAD | A5, A6 | ⬜ | |
+| 3 | Identitas, peran, kunci layar, kerangka navigasi | U2, U3, K6 | ✅ | `5926a53`; uji manual U3 15 menit dan Keluar ditunda ke Tahap 13 (sudah dicakup tes otomatis) |
+| 4 | Data master: sinkronisasi HCMS dan unggah TAD | A5, A6 | 🟡 | |
 | 5 | Klaim Biaya Perdin, termasuk bagian TAD | K1–K4 | ⬜ | |
 | 6 | Klaim Biaya Perdin Diklat | K3 (varian Diklat) | ⬜ | |
 | 7 | Permohonan SPPD dan Tugasku | K3 (varian SPPD), A2 | ⬜ | |

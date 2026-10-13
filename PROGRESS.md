@@ -2,8 +2,8 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–2 ✅; **Tahap 3** (identitas, peran, kunci layar, kerangka navigasi) hampir selesai: tinggal uji kunci layar 15 menit dan Keluar
-**Terakhir diperbarui:** 09-10-2026
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–3 ✅; **Tahap 4** (data master: sinkronisasi HCMS dan unggah TAD) berikutnya
+**Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
 | Dokumen | Versi | Status |
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 1–2 dari 15 ✅; Tahap 3 🟡 (menunggu OAuth Google) |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–3 dari 15 ✅; Tahap 4 🟡 |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -60,12 +60,8 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-Lanjutan Tahap 3 (sesi berikutnya):
-1. ✅ Admin pertama terdaftar (`tambahAdmin`): dicky.widyatama@pegadaian.co.id → kerangka Admin tampil di HCS-dev.
-2. ✅ Akun tidak terdaftar (manohc.balikpapan, Incognito) → layar U2.
-3. User uji: diam 15 menit sebagai dicky → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
-4. Bila lolos: centang Tahap 3 di BUILD_PLAN.md, user push (`git -C D:/HCS push origin main`), cek Actions hijau.
-5. Lalu Tahap 4: data master (sinkronisasi HCMS dan unggah TAD). Tampilan karyawan dengan akun asli diuji setelah sinkronisasi HCMS.
+1. Tahap 4: data master (sinkronisasi HCMS dan unggah TAD). Tampilan karyawan dengan akun asli diuji setelah sinkronisasi HCMS.
+2. Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
 Info lingkungan HCS-dev:
 - Editor: https://script.google.com/d/1DvFXJzHuJPjCRTSOaRK6hEsBHcuXG-uog_rzqpu4XTAgrMRB1TQeyLIJ/edit (akun unit manohc.balikpapan)
@@ -93,3 +89,4 @@ Info lingkungan HCS-dev:
 | 09-10-2026 | 3 | Tahap 2 selesai: skema 15 tabel (3 spreadsheet), modul data (baca sekaligus, cache tabel kecil, netralisasi rumus), enkripsi AES-256-GCM (@noble/ciphers, berjalan tanpa fitur browser), migrasi bernomor, fungsi pemilik (migrasi, kunci, dummy, cekBerbagi, trigger). User menjalankan kelima fungsi di HCS-dev tanpa error. 48 tes lolos, cek:keamanan lolos, audit 0 celah |
 | 09-10-2026 | 3 | Tahap 3 (kode): sesi HCS di CacheService (15 menit diam, maks 12 jam, keluar menghapus sesi), pembatas 120 panggilan/menit per email, peran dari tabel pengguna + data master karyawan, rute mulai/keluar, layar U2, U3, sudah keluar, kerangka karyawan (K1 kosong, K5 kosong, K6) dan Admin, fungsi tambahAdmin. Gambar halftone diperkecil 584 → 18 KB. 60 tes lolos |
 | 09-10-2026 | 3 | Uji Tahap 3: U2 tampil untuk manohc (tidak terdaftar); setelah tambahAdmin, dicky masuk ke kerangka Admin. Sisa uji: kunci layar 15 menit dan Keluar. Sesi dihentikan atas arahan user |
+| 13-10-2026 | 3 | Tahap 3 ditutup atas arahan user (tidak ada waktu uji 15 menit). Uji manual U3 dan Keluar ditunda ke Tahap 13; perilakunya sudah dicakup tes otomatis |
