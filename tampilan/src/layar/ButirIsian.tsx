@@ -1,11 +1,11 @@
-import { konfig, LABEL_MODA, LABEL_WAKTU, rentang, tanggal, type Isian } from "../pengajuan";
+import { jamWita, konfig, LABEL_MODA, rentang, tanggal, type Isian } from "../pengajuan";
 
 /**
  * Ringkasan isian sebagai pasangan <dt>/<dd>, dipakai Tinjau (K3), K4, dan detail Admin.
  * Isinya mengikuti bentuk form jenis layanan: perjalanan (klaim, SPPD) atau tiket.
  */
 export default function ButirIsian({ jenis, isian: i }: { jenis: string; isian: Isian }) {
-  const jadwal = (t: string, w: string) => (t ? [tanggal(t), LABEL_WAKTU[w]].filter(Boolean).join(" · ") : "-");
+  const jadwal = (t: string, w: string) => (t ? [tanggal(t), jamWita(w)].filter(Boolean).join(" · ") : "-");
   if (konfig(jenis).form === "tiket") {
     return (
       <>

@@ -44,8 +44,6 @@ const PILIHAN: Partial<Record<keyof Isian, readonly string[]>> = {
   jarak: ["30_60", "60"],
   moda_transportasi: ["pesawat", "kapal", "kereta", "darat"],
   kendaraan_dinas: ["ya", "tidak"],
-  waktu_berangkat: ["pagi", "siang", "sore"],
-  waktu_kembali: ["pagi", "siang", "sore"],
 };
 /**
  * Konfigurasi per jenis layanan (PRD 5.1): satu mesin form, beda label surat dasar.
@@ -83,6 +81,8 @@ export function bersihkanIsian(arg: unknown): Isian {
   for (const k of ISIAN) o[k] = teks(a[k], PANJANG[k] ?? 60);
   for (const [k, boleh] of Object.entries(PILIHAN) as [keyof Isian, readonly string[]][]) if (o[k] && !boleh.includes(o[k])) o[k] = "";
   for (const k of ["tgl_berangkat", "tgl_kembali"] as const) if (o[k] && !tanggalSah(o[k])) o[k] = "";
+  // Waktu penerbangan berupa jam HH:MM (24 jam), mis. 08:30.
+  for (const k of ["waktu_berangkat", "waktu_kembali"] as const) if (o[k] && !/^([01]\d|2[0-3]):[0-5]\d$/.test(o[k])) o[k] = "";
   if (o.menginap === "ya") o.jarak = "";
   if (!o.tgl_kembali) o.waktu_kembali = "";
   return o;
@@ -105,9 +105,9 @@ export function periksaIsian(o: Isian, jenis = "klaim_perdin"): Partial<Record<k
     if (o.kota_asal.length < 2) g.kota_asal = "Isi kota asal.";
     if (o.kota_tujuan.length < 2) g.kota_tujuan = "Isi kota tujuan.";
     if (!o.tgl_berangkat) g.tgl_berangkat = "Isi tanggal berangkat.";
-    if (!o.waktu_berangkat) g.waktu_berangkat = "Pilih waktu berangkat.";
+    if (!o.waktu_berangkat) g.waktu_berangkat = "Isi jam berangkat.";
     if (o.tgl_kembali && o.tgl_berangkat && o.tgl_kembali < o.tgl_berangkat) g.tgl_kembali = "Tanggal kembali sebelum tanggal berangkat.";
-    if (o.tgl_kembali && !o.waktu_kembali) g.waktu_kembali = "Pilih waktu kembali.";
+    if (o.tgl_kembali && !o.waktu_kembali) g.waktu_kembali = "Isi jam kembali.";
     return g;
   }
   if (o.kota_tujuan.length < 2) g.kota_tujuan = "Isi kota atau unit tujuan.";

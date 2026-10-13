@@ -4,7 +4,7 @@ import s from "../komponen/pengajuan.module.css";
 import ui from "../komponen/ui.module.css";
 import { inisial } from "../jenis";
 import ButirIsian from "./ButirIsian";
-import { jam, kalimat, konfig, LABEL_MODA, LABEL_WAKTU, LAYANAN, namaDokumen, siapkanFile, ukuran, type Detail, type Dokumen, type Isian, type Tad } from "../pengajuan";
+import { jam, kalimat, konfig, LABEL_MODA, LAYANAN, namaDokumen, siapkanFile, ukuran, type Detail, type Dokumen, type Isian, type Tad } from "../pengajuan";
 import { panggil } from "../server";
 
 const KOSONG: Isian = {
@@ -238,18 +238,26 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
                   onChange={(e) => ubah("kota_tujuan", e.target.value)} onBlur={() => tinggalkan("kota_tujuan")} />
               </Kolom>
             </div>
-            <Kolom id="tgl_berangkat" label="Tanggal berangkat" galat={pesan("tgl_berangkat")}>
-              <input id="isian-tgl_berangkat" type="date" className={s.isian} value={isian.tgl_berangkat} aria-invalid={!!pesan("tgl_berangkat")}
-                onChange={(e) => ubah("tgl_berangkat", e.target.value)} onBlur={() => tinggalkan("tgl_berangkat")} />
-            </Kolom>
-            <Pilihan id="waktu_berangkat" label="Waktu berangkat" galat={pesan("waktu_berangkat")} nilai={isian.waktu_berangkat} kolom={3}
-              opsi={Object.entries(LABEL_WAKTU)} onPilih={(v) => (ubah("waktu_berangkat", v), tinggalkan("waktu_berangkat"))} />
-            <Kolom id="tgl_kembali" label="Tanggal kembali (opsional)" bantuan="Kosongkan bila hanya sekali jalan." galat={pesan("tgl_kembali")}>
-              <input id="isian-tgl_kembali" type="date" className={s.isian} value={isian.tgl_kembali} min={isian.tgl_berangkat || undefined} aria-invalid={!!pesan("tgl_kembali")}
-                onChange={(e) => ubah("tgl_kembali", e.target.value)} onBlur={() => tinggalkan("tgl_kembali")} />
-            </Kolom>
-            <Pilihan id="waktu_kembali" label="Waktu kembali" galat={pesan("waktu_kembali")} nilai={isian.waktu_kembali} kolom={3} nonaktif={!isian.tgl_kembali}
-              opsi={Object.entries(LABEL_WAKTU)} onPilih={(v) => (ubah("waktu_kembali", v), tinggalkan("waktu_kembali"))} />
+            <div className={s.duaKolom}>
+              <Kolom id="tgl_berangkat" label="Tanggal berangkat" galat={pesan("tgl_berangkat")}>
+                <input id="isian-tgl_berangkat" type="date" className={s.isian} value={isian.tgl_berangkat} aria-invalid={!!pesan("tgl_berangkat")}
+                  onChange={(e) => ubah("tgl_berangkat", e.target.value)} onBlur={() => tinggalkan("tgl_berangkat")} />
+              </Kolom>
+              <Kolom id="waktu_berangkat" label="Jam berangkat" galat={pesan("waktu_berangkat")}>
+                <input id="isian-waktu_berangkat" type="time" className={s.isian} value={isian.waktu_berangkat} aria-invalid={!!pesan("waktu_berangkat")}
+                  onChange={(e) => ubah("waktu_berangkat", e.target.value)} onBlur={() => tinggalkan("waktu_berangkat")} />
+              </Kolom>
+            </div>
+            <div className={s.duaKolom}>
+              <Kolom id="tgl_kembali" label="Tanggal kembali (opsional)" bantuan="Kosongkan bila sekali jalan." galat={pesan("tgl_kembali")}>
+                <input id="isian-tgl_kembali" type="date" className={s.isian} value={isian.tgl_kembali} min={isian.tgl_berangkat || undefined} aria-invalid={!!pesan("tgl_kembali")}
+                  onChange={(e) => ubah("tgl_kembali", e.target.value)} onBlur={() => tinggalkan("tgl_kembali")} />
+              </Kolom>
+              <Kolom id="waktu_kembali" label="Jam kembali" galat={pesan("waktu_kembali")}>
+                <input id="isian-waktu_kembali" type="time" className={s.isian} value={isian.waktu_kembali} disabled={!isian.tgl_kembali} aria-invalid={!!pesan("waktu_kembali")}
+                  onChange={(e) => ubah("waktu_kembali", e.target.value)} onBlur={() => tinggalkan("waktu_kembali")} />
+              </Kolom>
+            </div>
           </>
         )}
 

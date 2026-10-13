@@ -58,7 +58,7 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 13-10-2026 | Klaim Perdin Diklat memakai mesin form yang sama lewat konfigurasi per jenis layanan (`KONFIG_LAYANAN`); Nomor Surat Pemanggilan disimpan di kolom `no_surat_tugas`, dokumen di jenis `surat_tugas` dengan label Surat Pemanggilan | Tanpa duplikasi kode dan tanpa ubah struktur sheet |
 | 13-10-2026 | Tugasku = pengajuan berstatus Dikirim dan Diproses; tab TAD satu baris per TAD. Filter tanggal bawaan "Semua tanggal" (mockup: 7 hari) agar antrean lama tidak tersembunyi. Ubah status dicek terhadap status yang dilihat Admin di dalam kunci | Antrean kerja tidak boleh ada yang terlewat; dua Admin tidak saling menimpa |
 | 13-10-2026 | Permohonan SPPD tanpa langkah Bukti; dokumen wajib hanya Surat Tugas | Design Brief 5.1 |
-| 13-10-2026 | Isian Pemesanan Tiket Pesawat: Nomor Surat Tugas + dokumen, kota asal, kota tujuan, tanggal dan waktu berangkat (pagi/siang/sore), tanggal dan waktu kembali (opsional, sekali jalan), nama hotel (opsional), catatan (opsional), TAD. Kolom baru lewat migrasi 0002 di akhir sheet pengajuan | Arahan user (nama hotel karena kadang ada pemesanan hotel) |
+| 13-10-2026 | Isian Pemesanan Tiket Pesawat: Nomor Surat Tugas + dokumen, kota asal, kota tujuan, tanggal dan jam berangkat (HH:MM), tanggal dan jam kembali (opsional, sekali jalan), nama hotel (opsional), catatan (opsional), TAD. Kolom baru lewat migrasi 0002 di akhir sheet pengajuan | Arahan user (nama hotel karena kadang ada pemesanan hotel) |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka

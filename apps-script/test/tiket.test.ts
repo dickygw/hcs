@@ -10,7 +10,7 @@ const A: Pemanggil = { email: "a@pegadaian.co.id", peran: "karyawan" };
 const B: Pemanggil = { email: "b@pegadaian.co.id", peran: "karyawan" };
 const TIKET = {
   no_surat_tugas: "ST/0455/KW-IV/2026", kota_asal: "Balikpapan", kota_tujuan: "Tarakan",
-  tgl_berangkat: "2026-10-14", waktu_berangkat: "pagi", tgl_kembali: "2026-10-16", waktu_kembali: "sore",
+  tgl_berangkat: "2026-10-14", waktu_berangkat: "08:30", tgl_kembali: "2026-10-16", waktu_kembali: "17:15",
   nama_hotel: "Hotel Tarakan Plaza", catatan: "Bila bisa, maskapai Garuda.",
 };
 
@@ -42,17 +42,17 @@ describe("Pemesanan Tiket Pesawat (Tahap 8)", () => {
   it("validasi: kota asal, kota tujuan, tanggal dan waktu berangkat wajib; menginap dan moda tidak ditanya", () => {
     const g = P.periksaIsian(P.bersihkanIsian({ no_surat_tugas: "ST/1" }), "pemesanan_tiket");
     expect(g).toEqual({
-      kota_asal: "Isi kota asal.", kota_tujuan: "Isi kota tujuan.", tgl_berangkat: "Isi tanggal berangkat.", waktu_berangkat: "Pilih waktu berangkat.",
+      kota_asal: "Isi kota asal.", kota_tujuan: "Isi kota tujuan.", tgl_berangkat: "Isi tanggal berangkat.", waktu_berangkat: "Isi jam berangkat.",
     });
   });
 
   it("sekali jalan boleh; bila tanggal kembali diisi, waktu kembali wajib dan tidak sebelum berangkat", () => {
-    const sekali = { ...TIKET, tgl_kembali: "", waktu_kembali: "sore", nama_hotel: "", catatan: "" };
+    const sekali = { ...TIKET, tgl_kembali: "", waktu_kembali: "17:15", nama_hotel: "", catatan: "" };
     expect(P.periksaIsian(P.bersihkanIsian(sekali), "pemesanan_tiket")).toEqual({});
     expect(P.bersihkanIsian(sekali).waktu_kembali).toBe(""); // dibuang bila tanpa tanggal kembali
-    expect(P.periksaIsian(P.bersihkanIsian({ ...TIKET, waktu_kembali: "" }), "pemesanan_tiket")).toEqual({ waktu_kembali: "Pilih waktu kembali." });
+    expect(P.periksaIsian(P.bersihkanIsian({ ...TIKET, waktu_kembali: "" }), "pemesanan_tiket")).toEqual({ waktu_kembali: "Isi jam kembali." });
     expect(P.periksaIsian(P.bersihkanIsian({ ...TIKET, tgl_kembali: "2026-10-01" }), "pemesanan_tiket")).toEqual({ tgl_kembali: "Tanggal kembali sebelum tanggal berangkat." });
-    expect(P.bersihkanIsian({ waktu_berangkat: "tengah malam" }).waktu_berangkat).toBe("");
+    expect(["pagi", "24:00", "8:30", "08:60", "08:30"].map((w) => P.bersihkanIsian({ waktu_berangkat: w }).waktu_berangkat)).toEqual(["", "", "", "", "08:30"]);
     expect(P.bersihkanIsian({ catatan: "x".repeat(1000) }).catatan).toHaveLength(300);
   });
 

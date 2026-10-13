@@ -68,7 +68,8 @@ export const LAYANAN = [
 ];
 
 export const LABEL_MODA: Record<string, string> = { pesawat: "Pesawat", kapal: "Kapal", kereta: "Kereta", darat: "Darat" };
-export const LABEL_WAKTU: Record<string, string> = { pagi: "Pagi", siang: "Siang", sore: "Sore" };
+/** 08:30 → 08.30 WITA (Design Brief 6: format waktu). */
+export const jamWita = (hhmm: string) => (hhmm ? hhmm.replace(":", ".") + " WITA" : "");
 
 const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 const bagian = (t: string) => t.split("-").map(Number) as [number, number, number];
