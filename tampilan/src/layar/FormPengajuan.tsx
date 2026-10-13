@@ -9,12 +9,12 @@ import { panggil } from "../server";
 
 const KOSONG: Isian = {
   no_surat_tugas: "", kota_tujuan: "", tgl_berangkat: "", tgl_kembali: "", menginap: "", jarak: "", moda_transportasi: "", kendaraan_dinas: "",
-  kota_asal: "", waktu_berangkat: "", waktu_kembali: "", nama_hotel: "", catatan: "",
+  kota_asal: "", waktu_berangkat: "", waktu_kembali: "", nama_hotel: "", catatan: "", kegiatan: "",
 };
 /** Isian yang diperiksa per langkah saat Lanjut ditekan. */
 // Nomor langkah: 0 surat, 1 perjalanan, 2 transportasi, 3 TAD, 4 bukti, 5 tinjau, 6 penerbangan (tiket), 7 hotel dan catatan (tiket).
 const ISIAN_LANGKAH: (keyof Isian)[][] = [
-  ["no_surat_tugas"], ["kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak"], ["moda_transportasi", "kendaraan_dinas"], [], [], [],
+  ["no_surat_tugas", "kegiatan"], ["kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak"], ["moda_transportasi", "kendaraan_dinas"], [], [], [],
   ["kota_asal", "kota_tujuan", "tgl_berangkat", "waktu_berangkat", "tgl_kembali", "waktu_kembali"], ["nama_hotel", "catatan"],
 ];
 
@@ -187,6 +187,10 @@ export default function FormPengajuan(p: { jenis: string; awal?: Detail; onTutup
             <Kolom id="no_surat_tugas" label={`Nomor ${surat}`} bantuan={`Tertera di kanan atas ${surat}.`} galat={pesan("no_surat_tugas")}>
               <input id="isian-no_surat_tugas" className={s.isian} value={isian.no_surat_tugas} maxLength={60} autoComplete="off" aria-invalid={!!pesan("no_surat_tugas")}
                 onChange={(e) => ubah("no_surat_tugas", e.target.value)} onBlur={() => tinggalkan("no_surat_tugas")} />
+            </Kolom>
+            <Kolom id="kegiatan" label="Kegiatan" bantuan={`Keperluan perjalanan dinas sesuai ${surat}, mis. Waskat CP Melak.`} galat={pesan("kegiatan")}>
+              <input id="isian-kegiatan" className={s.isian} value={isian.kegiatan} maxLength={200} aria-invalid={!!pesan("kegiatan")}
+                onChange={(e) => ubah("kegiatan", e.target.value)} onBlur={() => tinggalkan("kegiatan")} />
             </Kolom>
             <Unggah jenis="surat_tugas" label={`Dokumen ${surat}`} dokumen={dokumen} setDokumen={setDokumen} nomor={pastikanNomor} />
           </>

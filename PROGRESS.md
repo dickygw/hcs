@@ -2,7 +2,7 @@
 
 > File ini dibaca agen pembangun di awal setiap sesi. Simpan di root folder proyek HCS.
 
-**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–8 ✅; **Tahap 9** (perhitungan SPPD) berikutnya
+**Tahap aktif:** 3 – Bangun MVP · Build Plan v3.0 Tahap 0–8 ✅; **Tahap 9** (perhitungan SPPD) kode selesai, menunggu uji user di HCS-dev
 **Terakhir diperbarui:** 13-10-2026
 
 ## Dokumen acuan yang berlaku
@@ -21,7 +21,7 @@ Dokumen lama ada di `docs/arsip/` dan **tidak** dipakai sebagai acuan.
 |---|-------|--------|-----------------|
 | 1 | PRD | ✅ Selesai | v2.1 disetujui 08-10-2026 |
 | 2 | UI & UX Design Brief | ✅ Selesai | Brief v1.1 + mockup Claude Design disetujui 08-10-2026 |
-| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–8 dari 15 ✅; Tahap 9 berikutnya |
+| 3 | Bangun MVP | 🟡 Berjalan | Build Plan Tahap 0–8 dari 15 ✅; Tahap 9 🟡 |
 | 4 | Celah Keamanan | 🔒 Terkunci | Tes keamanan juga dijalankan setiap akhir tahap (AI-04) |
 | 5 | Debug Error ⚙️ | 🔒 Terkunci | |
 | 6 | E2E Test (Playwright) | 🔒 Terkunci | |
@@ -59,9 +59,13 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 | 13-10-2026 | Tugasku = pengajuan berstatus Dikirim dan Diproses; tab TAD satu baris per TAD. Filter tanggal bawaan "Semua tanggal" (mockup: 7 hari) agar antrean lama tidak tersembunyi. Ubah status dicek terhadap status yang dilihat Admin di dalam kunci | Antrean kerja tidak boleh ada yang terlewat; dua Admin tidak saling menimpa |
 | 13-10-2026 | Permohonan SPPD tanpa langkah Bukti; dokumen wajib hanya Surat Tugas | Design Brief 5.1 |
 | 13-10-2026 | Isian Pemesanan Tiket Pesawat: Nomor Surat Tugas + dokumen, kota asal, kota tujuan, tanggal dan jam berangkat (HH:MM), tanggal dan jam kembali (opsional, sekali jalan), nama hotel (opsional), catatan (opsional), TAD. Kolom baru lewat migrasi 0002 di akhir sheet pengajuan | Arahan user (nama hotel karena kadang ada pemesanan hotel) |
+| 13-10-2026 | Perhitungan SPPD mengikuti Daftar Pembayaran SPPD Lumpsum: uang harian = tarif unit kerja asal × 1 + tarif kota tujuan × (hari − 1) (menginap); tidak menginap = tarif jarak × hari, kendaraan dinas 50%; transportasi = tarif bandara × kali jalan. Jumlah hari/jalan/bulan sewa diusulkan sistem dan dapat diubah Admin dengan alasan (log_perubahan) | Arahan user (contoh daftar pembayaran) |
+| 13-10-2026 | Ekspor CMS: satu baris per karyawan dan per TAD, kolom sama dengan daftar pembayaran + kolom sewa, at cost, penyesuaian. **Karyawan dicocokkan lewat NIK; rekening karyawan tetap tidak disimpan** (PRD 6.4, DATA-05 tidak berubah). Rekening TAD lengkap hanya di ekspor, tercatat di log_akses_rekening | Arahan user |
+| 13-10-2026 | Isian "Kegiatan" wajib diisi karyawan di langkah 1 semua layanan (migrasi 0003) | Arahan user; kolom Kegiatan di daftar pembayaran |
 | 08-10-2026 | Standar Keamanan v1.2: lima lapis kunci Supabase (Data API mati, skema `hcs`, RLS tolak semua, network restriction, peran `hcs_app`) + aturan agen AI | Kebocoran 16.326 database Supabase (UpGuard, Sep 2026) |
 
 ## Pertanyaan terbuka
+6. Perhitungan (Tahap 9), mohon dikonfirmasi Admin SDM: (a) bantuan sewa rumah > 12 hari diusulkan per 30 hari dibulatkan ke atas dan ditambahkan di samping uang harian; (b) usulan kali jalan transportasi bandara: 4 (menginap), 2 (tidak menginap), 0 bila kendaraan dinas atau darat; (c) tarif dipilih menurut tanggal berangkat; (d) angka di file ekspor CMS berformat teks — pastikan dapat diunggah ke CMS.
 0. Tanggal berlaku tarif SE 145 Tahun 2026: sementara 01-01-2026 (`database/migrations/0002_data_acuan.sql`). Konfirmasi sebelum migrasi dipasang.
 1. ~~Kolom isian Pemesanan Tiket Pesawat~~ Terjawab 13-10-2026: usulan Build Plan + nama hotel (opsional).
 2. Validasi ulang template TAD final (EPS dan INHOUSE). Kolom sementara: NIK, NAMA, NAMA BANK, NOMOR REKENING, VENDOR, UNIT KERJA, TANGGAL AKHIR KONTRAK; NIK TAD dianggap NIK KTP 16 digit.
@@ -70,7 +74,14 @@ Legenda: ⚙️ Alat bantu, boleh dipakai sejak Tahap 3 · 🔒 Terkunci · 🟡
 4. File logo SVG dan web font Ronnia WOFF2 dari tim brand. Sementara memakai TTF di `mockup/_ds/`.
 
 ## Langkah berikutnya
-1. Tahap 9: perhitungan SPPD, A3 lengkap, Selesai. Butuh dari user: 3 contoh perjalanan yang sudah dibayar beserta hitungan manual Admin SDM (angka dan aturan saja, tanpa nama atau rekening asli).
+Uji Tahap 9 di HCS-dev (user):
+1. Kirim kode: `npm run kirim:dev`, lalu perbarui deployment (perintah di bawah).
+2. **Wajib:** editor Apps Script (akun manohc) → `jalankanMigrasi` → log "0003: Menambah 3 kolom ...".
+3. HP manohc: ajukan Klaim Biaya Perdin (isian baru "Kegiatan" di langkah 1) dengan 1 TAD yang belum punya rekening (pakai "TAD belum terdaftar").
+4. Laptop dicky: Tugasku → buka → Proses → panel Perhitungan SPPD: cocokkan angka dengan hitungan manual; Selesai nonaktif → Lengkapi rekening TAD → ubah jumlah hari (alasan wajib) → Selesai.
+5. Tugasku → Ekspor daftar pembayaran → buka file Excel, bandingkan dengan format CMS.
+6. HP manohc: detail → kartu Nominal disetujui dengan rincian per orang (tanpa tarif).
+7. Bila lolos: centang Tahap 9, lalu Tahap 10 (deteksi duplikasi).
 
 Utang uji manual Tahap 3 (dibawa ke Tahap 13): diam 15 menit → U3 "Sesi Anda berakhir" → Masuk kembali; klik Keluar → layar "Anda sudah keluar dari HCS".
 
@@ -111,3 +122,4 @@ Info lingkungan HCS-dev:
 | 13-10-2026 | 3 | Tahap 7 selesai: user menguji di HCS-dev tanpa error (SPPD 5 langkah, Tugasku, Proses, Minta revisi, kirim ulang). Riwayat status di detail Admin diubah menjadi tabel atas permintaan user |
 | 13-10-2026 | 3 | Tahap 8 (kode): Pemesanan Tiket Pesawat (TP-xxxx, 5 langkah: Surat Tugas, Penerbangan, Hotel dan catatan, TAD, Tinjau), migrasi 0002 (5 kolom baru di sheet pengajuan), ringkasan isian bersama untuk Tinjau/K4/A3. 125 tes lolos (7 tes baru); simulasi tiket karyawan → Admin lolos |
 | 13-10-2026 | 3 | Tahap 8 selesai: user menguji Pemesanan Tiket Pesawat di HCS-dev tanpa error (migrasi 0002 terpasang; jam penerbangan berupa isian jam atas permintaan user) |
+| 13-10-2026 | 3 | Tahap 9 (kode): mesin hitung SPPD (cocok dengan contoh daftar pembayaran user: 1.230.000, 900.000, 630.000, 820.000, 420.000, 125.000, 2.230.000), panel perhitungan A3 dengan pratinjau langsung, at cost, alasan wajib, lengkapi rekening TAD, Selesai nonaktif bila rekening kosong, hitung ulang di server, rincian K4 setelah Selesai tanpa tarif, ekspor Daftar Pembayaran SPPD (xlsx), migrasi 0003 (kegiatan, rincian_hitung, disetujui_pada). 151 tes lolos (26 tes baru); simulasi Admin → karyawan lolos. Gambar daftar pembayaran asli dari user tidak disimpan (hanya struktur dan aturan) |

@@ -4,6 +4,8 @@ import ui from "../komponen/ui.module.css";
 import { dariBase64, LAYANAN, namaDokumen, ukuran, waktuLengkap, waktuPendek, type Isian, type Status } from "../pengajuan";
 import { panggil } from "../server";
 import { unduh } from "../unggah";
+import { buatXlsx } from "../xlsx";
+import PanelHitung, { type DataHitung } from "./PanelHitung";
 import ButirIsian from "./ButirIsian";
 import { Lencana } from "./DetailPengajuan";
 
@@ -33,6 +35,7 @@ export default function Tugasku() {
   const [memuat, setMemuat] = useState(false);
   const [galat, setGalat] = useState("");
   const [buka, setBuka] = useState<string | null>(null);
+  const [ekspor, setEkspor] = useState(false);
 
   const muat = useCallback(async (f: typeof AWAL, halaman: number) => {
     setMemuat(true);
@@ -97,6 +100,14 @@ export default function Tugasku() {
           <option value="30_hari">30 hari terakhir</option>
         </select>
       </div>
+      <div className={s.alat}>
+        <div className={s.kanan}>
+          <button type="button" className={`${ui.tombol} ${ui.sekunder} ${ui.kecil}`} onClick={() => setEkspor(true)}>
+            Ekspor daftar pembayaran
+          </button>
+        </div>
+      </div>
+      {ekspor && <DialogEkspor onTutup={() => setEkspor(false)} />}
 
       {galat && (
         <div className={s.galat} role="alert">
@@ -216,6 +227,8 @@ interface DetailA {
   dokumen: { id: string; jenis: string; nama: string; tipe: string; ukuran: number }[];
   riwayat: { status: Status; pada: string; oleh: string; catatan: string }[];
   aksi: string[];
+  hitung: DataHitung | null;
+  umurDataKaryawan: { hari: number; warna: "hijau" | "kuning" | "merah" };
 }
 
 /**
@@ -227,6 +240,7 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
   const [galat, setGalat] = useState("");
   const [memuat, setMemuat] = useState(false);
   const [dialog, setDialog] = useState<"revisi" | "tolak" | null>(null);
+  const [rekeningUntuk, setRekeningUntuk] = useState<{ id: string; nama: string } | null>(null);
   const [berubah, setBerubah] = useState(false);
 
   const muat = useCallback(() => {
@@ -236,6 +250,21 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
       .catch((e: Error) => setGalat(e.message));
   }, [p.nomor]);
   useEffect(muat, [muat]);
+
+  async function selesai(kiriman: object = { nomor: p.nomor }) {
+    if (!d) return;
+    setMemuat(true);
+    setGalat("");
+    try {
+      await panggil("selesaikan", { ...kiriman, dari: d.status });
+      setBerubah(true);
+      muat();
+    } catch (e) {
+      setGalat((e as Error).message);
+    } finally {
+      setMemuat(false);
+    }
+  }
 
   async function aksi(nama: string, catatan = "") {
     if (!d) return;
@@ -293,6 +322,11 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
                   Minta revisi
                 </button>
               )}
+              {d.aksi.includes("selesai") && !d.hitung && (
+                <button type="button" className={`${ui.tombol} ${ui.utama} ${ui.kecil}`} disabled={memuat || d.tad.some((t) => !t.rekening)} onClick={() => void selesai()}>
+                  Selesai
+                </button>
+              )}
               {d.aksi.includes("proses") && (
                 <button type="button" className={`${ui.tombol} ${ui.utama} ${ui.kecil}`} disabled={memuat} onClick={() => void aksi("proses")}>
                   {memuat ? <span className={ui.putar} aria-hidden /> : "Proses"}
@@ -300,6 +334,12 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
               )}
             </div>
           </div>
+
+          {d.umurDataKaryawan.warna !== "hijau" && d.hitung && (
+            <div className={s.peringatan}>
+              Data karyawan {d.umurDataKaryawan.hari < 0 ? "belum pernah disinkronkan" : `berumur ${d.umurDataKaryawan.hari} hari`}. Pastikan JG sesuai sebelum menyelesaikan.
+            </div>
+          )}
 
           <div className={s.duaKolom}>
             <div className={s.halaman}>
@@ -359,11 +399,29 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
                         <div>
                           {t.rekening ? `${t.bank} ${t.rekening}` : <span className={s.penanda}>Rekening TAD kosong</span>}
                           {!t.terverifikasi && <span className={s.penanda}>TAD belum terdaftar</span>}
+                          {!t.rekening && ["dikirim", "diproses"].includes(d.status) && (
+                            <button type="button" className={s.tautan} onClick={() => setRekeningUntuk({ id: t.id, nama: t.nama })}>
+                              Lengkapi rekening
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))}
                   </div>
                 </section>
+              )}
+              {d.hitung && (
+                <PanelHitung
+                  key={d.status}
+                  nomor={d.nomor}
+                  isian={d.isian}
+                  data={d.hitung}
+                  bisaUbah={d.status === "diproses"}
+                  bisaSelesai={d.aksi.includes("selesai") && d.tad.every((t) => t.rekening)}
+                  alasanTidakSelesai={d.status !== "diproses" ? "Klik Proses sebelum menghitung dan menyelesaikan." : "Lengkapi rekening TAD sebelum menyelesaikan pengajuan."}
+                  onSelesai={selesai}
+                  memuat={memuat}
+                />
               )}
             </div>
           </div>
@@ -398,6 +456,16 @@ function DetailAdmin(p: { nomor: string; onKembali: (berubah: boolean) => void }
             </div>
           </section>
         </>
+      )}
+      {rekeningUntuk && d && (
+        <DialogRekening
+          nomor={d.nomor}
+          tad={rekeningUntuk}
+          onTutup={(tersimpan) => {
+            setRekeningUntuk(null);
+            if (tersimpan) muat();
+          }}
+        />
       )}
       {dialog && d && <DialogCatatan jenis={dialog} nomor={d.nomor} memuat={memuat} galat={galat} onKirim={(c) => void aksi(dialog, c)} onTutup={() => setDialog(null)} />}
     </div>
@@ -435,6 +503,116 @@ function DialogCatatan(p: { jenis: "revisi" | "tolak"; nomor: string; memuat: bo
           </button>
           <button type="submit" className={`${ui.tombol} ${tolak ? ui.bahaya : ui.utama}`} disabled={p.memuat}>
             {p.memuat ? <span className={ui.putar} aria-hidden /> : tolak ? "Tolak pengajuan" : "Minta revisi"}
+          </button>
+        </div>
+      </form>
+    </dialog>
+  );
+}
+
+/** Lengkapi rekening TAD (PRD 5.7): BRI 15 digit; disimpan terenkripsi, tampil tersamar. */
+function DialogRekening(p: { nomor: string; tad: { id: string; nama: string }; onTutup: (tersimpan: boolean) => void }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const [bank, setBank] = useState("BRI");
+  const [rekening, setRekening] = useState("");
+  const [memuat, setMemuat] = useState(false);
+  const [galat, setGalat] = useState("");
+  useEffect(() => ref.current?.showModal(), []);
+  return (
+    <dialog ref={ref} className={s.dialog} onClose={() => p.onTutup(false)} aria-labelledby="judul-rekening">
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setMemuat(true);
+          setGalat("");
+          try {
+            await panggil("lengkapiRekeningTad", { nomor: p.nomor, tadId: p.tad.id, bank, rekening });
+            p.onTutup(true);
+          } catch (er) {
+            setGalat((er as Error).message);
+            setMemuat(false);
+          }
+        }}
+      >
+        <h2 id="judul-rekening">Lengkapi rekening {p.tad.nama}</h2>
+        <label className={s.label}>
+          Nama bank
+          <input className={s.isian} value={bank} maxLength={20} onChange={(e) => setBank(e.target.value)} />
+        </label>
+        <label className={s.label}>
+          Nomor rekening
+          <small>Rekening BRI 15 digit. Disimpan terenkripsi dan tampil tersamar.</small>
+          <input className={s.isian} inputMode="numeric" autoComplete="off" required value={rekening} onChange={(e) => setRekening(e.target.value.replace(/[^\d-]/g, ""))} />
+        </label>
+        {galat && (
+          <div className={s.galat} role="alert">
+            {galat}
+          </div>
+        )}
+        <div className={s.tombolBawah}>
+          <button type="button" className={`${ui.tombol} ${ui.sekunder}`} disabled={memuat} onClick={() => ref.current?.close()}>
+            Batal
+          </button>
+          <button type="submit" className={`${ui.tombol} ${ui.utama}`} disabled={memuat}>
+            {memuat ? <span className={ui.putar} aria-hidden /> : "Simpan rekening"}
+          </button>
+        </div>
+      </form>
+    </dialog>
+  );
+}
+
+/** Ekspor Daftar Pembayaran SPPD Lumpsum untuk CMS. Memuat rekening TAD lengkap → konfirmasi dan tercatat (Design Brief 6). */
+function DialogEkspor(p: { onTutup: () => void }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const hariIni = new Date(Date.now() + 8 * 3_600_000).toISOString().slice(0, 10);
+  const [dari, setDari] = useState(hariIni.slice(0, 8) + "01");
+  const [sampai, setSampai] = useState(hariIni);
+  const [memuat, setMemuat] = useState(false);
+  const [galat, setGalat] = useState("");
+  useEffect(() => ref.current?.showModal(), []);
+  return (
+    <dialog ref={ref} className={s.dialog} onClose={p.onTutup} aria-labelledby="judul-ekspor">
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setMemuat(true);
+          setGalat("");
+          try {
+            const h = await panggil<{ kolom: string[]; baris: string[][] }>("eksporPembayaran", { dari, sampai });
+            unduh(`Daftar_Pembayaran_SPPD_${dari}_${sampai}.xlsx`, buatXlsx("Daftar Pembayaran SPPD", [h.kolom, ...h.baris]));
+            ref.current?.close();
+          } catch (er) {
+            setGalat((er as Error).message);
+          } finally {
+            setMemuat(false);
+          }
+        }}
+      >
+        <h2 id="judul-ekspor">Ekspor daftar pembayaran</h2>
+        <p className={s.redup}>Pengajuan berstatus Selesai, disetujui pada rentang tanggal berikut. Satu baris per karyawan dan per TAD.</p>
+        <div className={s.saring} style={{ gridTemplateColumns: "1fr 1fr" }}>
+          <label className={s.label}>
+            Dari
+            <input type="date" className={s.isian} value={dari} required onChange={(e) => setDari(e.target.value)} />
+          </label>
+          <label className={s.label}>
+            Sampai
+            <input type="date" className={s.isian} value={sampai} required onChange={(e) => setSampai(e.target.value)} />
+          </label>
+        </div>
+        <div className={s.peringatan}>Ekspor ini memuat nomor rekening dan akan tercatat di log.</div>
+        {galat && (
+          <div className={s.galat} role="alert">
+            {galat}
+          </div>
+        )}
+        <div className={s.tombolBawah}>
+          <button type="button" className={`${ui.tombol} ${ui.sekunder}`} disabled={memuat} onClick={() => ref.current?.close()}>
+            Batal
+          </button>
+          <button type="submit" className={`${ui.tombol} ${ui.utama}`} disabled={memuat}>
+            {memuat ? <span className={ui.putar} aria-hidden /> : "Ekspor"}
           </button>
         </div>
       </form>

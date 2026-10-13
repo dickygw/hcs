@@ -6,9 +6,16 @@ import { jamWita, konfig, LABEL_MODA, rentang, tanggal, type Isian } from "../pe
  */
 export default function ButirIsian({ jenis, isian: i }: { jenis: string; isian: Isian }) {
   const jadwal = (t: string, w: string) => (t ? [tanggal(t), jamWita(w)].filter(Boolean).join(" · ") : "-");
+  const kegiatan = (
+    <>
+      <dt>Kegiatan</dt>
+      <dd>{i.kegiatan || "-"}</dd>
+    </>
+  );
   if (konfig(jenis).form === "tiket") {
     return (
       <>
+        {kegiatan}
         <dt>Rute</dt>
         <dd>
           {i.kota_asal || "-"} → {i.kota_tujuan || "-"}
@@ -30,6 +37,7 @@ export default function ButirIsian({ jenis, isian: i }: { jenis: string; isian: 
   }
   return (
     <>
+      {kegiatan}
       <dt>Tujuan</dt>
       <dd>{i.kota_tujuan || "-"}</dd>
       <dt>Tanggal</dt>

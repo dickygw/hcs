@@ -65,6 +65,8 @@ export const TABEL = {
       "pernyataan_tad", "nominal_disetujui", "dikirim_pada", "dibuat_pada", "diperbarui_pada",
       // Migrasi 0002 (Pemesanan Tiket Pesawat): ditambahkan di akhir agar data lama tidak bergeser.
       "kota_asal", "waktu_berangkat", "waktu_kembali", "nama_hotel", "catatan",
+      // Migrasi 0003 (Tahap 9): kegiatan dari karyawan, isian perhitungan Admin (JSON), waktu disetujui.
+      "kegiatan", "rincian_hitung", "disetujui_pada",
     ],
   },
   pengajuan_tad: {

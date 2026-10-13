@@ -157,4 +157,22 @@ export const RUTE: Readonly<Record<string, Rute>> = {
   bukaPengajuanAdmin: { peran: ["admin"], jalankan: (a) => T.bukaPengajuanAdmin(gudang(), a, samar_()) },
   unduhDokumenAdmin: { peran: ["admin"], jalankan: (a) => T.unduhDokumenAdmin(gudang(), a) },
   ubahStatus: { peran: ["admin"], jalankan: (a, p) => T.ubahStatus(gudang(), p, a) },
+
+  // --- Admin: perhitungan SPPD, rekening TAD, Selesai, ekspor pembayaran (Tahap 9)
+  simpanHitung: { peran: ["admin"], jalankan: (a) => T.simpanHitung(gudang(), a) },
+  selesaikan: { peran: ["admin"], jalankan: (a, p) => T.selesaikan(gudang(), p, a) },
+  lengkapiRekeningTad: {
+    peran: ["admin"],
+    jalankan: (a, p) => {
+      const kunci = kunciTersimpan();
+      return T.lengkapiRekeningTad(gudang(), p, a, (t) => enkripsi(t, kunci, nonceBaru()));
+    },
+  },
+  eksporPembayaran: {
+    peran: ["admin"],
+    jalankan: (a, p) => {
+      const kunci = kunciTersimpan();
+      return T.eksporPembayaran(gudang(), p, a, (s) => dekripsi(s, kunci));
+    },
+  },
 };

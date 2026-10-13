@@ -65,7 +65,7 @@ export function Terkirim(p: { nomor: string; jenis: string; namaLayanan: string;
 }
 
 /** K4 Detail pengajuan: satu panggilan memuat isian, riwayat, dokumen, dan TAD (PRD 9.1 #3). */
-export default function DetailPengajuan(p: { nomor: string; onKembali: (berubah: boolean) => void; onEdit: (d: Detail) => void }) {
+export default function DetailPengajuan(p: { nomor: string; namaPengguna: string; onKembali: (berubah: boolean) => void; onEdit: (d: Detail) => void }) {
   const [d, setD] = useState<Detail | null>(null);
   const [galat, setGalat] = useState("");
   const [batal, setBatal] = useState(false);
@@ -151,16 +151,22 @@ export default function DetailPengajuan(p: { nomor: string; onKembali: (berubah:
                     Disetujui {terakhir ? tanggal(terakhir.pada) : ""} · {1 + d.tad.length} rincian
                   </small>
                 </div>
-                {d.tad.length > 0 && (
-                  <section className={s.blok}>
-                    {d.tad.map((t) => (
-                      <div key={t.id} className={s.barisNominal}>
-                        <span>{t.nama} · TAD</span>
-                        <strong>{rupiah(t.nominal)}</strong>
+                {[{ id: "karyawan", nama: p.namaPengguna, label: "", nominal: String(d.rincian.reduce((n, r) => n + r.nominal, 0)), rincian: d.rincian }, ...d.tad.map((t) => ({ ...t, label: "TAD" }))].map((o) => (
+                  <section key={o.id} className={s.blok}>
+                    <div className={s.kepalaBlok}>
+                      <span>
+                        {o.nama} {o.label && <span className={s.lencanaKecil}>{o.label}</span>}
+                      </span>
+                      <span>{rupiah(o.nominal)}</span>
+                    </div>
+                    {o.rincian.map((r) => (
+                      <div key={r.label} className={s.barisNominal}>
+                        <span>{r.label}</span>
+                        <span>{rupiah(r.nominal)}</span>
                       </div>
                     ))}
                   </section>
-                )}
+                ))}
               </>
             )}
 

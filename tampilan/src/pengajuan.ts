@@ -35,6 +35,10 @@ export interface Tad {
   unit: string;
   belumTerverifikasi: boolean;
 }
+export interface Rincian {
+  label: string;
+  nominal: number;
+}
 export interface Detail {
   nomor: string;
   jenis: string;
@@ -43,8 +47,10 @@ export interface Detail {
   isian: Isian;
   riwayat: { status: Status; pada: string; oleh: string; catatan: string }[];
   dokumen: Dokumen[];
-  tad: (Tad & { nominal: string })[];
+  tad: (Tad & { nominal: string; rincian: Rincian[] })[];
   nominal: string;
+  /** Hanya setelah Selesai: nama komponen dan nominal, tanpa tarif (PRD 5.8). */
+  rincian: Rincian[];
   bisaEdit: boolean;
   bisaBatal: boolean;
   terpakai: Record<string, string>;

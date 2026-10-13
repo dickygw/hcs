@@ -5,6 +5,7 @@
  */
 import type { Pemanggil } from "./akses";
 import { GalatPengguna } from "./akses";
+import { rincianTampil, type Hasil } from "./hitung";
 import { golonganDari, jgEfektif } from "./master";
 import type { Baris, NamaTabel } from "./skema";
 
@@ -34,9 +35,9 @@ const BISA_DIBATALKAN: readonly string[] = ["draf", "dikirim"];
 
 export const ISIAN = [
   "no_surat_tugas", "kota_tujuan", "tgl_berangkat", "tgl_kembali", "menginap", "jarak", "moda_transportasi", "kendaraan_dinas",
-  "kota_asal", "waktu_berangkat", "waktu_kembali", "nama_hotel", "catatan",
+  "kota_asal", "waktu_berangkat", "waktu_kembali", "nama_hotel", "catatan", "kegiatan",
 ] as const;
-const PANJANG: Partial<Record<(typeof ISIAN)[number], number>> = { kota_tujuan: 100, kota_asal: 100, nama_hotel: 100, catatan: 300 };
+const PANJANG: Partial<Record<(typeof ISIAN)[number], number>> = { kota_tujuan: 100, kota_asal: 100, nama_hotel: 100, catatan: 300, kegiatan: 200 };
 export type Isian = Record<(typeof ISIAN)[number], string>;
 export const JENIS_DOKUMEN = ["surat_tugas", "kuitansi_hotel", "kuitansi_transportasi", "formulir"] as const;
 const PILIHAN: Partial<Record<keyof Isian, readonly string[]>> = {
@@ -100,6 +101,7 @@ export function periksaIsian(o: Isian, jenis = "klaim_perdin"): Partial<Record<k
   const surat = konfig(jenis).surat;
   if (!o.no_surat_tugas) g.no_surat_tugas = `Isi nomor ${surat}.`;
   else if (o.no_surat_tugas.length < 3 || !/^[A-Za-z0-9./\-_ ]+$/.test(o.no_surat_tugas)) g.no_surat_tugas = `Nomor ${surat} hanya berisi huruf, angka, titik, garis miring, dan tanda hubung.`;
+  if (o.kegiatan.length < 3) g.kegiatan = "Isi kegiatan perjalanan dinas.";
   if (konfig(jenis).form === "tiket") {
     // Tiket: rute dan jadwal; kembali boleh kosong (sekali jalan); hotel dan catatan opsional.
     if (o.kota_asal.length < 2) g.kota_asal = "Isi kota asal.";
@@ -388,6 +390,9 @@ export function bukaPengajuan(g: Gudang, p: Pemanggil, arg: unknown) {
   }));
   const tad = tadPengajuan(g, x.nomor);
   const selesai = x.status === "selesai";
+  // Setelah Selesai: rincian per komponen tanpa tarif atau rumus (PRD 5.8).
+  const hasil = selesai ? ((JSON.parse(x.rincian_hitung || "{}") as { hasil?: Record<string, Hasil> }).hasil ?? {}) : {};
+  const rincian = (kunci: string) => (hasil[kunci] ? rincianTampil(hasil[kunci]) : []);
   return {
     nomor: x.nomor,
     jenis: x.jenis_layanan,
@@ -397,8 +402,10 @@ export function bukaPengajuan(g: Gudang, p: Pemanggil, arg: unknown) {
     riwayat,
     dokumen: g.baca("dokumen").filter((d) => d.nomor_pengajuan === x.nomor).map(tampilDokumen),
     // Nominal hanya setelah Selesai (PRD 5.8); tanpa rincian tarif atau rumus.
-    tad: tad.map((t) => ({ ...t, nominal: selesai ? t.nominal : "" })),
+    tad: tad.map((t) => ({ ...t, nominal: selesai ? t.nominal : "", rincian: rincian(t.id) })),
     nominal: selesai ? x.nominal_disetujui : "",
+    rincian: rincian("karyawan"),
+    disetujuiPada: selesai ? x.disetujui_pada : "",
     bisaEdit: BISA_DIEDIT.includes(x.status),
     bisaBatal: BISA_DIBATALKAN.includes(x.status),
     terpakai: BISA_DIEDIT.includes(x.status) ? tadTerpakai(g, x.no_surat_tugas, x.nomor) : {},

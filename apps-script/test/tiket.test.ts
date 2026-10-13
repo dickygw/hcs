@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Pemanggil } from "../src/akses";
-import { KOLOM_0002, MIGRASI } from "../src/migrasi";
+import { KOLOM_0002, KOLOM_0003, MIGRASI } from "../src/migrasi";
 import * as P from "../src/pengajuan";
 import { TABEL } from "../src/skema";
 import * as T from "../src/tugas";
@@ -11,7 +11,7 @@ const B: Pemanggil = { email: "b@pegadaian.co.id", peran: "karyawan" };
 const TIKET = {
   no_surat_tugas: "ST/0455/KW-IV/2026", kota_asal: "Balikpapan", kota_tujuan: "Tarakan",
   tgl_berangkat: "2026-10-14", waktu_berangkat: "08:30", tgl_kembali: "2026-10-16", waktu_kembali: "17:15",
-  nama_hotel: "Hotel Tarakan Plaza", catatan: "Bila bisa, maskapai Garuda.",
+  nama_hotel: "Hotel Tarakan Plaza", catatan: "Bila bisa, maskapai Garuda.", kegiatan: "Sosialisasi PKB",
 };
 
 let u: ReturnType<typeof gudangUji>;
@@ -40,7 +40,7 @@ describe("Pemesanan Tiket Pesawat (Tahap 8)", () => {
   });
 
   it("validasi: kota asal, kota tujuan, tanggal dan waktu berangkat wajib; menginap dan moda tidak ditanya", () => {
-    const g = P.periksaIsian(P.bersihkanIsian({ no_surat_tugas: "ST/1" }), "pemesanan_tiket");
+    const g = P.periksaIsian(P.bersihkanIsian({ no_surat_tugas: "ST/1", kegiatan: "Rapat" }), "pemesanan_tiket");
     expect(g).toEqual({
       kota_asal: "Isi kota asal.", kota_tujuan: "Isi kota tujuan.", tgl_berangkat: "Isi tanggal berangkat.", waktu_berangkat: "Isi jam berangkat.",
     });
@@ -71,11 +71,11 @@ describe("Pemesanan Tiket Pesawat (Tahap 8)", () => {
 
 describe("Migrasi 0002 (WS-13)", () => {
   it("kolom baru ditambahkan di akhir skema pengajuan, sama persis dengan migrasi", () => {
-    expect(TABEL.pengajuan.kolom.slice(-KOLOM_0002.length)).toEqual(KOLOM_0002);
+    expect(TABEL.pengajuan.kolom.slice(-KOLOM_0002.length - KOLOM_0003.length)).toEqual([...KOLOM_0002, ...KOLOM_0003]);
     expect(TABEL.pengajuan.kolom.slice(0, 3)).toEqual(["nomor", "jenis_layanan", "nik_pendek"]); // urutan lama tidak bergeser
   });
 
   it("nomor migrasi unik dan berurutan", () => {
-    expect(MIGRASI.map((m) => m.nomor)).toEqual(["0001", "0002"]);
+    expect(MIGRASI.map((m) => m.nomor)).toEqual(["0001", "0002", "0003"]);
   });
 });

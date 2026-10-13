@@ -872,3 +872,12 @@
   background: #a51f1f;
   color: #fff;
 }
+
+.lencanaKecil {
+  margin-left: 6px;
+  font: 600 11px/1 var(--font-core);
+  padding: 3px 6px;
+  border-radius: 5px;
+  background: var(--gold-100);
+  color: var(--pgd-forest);
+}

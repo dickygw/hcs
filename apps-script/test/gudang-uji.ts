@@ -33,5 +33,5 @@ export const dariB64 = (s: string) => new Uint8Array(Buffer.from(s, "base64"));
 export const ISIAN = {
   no_surat_tugas: "ST/0412/KW-IV/2026", kota_tujuan: "Samarinda", tgl_berangkat: "2026-10-06", tgl_kembali: "2026-10-08",
   menginap: "ya", jarak: "", moda_transportasi: "pesawat", kendaraan_dinas: "tidak",
-  kota_asal: "", waktu_berangkat: "", waktu_kembali: "", nama_hotel: "", catatan: "",
+  kota_asal: "", waktu_berangkat: "", waktu_kembali: "", nama_hotel: "", catatan: "", kegiatan: "Waskat CP Melak",
 };

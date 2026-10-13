@@ -96,7 +96,7 @@ export default function Karyawan(p: { pengguna: Pengguna; onKeluar: () => void }
           onBeranda={() => keDaftar(false)}
         />
       ) : (
-        <DetailPengajuan nomor={layar.nomor} onKembali={keDaftar} onEdit={(d) => setLayar({ id: "form", jenis: d.jenis, awal: d })} />
+        <DetailPengajuan nomor={layar.nomor} namaPengguna={p.pengguna.nama} onKembali={keDaftar} onEdit={(d) => setLayar({ id: "form", jenis: d.jenis, awal: d })} />
       );
     return <div className={styles.kerangka}>{isi}</div>;
   }
